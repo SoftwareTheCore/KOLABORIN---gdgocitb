@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-container": "#6cf8bb",
+            "on-tertiary-fixed-variant": "#653e00",
+            "outline": "#777587",
+            "on-secondary-fixed": "#002113",
+            "on-tertiary": "#ffffff",
+            "primary": "#3525cd",
+            "primary-fixed-dim": "#c3c0ff",
+            "on-primary-fixed": "#0f0069",
+            "on-surface-variant": "#464555",
+            "tertiary-container": "#885500",
+            "surface-container-highest": "#dae2fd",
+            "secondary-fixed-dim": "#4edea3",
+            "on-error-container": "#93000a",
+            "surface-container-low": "#f2f3ff",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#dae2fd",
+            "on-primary-container": "#dad7ff",
+            "surface-container": "#eaedff",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#eef0ff",
+            "inverse-primary": "#c3c0ff",
+            "surface-dim": "#d2d9f4",
+            "outline-variant": "#c7c4d8",
+            "surface-container-lowest": "#ffffff",
+            "inverse-surface": "#283044",
+            "on-tertiary-container": "#ffd4a4",
+            "tertiary-fixed-dim": "#ffb95f",
+            "background": "#faf8ff",
+            "secondary": "#006c49",
+            "on-surface": "#131b2e",
+            "on-secondary-fixed-variant": "#005236",
+            "on-primary-fixed-variant": "#3323cc",
+            "primary-fixed": "#e2dfff",
+            "error-container": "#ffdad6",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed": "#2a1700",
+            "tertiary-fixed": "#ffddb8",
+            "surface-tint": "#4d44e3",
+            "on-secondary-container": "#00714d",
+            "surface-container-high": "#e2e7ff",
+            "surface-bright": "#faf8ff",
+            "error": "#ba1a1a",
+            "on-background": "#131b2e",
+            "tertiary": "#684000",
+            "surface": "#faf8ff",
+            "secondary-fixed": "#6ffbbe",
+            "primary-container": "#4f46e5"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem",
+            "space-md": "1rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "title-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased">
+<!-- 1. SIMPLIFIED SLEEK HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md border-b border-surface-container-high">
+<div class="h-16 max-w-[84rem] mx-auto px-margin-mobile md:px-margin flex items-center justify-between gap-space-md">
+<!-- Left: Logo & Core Nav -->
+<div class="flex items-center gap-space-xl">
+<a class="flex items-center gap-2 group" data-path="home" href="#">
+<img alt="KOLABORIN Brand Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDBA2oyd-4v9RxabshcrZIiDseUEQA1Z-hVYp3k4C7d77dbL3CJxeEHuJK2Gsg4BlbzsAO01rxuNJPLhBhCy9pABnhJumONdOOK6AvUOs5TQgDF04dCcX4aTxdbvEUGdmFHtLrOjoQ7eldtzS096i_9zPetjM4dn8gWlLlf36wkvhEF2TDvaTqa7FWYHywzYTdTtEyzLKvQZFyOaRCArjr8hktBoI1BITWSlOGTCyru"/>
+<span class="font-headline-sm text-[20px] text-primary tracking-tight font-extrabold">KOLABORIN</span>
+</a>
+<!-- Streamlined core nav links -->
+<nav class="hidden md:flex items-center gap-space-lg text-body-md font-medium">
+<a class="text-primary font-bold border-b-2 border-primary py-4 transition-colors" data-path="home" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="live-map-&amp;-spots" href="#">Live Map</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="open-party-(study-groups)" href="#">Open Party</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="community-hub" href="#">Chat Hub</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="campus-events" href="#">Events</a>
+</nav>
+</div>
+<!-- Right: Search, Notification, Compact Avatar -->
+<div class="flex items-center gap-space-sm">
+<div class="relative hidden sm:flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">search</span>
+<input class="bg-surface-container-low pl-9 pr-8 py-1.5 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline w-52 lg:w-64 focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="Cari spot, matkul, teman..." type="text"/>
+<kbd class="absolute right-2.5 font-label-sm text-[10px] bg-surface-container-highest px-1.5 py-0.5 rounded text-on-surface-variant">⌘K</kbd>
+</div>
+<button aria-label="Notifikasi" class="relative p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-error px-1 text-[10px] font-bold text-on-error">3</span>
+</button>
+<!-- Compact User Profile -->
+<div class="flex items-center gap-2 pl-1 py-1 pr-2 rounded-full hover:bg-surface-container cursor-pointer transition-colors">
+<img alt="Farrel Arkan" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACSJPR27gVwFzxNagQ1pVASbkIN3ZlaR2Dcxl6aXnoU-gDd5vSPLPsZ6I9GZJBpGUfTJFvGdKUjRwOcHmugPB8dnuA11rTbqHSh5vrjXPeml9umagg4sTYGGaCdbzMMLnUI8AplCEc4niLSF-uzqHoTSQhen3l2upvdjxfX_eOkcsFdhkYeuUCNczsHH1GkUQIYSLhfEzvJ9H0PxIqEm9TJMVWQNqAQh3RAOBFDQGf"/>
+<div class="hidden lg:flex flex-col text-left">
+<span class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Farrel Arkan</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant leading-none">STEI ITB</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN VIEWPORT -->
+<main class="w-full pt-16 bg-surface min-h-[calc(100vh-120px)]"><div class="flex flex-col w-full">
+<!-- Active Header Tab Underline Sync Script (Highlights Chat Hub link in Shell) -->
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const navLinks = document.querySelectorAll("header nav a");
+      navLinks.forEach((link) => {
+        if (link.getAttribute("data-path") === "community-hub") {
+          link.classList.remove("text-on-surface-variant", "hover:text-primary");
+          link.classList.add("text-primary", "font-bold", "border-b-2", "border-primary");
+        } else if (link.getAttribute("data-path") === "home") {
+          link.classList.remove("text-primary", "font-bold", "border-b-2", "border-primary");
+          link.classList.add("text-on-surface-variant", "hover:text-primary");
+        }
+      });
+    });
+  </script>
+<!-- WORKSPACE WRAPPER -->
+<div class="max-w-[86rem] w-full mx-auto px-margin-mobile md:px-margin py-space-md">
+<!-- SUB-NAV / CONTEXT TILE -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm mb-space-md">
+<div class="flex items-center gap-space-sm min-w-0">
+<div class="h-8 w-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[20px]">forum</span>
+</div>
+<div class="flex items-center gap-2 truncate">
+<span class="font-headline-sm text-headline-sm text-on-surface tracking-tight">Community Chat Hub</span>
+<span class="font-label-sm text-label-sm text-secondary bg-secondary-container/40 px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-pulse"></span>
+            Live ITB Sync
+          </span>
+</div>
+</div>
+<!-- Quick Action Controls -->
+<div class="flex items-center gap-2">
+<div class="relative hidden lg:flex items-center">
+<span class="material-symbols-outlined absolute left-2.5 text-outline text-[16px]">travel_explore</span>
+<input class="bg-surface-container-low pl-8 pr-3 py-1 text-body-sm font-body-sm rounded-lg text-on-surface placeholder:text-outline w-64 focus:outline-none focus:bg-surface-container-lowest focus:ring-1 focus:ring-primary shadow-sm" placeholder="Telusuri seluruh arsip &amp; chat..." type="text"/>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary text-label-md font-label-md px-3 py-1.5 rounded-lg flex items-center gap-1.5 shadow-sm transition-all">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+<span>Open Study Room</span>
+</button>
+</div>
+</div>
+<!-- MAIN THREE-COLUMN WORKSPACE CONTAINER -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-md items-start">
+<!-- ======================================================== -->
+<!-- COLUMN 1: LEFT NAVIGATOR (Community & Channels) ~260px    -->
+<!-- ======================================================== -->
+<aside class="lg:col-span-3 flex flex-col gap-space-sm bg-surface-container-lowest rounded-2xl p-space-md shadow-sm">
+<!-- Active Community Switcher (F33 - F36) -->
+<div class="relative group">
+<div class="flex items-center justify-between p-2.5 rounded-xl bg-surface-container-low hover:bg-surface-container cursor-pointer transition-colors">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="relative">
+<div class="w-9 h-9 rounded-xl bg-primary-container text-on-primary flex items-center justify-center font-bold text-label-lg shadow-sm">
+                  HM
+                </div>
+<span class="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 bg-secondary rounded-full flex items-center justify-center text-on-secondary text-[8px]" title="Terverifikasi ITB">
+<span class="material-symbols-outlined text-[10px]">verified</span>
+</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1">
+<span class="font-title-sm text-title-sm text-on-surface truncate">HIMATIKA ITB</span>
+<span class="material-symbols-outlined text-primary text-[16px]">verified</span>
+</div>
+<span class="font-body-sm text-[11px] text-on-surface-variant truncate">Himpunan Mahasiswa Informatika</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline text-[18px]">unfold_more</span>
+</div>
+<!-- Dropdown Switcher Menu (Desktop Flyout) -->
+<div class="absolute top-full left-0 right-0 mt-1.5 bg-surface-container-lowest rounded-xl p-1.5 shadow-xl hidden group-hover:block z-30">
+<div class="px-2 py-1 text-[11px] font-label-sm text-outline uppercase tracking-wider">Beralih Komunitas</div>
+<a class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container text-on-surface text-label-md font-label-md" href="#">
+<span class="w-6 h-6 rounded-md bg-secondary text-on-secondary flex items-center justify-center text-[10px] font-bold">GD</span>
+<span>Google DSC ITB</span>
+</a>
+<a class="flex items-center gap-2 px-2.5 py-1.5 rounded-lg hover:bg-surface-container text-on-surface text-label-md font-label-md" href="#">
+<span class="w-6 h-6 rounded-md bg-tertiary text-on-tertiary flex items-center justify-center text-[10px] font-bold">RC</span>
+<span>ITB Robotics Club</span>
+</a>
+<div class="my-1 border-t border-surface-container-high"></div>
+<button class="w-full text-left flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-primary hover:bg-surface-container text-label-md font-label-md">
+<span class="material-symbols-outlined text-[18px]">add</span>
+<span>Gabung / Buat Komunitas</span>
+</button>
+</div>
+</div>
+<!-- + Gabung / Buat Komunitas Baru Button -->
+<button class="w-full py-1.5 px-3 bg-surface-container hover:bg-surface-container-high text-primary rounded-xl font-label-md text-label-md flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[18px]">group_add</span>
+<span>+ Buat / Gabung Channel</span>
+</button>
+<!-- CHANNEL DIRECTORY SCROLLABLE AREA -->
+<div class="flex flex-col gap-space-md mt-1 overflow-y-auto max-h-[calc(100vh-270px)] pr-1">
+<!-- Category 1: PINNED CHANNELS & ANNOUNCEMENTS (F39) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between px-2 text-[11px] font-label-sm text-outline uppercase tracking-wider">
+<span>Pinned &amp; Info Resmi</span>
+<span class="material-symbols-outlined text-[14px]">push_pin</span>
+</div>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-error text-[18px]">campaign</span>
+<span class="font-body-md text-body-md truncate">pengumuman-resmi</span>
+</div>
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-tertiary-container text-[18px]">bookmark</span>
+<span class="font-body-md text-body-md truncate">info-beasiswa-lpdp</span>
+</div>
+</a>
+</div>
+<!-- Category 2: TEXT CHANNELS (F37, F38) -->
+<div class="flex flex-col gap-1">
+<div class="flex items-center justify-between px-2 text-[11px] font-label-sm text-outline uppercase tracking-wider">
+<span>Text Channels</span>
+<span class="font-label-sm text-[10px] bg-surface-container px-1.5 py-0.5 rounded text-on-surface-variant">4 Aktif</span>
+</div>
+<!-- ACTIVE CHANNEL SELECTION -->
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-xl bg-primary text-on-primary font-medium shadow-sm transition-all" href="#">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-[18px]">tag</span>
+<span class="font-label-lg text-label-lg truncate">tugas-besar-algo</span>
+</div>
+<span class="bg-surface-container-lowest text-primary text-label-sm font-label-sm px-1.5 py-0.2 rounded-full font-bold">3</span>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-outline text-[18px]">tag</span>
+<span class="font-body-md text-body-md truncate">ask-senior-mentoring</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-outline text-[18px]">tag</span>
+<span class="font-body-md text-body-md truncate">share-catatan-matkul</span>
+</div>
+</a>
+<a class="flex items-center justify-between px-2.5 py-1.5 rounded-lg text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors" href="#">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-primary text-[18px]">smart_toy</span>
+<span class="font-body-md text-body-md truncate">bot-kolaborin-faq</span>
+</div>
+<span class="font-label-sm text-[10px] bg-secondary-container/40 text-on-secondary-container px-1 rounded">AI</span>
+</a>
+</div>
+<!-- Category 3: VOICE STUDY ROOMS (F29) -->
+<div class="flex flex-col gap-1.5">
+<div class="flex items-center justify-between px-2 text-[11px] font-label-sm text-outline uppercase tracking-wider">
+<span>Voice Study Rooms</span>
+<span class="material-symbols-outlined text-[14px] text-secondary">wifi_tethering</span>
+</div>
+<!-- Voice Room 1: Study Room 204 -->
+<div class="p-2.5 rounded-xl bg-surface-container-low/70 hover:bg-surface-container transition-colors">
+<div class="flex items-center justify-between mb-1.5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">volume_up</span>
+<span class="font-label-md text-label-md text-on-surface">Study Room 204</span>
+</div>
+<span class="font-label-sm text-[10px] bg-secondary/15 text-secondary px-1.5 py-0.5 rounded-full font-bold">4 Online</span>
+</div>
+<!-- Active Participants Mini Grid -->
+<div class="flex items-center gap-1.5 pl-6">
+<div class="flex -space-x-2">
+<img class="w-6 h-6 rounded-full object-cover ring-2 ring-surface-container-lowest" data-alt="Student avatar Farrel Arkan wearing casual denim jacket in bright ITB computer lab" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhrV6EDtEL-407zFCSYxCWk8vNCQVLRgvZhsQhpwqabz9RRHKvcrj19MevkA4jgcfgvWADulkPuzI2gZcEE4N-qCIOWho3S220rz9GQhgYVeulFavrGovN9T2vbSBUmS0Gi_ARq_tsyTvXasDiVhL2zhn1oWnO8XMLEuqtEWrM2bbBzPnOiyUNabaPBuuVFSi8tbn8iK2Z3Y_7IL3TIb1sqS_akPSvhZXmQU5kcn0Q"/>
+<img class="w-6 h-6 rounded-full object-cover ring-2 ring-surface-container-lowest" data-alt="Female college student Amanda wearing hijab and eyeglasses smiling in library" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFgrn0W9N1e7-1-PM1fR7VAuMt9HmmB_svhDSReew8LD8lThCecAiq7cuLu_meS7pBeCPLGkFCFMfOIggaI9hhcY4UjqzK6ti7UQBPpAzFvyizxz-F9pcTCtg-vYjsCFVa_GB91SGT_v_nM6Fv3AH7_6cu5GDLWMKrfvJJ4DnJhtUwm7bR3NjfYEAlLwOSdzhfyiTgn6KYYA6fME0Ysikr7G9qb2H4bh1kjJ6KI9VV"/>
+<img class="w-6 h-6 rounded-full object-cover ring-2 ring-surface-container-lowest" data-alt="Male engineering student Daffa with headphones coding on laptop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvz6k1zvKwaG8RH0bW791d_TZdX52ygPb1VnY_MDsEjnr6On33NbOEPD2OnC0zKQZjxsMTDew4P0OHcnXSPIRbZmVXryx1r1lauevxXpii8eV4yo0RUno4wgL8F7KOkhaF3tx4HHoIshHgF0ZHV5hobH1BD3CSM-cAG22nK9HY9mhucJM_AWDmL_Ut6j5PsC7dFH8w8F4uDlnNVrFMK9LnlpONSpeE7Qh9ouh1x8CX"/>
+<div class="w-6 h-6 rounded-full bg-primary-fixed text-primary flex items-center justify-center text-[10px] font-bold ring-2 ring-surface-container-lowest">+1</div>
+</div>
+<span class="text-[11px] font-body-sm text-on-surface-variant truncate">Sedang bahas Graph Tubes</span>
+</div>
+</div>
+<!-- Voice Room 2: Silent Focus Room -->
+<div class="p-2.5 rounded-xl bg-surface-container-low/70 hover:bg-surface-container transition-colors">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[18px]">headphones</span>
+<span class="font-label-md text-label-md text-on-surface">Silent Focus Room</span>
+</div>
+<span class="font-label-sm text-[10px] text-outline">12 lofi</span>
+</div>
+</div>
+</div>
+</div>
+<!-- User Voice Status Bar (Bottom fixed in column) -->
+<div class="mt-auto pt-2 border-t border-surface-container-high flex items-center justify-between bg-surface-container-low p-2 rounded-xl">
+<div class="flex items-center gap-2 min-w-0">
+<div class="relative">
+<div class="w-7 h-7 rounded-full bg-secondary-fixed text-on-secondary-fixed flex items-center justify-center font-bold text-[11px]">
+                FA
+              </div>
+<span class="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<div class="flex flex-col truncate">
+<span class="font-label-sm text-label-sm text-on-surface truncate">Farrel Arkan</span>
+<span class="font-body-sm text-[10px] text-secondary truncate">Terkoneksi ke Labtek V</span>
+</div>
+</div>
+<div class="flex items-center gap-0.5">
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant hover:text-error" title="Mute Mic">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant" title="Deafen Audio">
+<span class="material-symbols-outlined text-[18px]">headphones</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container text-on-surface-variant" title="Setelan Suara">
+<span class="material-symbols-outlined text-[18px]">settings</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- ======================================================== -->
+<!-- COLUMN 2: MIDDLE COLUMN (Active Channel Feed) ~600px+    -->
+<!-- ======================================================== -->
+<section class="lg:col-span-6 flex flex-col bg-surface-container-lowest rounded-2xl shadow-sm min-h-[780px] h-[calc(100vh-140px)]">
+<!-- Active Channel Header Bar -->
+<div class="px-space-md py-3 border-b border-surface-container-high flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-primary text-[22px]">tag</span>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-2">
+<h1 class="font-title-md text-title-md text-on-surface truncate font-bold">tugas-besar-algo</h1>
+<span class="hidden sm:inline-block font-label-sm text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded font-semibold">IF2110</span>
+</div>
+<p class="font-body-sm text-[11px] text-on-surface-variant truncate">Diskusi Tubes Strategi Algoritma &amp; Bedah Testcase UAS Semester Genap</p>
+</div>
+</div>
+<!-- Channel Tool Icons & Search -->
+<div class="flex items-center gap-1">
+<div class="relative hidden xl:flex items-center">
+<span class="material-symbols-outlined absolute left-2 text-outline text-[16px]">search</span>
+<input class="bg-surface-container-low pl-7 pr-2 py-1 rounded-full text-body-sm font-body-sm text-on-surface placeholder:text-outline w-36 focus:w-48 transition-all focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Cari di channel..." type="text"/>
+</div>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant" title="Pesan Tersemat">
+<span class="material-symbols-outlined text-[20px]">push_pin</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant" title="Vault Berkas">
+<span class="material-symbols-outlined text-[20px]">folder_open</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant" title="Bungkam Notifikasi">
+<span class="material-symbols-outlined text-[20px]">notifications_none</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-primary font-bold block lg:hidden" title="Daftar Anggota">
+<span class="material-symbols-outlined text-[20px]">group</span>
+</button>
+</div>
+</div>
+<!-- PINNED ANNOUNCEMENT BANNER (F39) -->
+<div class="bg-primary/5 px-space-md py-2.5 border-b border-primary/15 flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2 text-primary min-w-0">
+<span class="material-symbols-outlined text-[18px] shrink-0">announcement</span>
+<p class="font-body-sm text-[12px] truncate text-on-surface">
+<strong class="font-label-md text-primary">Pengumuman Dosen:</strong> Pengumpulan Tubes Tahap 1 dibuka hingga Jumat 23:59 WIB di Spada ITB.
+            </p>
+</div>
+<a class="font-label-sm text-[11px] text-primary hover:underline shrink-0 font-bold" href="#">Rincian</a>
+</div>
+<!-- MESSAGE STREAM FEED (Scrollable) -->
+<div class="flex-1 overflow-y-auto p-space-md flex flex-col gap-space-md">
+<div class="flex items-center justify-center my-1">
+<span class="font-label-sm text-[10px] text-outline uppercase tracking-wider bg-surface-container px-2.5 py-0.5 rounded-full">Hari Ini • 14 Maret 2025</span>
+</div>
+<!-- Message 1: Amanda S. -->
+<div class="flex items-start gap-space-sm group">
+<img class="w-9 h-9 rounded-full object-cover mt-0.5 shrink-0" data-alt="Headshot of Amanda S. female university computer science student with a friendly expression in modern bright campus" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAia3km4n8blZLoJ-WiRDtPrS3lpKrBxMhQHg5W8wxHXzo1DbS-nzenwLSG4w8Dk_LOPbolxhdeZ2xcGY4Pyu6DDDTlvjLk2g89uUX16G74MuuL28jYhF-rPIYXPz2cIAFoCrw4hbEyuXkh9bNPF6ZMV1eBoNpggT2iHErU7x7lrCZuBlfNQk6ntfskNBp_8nnQSHXHXiQw5qUAPDMOOr-pTDmwh3RwJr9uJ67nDO2"/>
+<div class="flex flex-col min-w-0 max-w-[85%]">
+<div class="flex items-baseline gap-2">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Amanda S.</span>
+<span class="font-label-sm text-[11px] text-outline">Informatika '22</span>
+<span class="font-body-sm text-[10px] text-outline">10:14 WIB</span>
+</div>
+<div class="mt-1 bg-surface-container-low p-3 rounded-2xl rounded-tl-sm text-body-md text-on-surface">
+                Ada yang punya rekomendasi visualizer BFS vs DFS buat graph berbobot gak ya? Lagi nyangkut di test case 14 nih, complexity-nya selalu TLE pas cycle detection. 🤔
+              </div>
+</div>
+</div>
+<!-- Message 2: Daffa R. with Embedded Code Snippet -->
+<div class="flex items-start gap-space-sm group">
+<img class="w-9 h-9 rounded-full object-cover mt-0.5 shrink-0" data-alt="Portrait of Daffa R. male informatics student wearing glasses and dark hoodie" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyBZcWorqeazmb_w6vJhA8VWwwJuf6ucEnbiFBXZ5rM4XS5CDNW06ESDaxRTVQSH_eDJgRuw3z7cvRlq7R6ft4rz--EJH4KEJdkvBDPe1jYLdTzYIQIP7sz5lNa6-8oJVlad-99EPfzDN54ctjzAQMd_Zt7FLngmXG3-LaQq-6BVPfEuxTO90b0rPh-wmlR2YVcja_47AgRB6Ed0VyOqtEq_QDiX3aIBuZnzfm9fEl"/>
+<div class="flex flex-col min-w-0 max-w-[90%]">
+<div class="flex items-baseline gap-2">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Daffa R.</span>
+<span class="font-label-sm text-[11px] text-primary font-semibold">Informatika '21 (Asisten)</span>
+<span class="font-body-sm text-[10px] text-outline">10:18 WIB</span>
+</div>
+<div class="mt-1 bg-surface-container-low p-3 rounded-2xl rounded-tl-sm text-body-md text-on-surface flex flex-col gap-2">
+<p>Coba pakai Tarjan's strongly connected components atau optimasi priority queue di Dijkstra-nya Man. Ini helper snippet dari repo asisten tahun lalu:</p>
+<!-- Code Snippet Card -->
+<div class="bg-inverse-surface text-inverse-on-surface p-3 rounded-xl font-mono text-[12px] leading-relaxed overflow-x-auto shadow-inner">
+<div class="flex justify-between items-center pb-1 mb-2 border-b border-outline/30 text-[10px] text-outline-variant">
+<span>graph_optimizer.cpp</span>
+<button class="hover:text-surface-bright flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">content_copy</span> Salin
+                    </button>
+</div>
+<code>
+<span class="text-secondary-fixed">void</span> <span class="text-tertiary-fixed">detectCycle</span>(<span class="text-secondary-fixed">int</span> u, vector&lt;<span class="text-secondary-fixed">bool</span>&gt;&amp; visited) {<br/>
+                      visited[u] = <span class="text-primary-fixed">true</span>;<br/>
+                      <span class="text-secondary-fixed">for</span>(<span class="text-secondary-fixed">auto</span>&amp; edge : adj[u]) {<br/>
+                        <span class="text-secondary-fixed">if</span>(!visited[edge.to]) detectCycle(edge.to, visited);<br/>
+                      }<br/>
+                    }
+                  </code>
+</div>
+<div class="flex items-center gap-2 text-primary font-label-md text-[12px] hover:underline cursor-pointer">
+<span class="material-symbols-outlined text-[16px]">link</span>
+<span>github.com/stei-itb/tubes-algo-templates-2024</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Message 3: KOLABORIN Campus Bot (F38) -->
+<div class="flex items-start gap-space-sm bg-primary/5 p-3 rounded-2xl border border-primary/20">
+<div class="w-9 h-9 rounded-full bg-primary text-on-primary flex items-center justify-center shrink-0 shadow-sm">
+<span class="material-symbols-outlined text-[20px]">smart_toy</span>
+</div>
+<div class="flex flex-col min-w-0 flex-1">
+<div class="flex items-center gap-2">
+<span class="font-label-lg text-label-lg font-extrabold text-primary">KOLABORIN Campus Bot</span>
+<span class="bg-primary text-on-primary font-label-sm text-[9px] px-1.5 py-0.2 rounded-full uppercase tracking-wider">AI Bot F38</span>
+<span class="font-body-sm text-[10px] text-outline">10:19 WIB</span>
+</div>
+<p class="font-body-md text-body-md text-on-surface mt-1">
+                🤖 <strong>Auto-Radar:</strong> Ditemukan <strong>2 Open Party</strong> aktif yang sedang membahas matkul <em>IF2110</em> saat ini:
+              </p>
+<!-- Hotspot Spots Suggestions -->
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
+<div class="bg-surface-container-lowest p-2 rounded-xl border border-surface-container-high flex items-center justify-between">
+<div class="flex flex-col truncate">
+<span class="font-label-md text-label-md text-on-surface truncate">Labtek V Meja 4</span>
+<span class="font-body-sm text-[11px] text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> 3 Mahasiswa aktif
+                    </span>
+</div>
+<button class="bg-primary text-on-primary px-2 py-1 rounded-lg text-label-sm font-label-sm hover:bg-primary-container shrink-0">
+                    Gabung Meja
+                  </button>
+</div>
+<div class="bg-surface-container-lowest p-2 rounded-xl border border-surface-container-high flex items-center justify-between">
+<div class="flex flex-col truncate">
+<span class="font-label-md text-label-md text-on-surface truncate">Perpustakaan Pusat Lt. 2</span>
+<span class="font-body-sm text-[11px] text-secondary flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> 5 Mahasiswa aktif
+                    </span>
+</div>
+<button class="bg-primary text-on-primary px-2 py-1 rounded-lg text-label-sm font-label-sm hover:bg-primary-container shrink-0">
+                    Gabung Meja
+                  </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Message 4: Farrel Arkan (Current User) with Attached PDF Card -->
+<div class="flex items-start gap-space-sm justify-end group">
+<div class="flex flex-col items-end min-w-0 max-w-[85%]">
+<div class="flex items-baseline gap-2">
+<span class="font-body-sm text-[10px] text-outline">10:22 WIB</span>
+<span class="font-label-sm text-[11px] text-primary font-semibold">You</span>
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Farrel Arkan</span>
+</div>
+<div class="mt-1 bg-primary text-on-primary p-3 rounded-2xl rounded-tr-sm text-body-md flex flex-col gap-2">
+<p>Mantap, meluncur ke Labtek V sekarang! Btw ini rangkuman modul 4 yg kemarin sempat kubikin bareng tim:</p>
+<!-- PDF File Attachment Card -->
+<div class="bg-surface-container-lowest text-on-surface p-3 rounded-xl flex items-center justify-between gap-3 shadow-md border border-surface-container-highest">
+<div class="flex items-center gap-2.5 min-w-0">
+<div class="w-9 h-9 rounded-lg bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[22px]">picture_as_pdf</span>
+</div>
+<div class="flex flex-col truncate">
+<span class="font-label-md text-label-md font-bold truncate">Rangkuman_Modul4_Graph_STEI.pdf</span>
+<span class="font-body-sm text-[11px] text-outline">2.4 MB • Disimpan di Knowledge Vault</span>
+</div>
+</div>
+<button class="px-2.5 py-1 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary font-label-sm text-label-sm flex items-center gap-1 shrink-0">
+<span class="material-symbols-outlined text-[16px]">visibility</span> Pratinjau
+                  </button>
+</div>
+</div>
+</div>
+<img class="w-9 h-9 rounded-full object-cover mt-0.5 shrink-0" data-alt="Farrel Arkan avatar portrait young Indonesian university student smiling with campus background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2c90yfOrlh7TL1dHWBC1n-XUcI6EU24K_RBGwzwDp5mh7KKj_3lk7xmZqSjaWt08R9Dl58AtjLVJfaNnt0-_1lvwzIK8wIKEwqC1xJG5J1v3jzE7I5f4ETJee6eFwLshe1cg89Y0czlO1YzlmhdphRhooBascZJHa8TOOw7OBUYxFWpwB6QNGBrSPG7iTL-9GbxtM_pchlQqsweUGJd1lyJthw1Ht1DbOVqkA97lq"/>
+</div>
+<!-- Message 5: Alifia Putri with Gamification inline badge (F53) -->
+<div class="flex items-start gap-space-sm group">
+<img class="w-9 h-9 rounded-full object-cover mt-0.5 shrink-0" data-alt="Portrait of Alifia Putri female electrical engineering student wearing glasses with laptop" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqAPaElrj6CmEJ76mia0Qo1S3wMWL7LEVzQ4DExLjR8kCokwS3trlrJUFwSwkwCqspHG-fM82XGq9YDVoLRxijMCDk97JIL1RCsdB4-ECD_b-VRnsdlMRFUULKqQeIwocVukZwGWXfxHdcEA363Sa6ywE4gFytEOHcbxNM1CWra-PRPsNTLXM273xVc4UKg2wHEU_f7_mJe9pGpV32c3lgcUFb3YeIrMIicuNRbdRQ"/>
+<div class="flex flex-col min-w-0 max-w-[85%]">
+<div class="flex items-baseline gap-2">
+<span class="font-label-lg text-label-lg font-bold text-on-surface">Alifia Putri</span>
+<span class="font-label-sm text-[11px] text-outline">Elektro '22</span>
+<span class="font-body-sm text-[10px] text-outline">10:24 WIB</span>
+</div>
+<div class="mt-1 bg-surface-container-low p-3 rounded-2xl rounded-tl-sm text-body-md text-on-surface flex flex-col gap-1.5">
+<p>Makasih Farrel! Langsung paham bedanya Dijkstra sama Bellman-Ford di page 3. 🙌</p>
+<!-- Gamification Inline Badge F53 -->
+<div class="inline-flex items-center gap-1.5 self-start bg-tertiary-fixed text-on-tertiary-fixed px-2.5 py-0.5 rounded-full font-label-sm text-[11px] shadow-xs">
+<span class="material-symbols-outlined text-[14px]">military_tech</span>
+<span>+10 XP rewarded to Farrel for Verified Academic Notes!</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- CHAT INPUT FOOTER -->
+<div class="p-space-md border-t border-surface-container-high bg-surface-container-lowest rounded-b-2xl">
+<div class="bg-surface-container-low rounded-2xl p-2.5 flex flex-col gap-2 focus-within:ring-2 focus-within:ring-primary/20 transition-all">
+<textarea class="w-full bg-transparent border-0 resize-none font-body-md text-body-md text-on-surface placeholder:text-outline focus:outline-none p-1" placeholder="Kirim pesan ke #tugas-besar-algo atau ketik /bot untuk tanya spot belajar..." rows="2"></textarea>
+<!-- Toolbar & Send Action -->
+<div class="flex items-center justify-between border-t border-surface-container-high/60 pt-2">
+<div class="flex items-center gap-1">
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" title="Unggah Berkas">
+<span class="material-symbols-outlined text-[18px]">attach_file</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" title="Format Kode">
+<span class="material-symbols-outlined text-[18px]">code</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" title="Tebal (Ctrl+B)">
+<span class="material-symbols-outlined text-[18px]">format_bold</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" title="Emoji">
+<span class="material-symbols-outlined text-[18px]">sentiment_satisfied</span>
+</button>
+<button class="p-1.5 rounded-lg hover:bg-surface-container text-on-surface-variant hover:text-primary transition-colors" title="Pesan Suara">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+</button>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-body-sm text-[11px] text-outline hidden sm:inline">Ketik <strong>/</strong> untuk bot command</span>
+<button class="bg-primary hover:bg-primary-container text-on-primary px-4 py-1.5 rounded-xl font-label-md text-label-md flex items-center gap-1.5 shadow-sm transition-all">
+<span>Kirim</span>
+<span class="material-symbols-outlined text-[16px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ======================================================== -->
+<!-- COLUMN 3: RIGHT COLUMN (Knowledge Vault & Community Roster) ~300px -->
+<!-- ======================================================== -->
+<aside class="lg:col-span-3 flex flex-col gap-space-sm bg-surface-container-lowest rounded-2xl p-space-md shadow-sm">
+<!-- Tab Switcher (Vault F40 vs Roster) -->
+<div class="grid grid-cols-2 p-1 bg-surface-container-low rounded-xl">
+<button class="py-1.5 text-center font-label-md text-label-md rounded-lg bg-surface-container-lowest text-primary shadow-xs font-bold transition-all" id="tab-vault">
+            Media &amp; Berkas
+          </button>
+<button class="py-1.5 text-center font-label-md text-label-md rounded-lg text-on-surface-variant hover:text-on-surface font-semibold transition-all" id="tab-members">
+            Anggota (96)
+          </button>
+</div>
+<!-- SEARCH INSIDE FILES -->
+<div class="relative flex items-center mt-1">
+<span class="material-symbols-outlined absolute left-2.5 text-outline text-[16px]">filter_list</span>
+<input class="w-full bg-surface-container-low pl-8 pr-3 py-1.5 text-body-sm font-body-sm rounded-xl text-on-surface placeholder:text-outline focus:outline-none focus:ring-1 focus:ring-primary" placeholder="Saring nama dokumen..." type="text"/>
+</div>
+<!-- VAULT CONTENT WRAPPER -->
+<div class="flex flex-col gap-space-md mt-1 overflow-y-auto max-h-[calc(100vh-320px)] pr-1">
+<!-- SECTION: RECENT SHARED FILES (F40) -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between text-[11px] font-label-sm text-outline uppercase tracking-wider">
+<span>Berkas Terbaru</span>
+<a class="text-primary hover:underline lowercase font-semibold" href="#">lihat semua</a>
+</div>
+<!-- File Item 1 -->
+<div class="p-2 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center justify-between gap-2">
+<div class="flex items-center gap-2 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-error-container text-on-error-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">description</span>
+</div>
+<div class="flex flex-col truncate">
+<span class="font-label-md text-label-md text-on-surface truncate">CheatSheet_UAS_Kalkulus_II.pdf</span>
+<span class="font-body-sm text-[10px] text-outline">1.8 MB • oleh Cindy M.</span>
+</div>
+</div>
+<button class="p-1 rounded text-outline hover:text-primary" title="Unduh">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<!-- File Item 2 -->
+<div class="p-2 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center justify-between gap-2">
+<div class="flex items-center gap-2 min-w-0">
+<div class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[18px]">article</span>
+</div>
+<div class="flex flex-col truncate">
+<span class="font-label-md text-label-md text-on-surface truncate">Benchmark_PyTorch_CUDA_Labtek.docx</span>
+<span class="font-body-sm text-[10px] text-outline">420 KB • oleh Brian S.</span>
+</div>
+</div>
+<button class="p-1 rounded text-outline hover:text-primary" title="Unduh">
+<span class="material-symbols-outlined text-[18px]">download</span>
+</button>
+</div>
+<!-- File Item 3 (Image Thumbnail Preview) -->
+<div class="p-2 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors flex items-center justify-between gap-2">
+<div class="flex items-center gap-2 min-w-0">
+<img class="w-8 h-8 rounded-lg object-cover shrink-0" data-alt="Technical architectural diagram database entity relationship for campus application system" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4D0IKmAuGG4mok5cxOkAcqPtd3arOyKCBs-HKWaRnJwmjibyzcpbrNbn9rN0Dt-EZFRRr9dBy_w522W_2HEnJ1A4DT0N2DP2gzsWKxjiV4TUXroRru6J1jYB4eejnXw_-qMwVG6LK02EJ2H_YwvPXba83T4v_SopDUgfLwYpwustB2Ewo2tkqOztsg9IXvjyKSxR0NFduCY-cVi27A_F8z1FWvzZWBJDyTnrJSXxQ"/>
+<div class="flex flex-col truncate">
+<span class="font-label-md text-label-md text-on-surface truncate">Schema_DB_Kolaborin_v2.png</span>
+<span class="font-body-sm text-[10px] text-outline">PNG Image • 1.1 MB</span>
+</div>
+</div>
+<button class="p-1 rounded text-outline hover:text-primary" title="Pratinjau">
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</div>
+<!-- SECTION: PINNED COMMUNITY LINKS -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between text-[11px] font-label-sm text-outline uppercase tracking-wider">
+<span>Tautan Penting</span>
+</div>
+<a class="p-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-between transition-colors" href="#">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-outline text-[18px]">folder_shared</span>
+<span class="font-body-md text-body-md truncate">Google Drive Bank Soal STEI</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">arrow_outward</span>
+</a>
+<a class="p-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-between transition-colors" href="#">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-outline text-[18px]">terminal</span>
+<span class="font-body-md text-body-md truncate">Organisasi GitHub STEI ITB</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">arrow_outward</span>
+</a>
+<a class="p-2 rounded-xl bg-surface-container-low hover:bg-surface-container text-on-surface flex items-center justify-between transition-colors" href="#">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-outline text-[18px]">school</span>
+<span class="font-body-md text-body-md truncate">Portal Spada ITB (IF2110)</span>
+</div>
+<span class="material-symbols-outlined text-outline text-[16px]">arrow_outward</span>
+</a>
+</div>
+<!-- SECTION: COMMUNITY INFO WIDGET & BEACON (F59) -->
+<div class="p-3.5 rounded-2xl bg-surface-container-low flex flex-col gap-2.5">
+<div class="flex items-center justify-between">
+<span class="font-label-sm text-[10px] font-bold text-outline uppercase tracking-wider">Tentang Komunitas</span>
+<!-- Open for Collab Beacon F59 -->
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-secondary-container/40 text-on-secondary-container text-label-sm text-[10px] font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+                Open for Collab
+              </span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-10 h-10 rounded-xl bg-primary text-on-primary flex items-center justify-center font-bold text-headline-sm">
+                HM
+              </div>
+<div class="flex flex-col min-w-0">
+<span class="font-title-sm text-title-sm text-on-surface font-bold truncate">HIMATIKA ITB</span>
+<span class="font-body-sm text-[11px] text-primary truncate">himatika.stei.itb.ac.id</span>
+</div>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-relaxed">
+              Wadah kolaborasi akademik, riset algoritma, dan proyek inkubasi mahasiswa Sekolah Teknik Elektro &amp; Informatika Institut Teknologi Bandung.
+            </p>
+<div class="grid grid-cols-2 gap-2 pt-2 border-t border-surface-container-high text-center">
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-on-surface font-bold">1,240</span>
+<span class="font-body-sm text-[11px] text-outline">Mahasiswa Terdaftar</span>
+</div>
+<div class="flex flex-col">
+<span class="font-title-md text-title-md text-secondary font-bold">38</span>
+<span class="font-body-sm text-[11px] text-outline">Tubes Aktif</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<!-- Micro-Interactivity Script for Tab Toggling -->
+<script>
+    const tabVault = document.getElementById("tab-vault");
+    const tabMembers = document.getElementById("tab-members");
+
+    if (tabVault && tabMembers) {
+      tabMembers.addEventListener("click", () => {
+        tabMembers.classList.add("bg-surface-container-lowest", "text-primary", "shadow-xs", "font-bold");
+        tabMembers.classList.remove("text-on-surface-variant");
+        tabVault.classList.remove("bg-surface-container-lowest", "text-primary", "shadow-xs", "font-bold");
+        tabVault.classList.add("text-on-surface-variant");
+      });
+
+      tabVault.addEventListener("click", () => {
+        tabVault.classList.add("bg-surface-container-lowest", "text-primary", "shadow-xs", "font-bold");
+        tabVault.classList.remove("text-on-surface-variant");
+        tabMembers.classList.remove("bg-surface-container-lowest", "text-primary", "shadow-xs", "font-bold");
+        tabMembers.classList.add("text-on-surface-variant");
+      });
+    }
+  </script>
+</div></main>
+<!-- CLEAN STREAMLINED FOOTER -->
+<footer class="w-full bg-surface-container-lowest border-t border-surface-container-high mt-space-xl">
+<div class="max-w-[84rem] mx-auto px-margin py-space-md flex flex-col sm:flex-row items-center justify-between gap-space-sm font-body-sm text-[12px] text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] font-bold text-primary">KOLABORIN</span>
+<span class="text-outline">•</span>
+<span>Platform Kolaborasi Kampus ITB</span>
+</div>
+<div class="flex items-center gap-space-md text-outline">
+<a class="hover:text-primary transition-colors" data-path="community-guidelines" href="#">Pedoman Komunitas</a>
+<a class="hover:text-primary transition-colors" data-path="campus-safety" href="#">Keamanan Kampus</a>
+<a class="hover:text-primary transition-colors" data-path="privacy-policy" href="#">Privasi</a>
+</div>
+<div class="text-outline">© 2025 KOLABORIN</div>
+</div>
+</footer>
+</body></html>

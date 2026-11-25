@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-container": "#6cf8bb",
+            "on-tertiary-fixed-variant": "#653e00",
+            "outline": "#777587",
+            "on-secondary-fixed": "#002113",
+            "on-tertiary": "#ffffff",
+            "primary": "#3525cd",
+            "primary-fixed-dim": "#c3c0ff",
+            "on-primary-fixed": "#0f0069",
+            "on-surface-variant": "#464555",
+            "tertiary-container": "#885500",
+            "surface-container-highest": "#dae2fd",
+            "secondary-fixed-dim": "#4edea3",
+            "on-error-container": "#93000a",
+            "surface-container-low": "#f2f3ff",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#dae2fd",
+            "on-primary-container": "#dad7ff",
+            "surface-container": "#eaedff",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#eef0ff",
+            "inverse-primary": "#c3c0ff",
+            "surface-dim": "#d2d9f4",
+            "outline-variant": "#c7c4d8",
+            "surface-container-lowest": "#ffffff",
+            "inverse-surface": "#283044",
+            "on-tertiary-container": "#ffd4a4",
+            "tertiary-fixed-dim": "#ffb95f",
+            "background": "#faf8ff",
+            "secondary": "#006c49",
+            "on-surface": "#131b2e",
+            "on-secondary-fixed-variant": "#005236",
+            "on-primary-fixed-variant": "#3323cc",
+            "primary-fixed": "#e2dfff",
+            "error-container": "#ffdad6",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed": "#2a1700",
+            "tertiary-fixed": "#ffddb8",
+            "surface-tint": "#4d44e3",
+            "on-secondary-container": "#00714d",
+            "surface-container-high": "#e2e7ff",
+            "surface-bright": "#faf8ff",
+            "error": "#ba1a1a",
+            "on-background": "#131b2e",
+            "tertiary": "#684000",
+            "surface": "#faf8ff",
+            "secondary-fixed": "#6ffbbe",
+            "primary-container": "#4f46e5"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem",
+            "space-md": "1rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "title-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased">
+<!-- 1. SIMPLIFIED SLEEK HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md border-b border-surface-container-high">
+<div class="h-16 max-w-[84rem] mx-auto px-margin-mobile md:px-margin flex items-center justify-between gap-space-md">
+<!-- Left: Logo & Core Nav -->
+<div class="flex items-center gap-space-xl">
+<a class="flex items-center gap-2 group" data-path="home" href="#">
+<img alt="KOLABORIN Brand Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDBA2oyd-4v9RxabshcrZIiDseUEQA1Z-hVYp3k4C7d77dbL3CJxeEHuJK2Gsg4BlbzsAO01rxuNJPLhBhCy9pABnhJumONdOOK6AvUOs5TQgDF04dCcX4aTxdbvEUGdmFHtLrOjoQ7eldtzS096i_9zPetjM4dn8gWlLlf36wkvhEF2TDvaTqa7FWYHywzYTdTtEyzLKvQZFyOaRCArjr8hktBoI1BITWSlOGTCyru"/>
+<span class="font-headline-sm text-[20px] text-primary tracking-tight font-extrabold">KOLABORIN</span>
+</a>
+<!-- Streamlined core nav links -->
+<nav class="hidden md:flex items-center gap-space-lg text-body-md font-medium">
+<a class="text-primary font-bold border-b-2 border-primary py-4 transition-colors" data-path="home" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="live-map-&amp;-spots" href="#">Live Map</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="open-party-(study-groups)" href="#">Open Party</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="community-hub" href="#">Chat Hub</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="campus-events" href="#">Events</a>
+</nav>
+</div>
+<!-- Right: Search, Notification, Compact Avatar -->
+<div class="flex items-center gap-space-sm">
+<div class="relative hidden sm:flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">search</span>
+<input class="bg-surface-container-low pl-9 pr-8 py-1.5 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline w-52 lg:w-64 focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="Cari spot, matkul, teman..." type="text"/>
+<kbd class="absolute right-2.5 font-label-sm text-[10px] bg-surface-container-highest px-1.5 py-0.5 rounded text-on-surface-variant">⌘K</kbd>
+</div>
+<button aria-label="Notifikasi" class="relative p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-error px-1 text-[10px] font-bold text-on-error">3</span>
+</button>
+<!-- Compact User Profile -->
+<div class="flex items-center gap-2 pl-1 py-1 pr-2 rounded-full hover:bg-surface-container cursor-pointer transition-colors">
+<img alt="Farrel Arkan" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACSJPR27gVwFzxNagQ1pVASbkIN3ZlaR2Dcxl6aXnoU-gDd5vSPLPsZ6I9GZJBpGUfTJFvGdKUjRwOcHmugPB8dnuA11rTbqHSh5vrjXPeml9umagg4sTYGGaCdbzMMLnUI8AplCEc4niLSF-uzqHoTSQhen3l2upvdjxfX_eOkcsFdhkYeuUCNczsHH1GkUQIYSLhfEzvJ9H0PxIqEm9TJMVWQNqAQh3RAOBFDQGf"/>
+<div class="hidden lg:flex flex-col text-left">
+<span class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Farrel Arkan</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant leading-none">STEI ITB</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN VIEWPORT -->
+<main class="w-full pt-16 bg-surface min-h-[calc(100vh-120px)]"><div class="flex flex-col w-full">
+<!-- Interactive View State Controller Scripts & Scoped Logic -->
+<div class="max-w-[84rem] mx-auto px-margin-mobile md:px-margin py-space-lg w-full space-y-space-xl">
+<!-- 1. HEADER & QUICK STAT HERO BANNER -->
+<section class="relative rounded-2xl bg-surface-container-lowest p-space-lg md:p-space-xl shadow-sm overflow-hidden">
+<!-- Decorative ambient gradient -->
+<div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-primary-fixed/40 blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-24 -left-20 w-80 h-80 rounded-full bg-secondary-container/30 blur-3xl pointer-events-none"></div>
+<div class="relative z-10 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-space-lg">
+<div class="max-w-3xl space-y-space-sm">
+<!-- Verification Pill -->
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-secondary-container/40 text-on-secondary-container">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-sm uppercase tracking-wide">Terverifikasi Kemahasiswaan &amp; BEM ITB • Semester Ganjil 2024/2025</span>
+</div>
+<!-- Main Titles -->
+<h1 class="font-headline-lg text-headline-lg text-on-surface">
+            Jelajahi Event, Workshop &amp; Kompetisi Kampus
+          </h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+            Daftar seminar teknologi, kompetisi nasional, dan gathering organisasi dengan tiket digital QR paperless &amp; verifikasi instan.
+          </p>
+</div>
+<!-- CTA & Quick Action -->
+<div class="flex flex-col sm:flex-row items-stretch lg:items-center gap-space-sm self-start lg:self-center shrink-0">
+<button class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-surface-container-low hover:bg-surface-container text-primary font-label-lg transition-colors">
+<span class="material-symbols-outlined text-[20px]">calendar_month</span>
+<span>Jadwal Saya</span>
+</button>
+<button class="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-lg shadow-sm transition-all">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>+ Daftarkan Event Organisasi</span>
+<span class="px-1.5 py-0.5 rounded bg-white/20 text-white font-label-sm">F46</span>
+</button>
+</div>
+</div>
+<!-- Quick Metrics Strip -->
+<div class="relative z-10 grid grid-cols-2 md:grid-cols-4 gap-space-sm mt-space-lg pt-space-md">
+<div class="flex items-center gap-3 p-space-md rounded-xl bg-surface-container-low">
+<div class="w-10 h-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">event_available</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">18</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Event Bulan Ini</div>
+</div>
+</div>
+<div class="flex items-center gap-3 p-space-md rounded-xl bg-surface-container-low">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">group</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">4,250</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Mahasiswa Terdaftar</div>
+</div>
+</div>
+<div class="flex items-center gap-3 p-space-md rounded-xl bg-surface-container-low">
+<div class="w-10 h-10 rounded-lg bg-primary-container/10 text-primary-container flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-on-surface">100%</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Paperless QR Check-in</div>
+</div>
+</div>
+<div class="flex items-center gap-3 p-space-md rounded-xl bg-surface-container-low">
+<div class="w-10 h-10 rounded-lg bg-tertiary-fixed text-tertiary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined">military_tech</span>
+</div>
+<div>
+<div class="font-headline-sm text-headline-sm text-tertiary">+50 XP</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant">Tiap Ikut Workshop <span class="font-label-sm text-primary font-bold">(F53)</span></div>
+</div>
+</div>
+</div>
+</section>
+<!-- 2. FILTER & VIEW CONTROLS BAR (F47) -->
+<section class="bg-surface-container-lowest rounded-2xl p-space-md md:p-space-lg shadow-sm space-y-space-md">
+<!-- Search and View Switcher Row -->
+<div class="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-space-md">
+<!-- Search bar -->
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">search</span>
+<input class="w-full h-12 pl-11 pr-24 rounded-full bg-surface-container-low font-body-md text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/30 outline-none transition-all" id="event-search-input" placeholder="Cari nama event, pembicara, atau organisasi penyelenggara..." type="text"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1 font-label-sm text-on-surface-variant bg-surface-container-highest px-2 py-1 rounded">
+<span>Filter Cepat</span>
+</div>
+</div>
+<!-- View Mode Switcher -->
+<div class="inline-flex p-1 bg-surface-container-low rounded-xl shrink-0 self-start md:self-auto">
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg font-label-md bg-surface-container-lowest text-primary shadow-sm transition-all" id="view-grid-btn" onclick="setViewMode('grid')">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+<span>Grid Kartu</span>
+</button>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg font-label-md text-on-surface-variant hover:text-on-surface transition-all" id="view-cal-btn" onclick="setViewMode('calendar')">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+<span>Kalender Bulan</span>
+</button>
+</div>
+</div>
+<!-- Categories Filter Tabs -->
+<div class="flex items-center gap-2 overflow-x-auto pb-1 no-scrollbar">
+<button class="category-chip shrink-0 px-4 py-2 rounded-full font-label-md bg-primary text-on-primary shadow-sm transition-all">
+          Semua Kategori (18)
+        </button>
+<button class="category-chip shrink-0 px-4 py-2 rounded-full font-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all">
+          Tech &amp; AI (6)
+        </button>
+<button class="category-chip shrink-0 px-4 py-2 rounded-full font-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all">
+          Bisnis &amp; Karir (4)
+        </button>
+<button class="category-chip shrink-0 px-4 py-2 rounded-full font-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all">
+          Seni &amp; Budaya (3)
+        </button>
+<button class="category-chip shrink-0 px-4 py-2 rounded-full font-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all">
+          Kompetisi / Hackathon (5)
+        </button>
+</div>
+<!-- Date Pills and Dynamic Toggle Row -->
+<div class="flex flex-wrap items-center justify-between gap-space-sm pt-2">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-label-sm text-outline uppercase tracking-wider mr-1">Waktu:</span>
+<button class="px-3 py-1.5 rounded-lg font-label-sm bg-surface-container text-primary">Minggu Ini</button>
+<button class="px-3 py-1.5 rounded-lg font-label-sm bg-surface-container-low text-on-surface-variant hover:bg-surface-container">Bulan November</button>
+<button class="px-3 py-1.5 rounded-lg font-label-sm bg-surface-container-low text-on-surface-variant hover:bg-surface-container">Desember</button>
+<button class="px-3 py-1.5 rounded-lg font-label-sm bg-surface-container-low text-on-surface-variant hover:bg-surface-container">Weekend Only</button>
+</div>
+<div class="flex items-center gap-space-md">
+<label class="inline-flex items-center gap-2 cursor-pointer">
+<input checked="" class="w-4 h-4 rounded text-primary focus:ring-primary accent-primary" type="checkbox"/>
+<span class="font-label-md text-on-surface">Hanya Tiket Tersedia</span>
+</label>
+<label class="inline-flex items-center gap-2 cursor-pointer">
+<input class="w-4 h-4 rounded text-primary focus:ring-primary accent-primary" type="checkbox"/>
+<span class="font-label-md text-on-surface-variant hover:text-on-surface">Khusus TPB</span>
+</label>
+</div>
+</div>
+</section>
+<!-- 3. MAIN WORKSPACE: EVENTS + TICKET DRAWER SECTION -->
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT / MAIN COLUMN: SPOTLIGHT & GRID (8 Cols on XL) -->
+<div class="xl:col-span-8 space-y-space-lg" id="events-stream-container">
+<!-- SPOTLIGHT HERO EVENT CARD (F48) -->
+<div class="relative bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden">
+<div class="grid grid-cols-1 md:grid-cols-12 min-h-[360px]">
+<!-- Image Frame -->
+<div class="md:col-span-5 relative overflow-hidden min-h-[240px] md:min-h-full">
+<img class="w-full h-full object-cover" data-alt="Modern high-tech auditorium at Institut Teknologi Bandung CC Barat, soft indigo lighting, huge GenAI presentation screen, attentive engineering university students sitting with laptops, vibrant academic innovation atmosphere, hyper-detailed photography" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAje_JzpF9EFrPXmzn1s5fRQYadY528vZLuc_YOKYYh7jZa4HBiYXe8q_vDU6QleozoO1MYSdX7RWSQZlRiyszCjD7PGuZYoKEpCjQBbtykr6UM0bRJSXPK6gGx1c-UVCCRc8HSg8KoGfLHpY0eG0WD6h4ovRAdJnv0v7YUmUvwGLMnT1GnOSySaofM20K-hG2jauyna8-wSyqNG5BNsuMYDj63XKb2QjkiUVux0nfZ"/>
+<div class="absolute inset-0 bg-gradient-to-t md:bg-gradient-to-r from-surface-container-lowest/80 via-transparent to-transparent"></div>
+<div class="absolute top-4 left-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-on-primary font-label-sm shadow-md">
+<span class="material-symbols-outlined text-[14px]">star</span>
+                  SPOTLIGHT EVENT
+                </span>
+</div>
+</div>
+<!-- Content Details -->
+<div class="md:col-span-7 p-space-md md:p-space-lg flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-xs">
+<div class="flex items-center gap-2">
+<span class="font-label-sm uppercase tracking-wider text-primary font-bold">GDSC ITB • TECH TALK &amp; WORKSHOP</span>
+<span class="text-outline">•</span>
+<span class="inline-flex items-center gap-1 font-label-sm text-secondary font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                    Verified Org
+                  </span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface">
+                  GenAI &amp; Large Language Model on Cloud Infrastructure: Hands-on Vertex AI
+                </h2>
+<div class="space-y-1.5 pt-1 font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">calendar_today</span>
+<span>28 Nov 2024 • 13:30 - 17:00 WIB</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">location_on</span>
+<span>Auditorium CC Barat ITB • Free E-Certificate &amp; Konsumsi</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]">record_voice_over</span>
+<span>Tech Lead Google Cloud Indonesia &amp; Senior AI Engineer ITB Alum</span>
+</div>
+</div>
+</div>
+<!-- Capacity Guard (F52) -->
+<div class="space-y-2 pt-2">
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-md text-error flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">local_fire_department</span>
+                    Sisa 18 dari 250 Kursi (F52)
+                  </span>
+<span class="font-label-sm text-on-surface-variant">92% Terisi</span>
+</div>
+<!-- Capacity Progress Bar -->
+<div class="w-full h-2 rounded-full bg-surface-container-high overflow-hidden">
+<div class="h-full bg-gradient-to-r from-primary to-error rounded-full transition-all" style="width: 92%;"></div>
+</div>
+</div>
+<!-- Action CTAs -->
+<div class="flex flex-wrap items-center gap-space-sm pt-2">
+<button class="flex-1 inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-lg shadow-sm transition-all">
+<span class="material-symbols-outlined text-[20px]">confirmation_number</span>
+<span>Lihat Detail &amp; Daftar Sekarang</span>
+</button>
+<button class="p-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface transition-colors" title="Simpan ke Kalender">
+<span class="material-symbols-outlined text-[20px]">bookmark_add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- EVENTS GRID (F47, F48, F51) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md" id="events-cards-grid">
+<!-- Card 1: Robotika & Otomasi -->
+<div class="group bg-surface-container-lowest rounded-2xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-sm">
+<!-- Top bar meta -->
+<div class="flex items-center justify-between">
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm font-bold">ROBOTIKA &amp; OTOMASI</span>
+<span class="font-label-sm text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-full font-bold">+40 Kolaborin XP</span>
+</div>
+<!-- Date Badge & Title -->
+<div class="space-y-1">
+<div class="font-label-md text-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                  02 DES • 09:00 WIB
+                </div>
+<h3 class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">
+                  Seminar Nasional Robotika &amp; Autonomous Systems 2025
+                </h3>
+</div>
+<!-- Org & Venue -->
+<div class="space-y-1 font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+<span class="font-medium text-on-surface">Unit Robotika ITB</span>
+<span class="font-label-sm text-outline">(F36 Verified)</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">pin_drop</span>
+<span>Aula Barat ITB (Offline)</span>
+</div>
+</div>
+</div>
+<!-- Footer Details & Action -->
+<div class="pt-space-sm space-y-space-sm">
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-secondary font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Sisa 24 Slot Kursi
+                </span>
+<span class="font-body-sm text-on-surface-variant">Gratis E-Sertifikat</span>
+</div>
+<button class="w-full py-2.5 rounded-lg bg-surface-container-low hover:bg-primary hover:text-on-primary text-primary font-label-md transition-colors flex items-center justify-center gap-2">
+<span>Daftar Gratis</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Card 2: ITB Campus AI Hackathon 2025 -->
+<div class="group bg-surface-container-lowest rounded-2xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-2.5 py-1 rounded-full bg-primary/10 text-primary font-label-sm font-bold">HACKATHON &amp; LOMBA</span>
+<span class="font-label-sm text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-full font-bold">+100 Kolaborin XP</span>
+</div>
+<div class="space-y-1">
+<div class="font-label-md text-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">timer</span>
+                  07 - 08 DES • 2 Hari Kompetisi
+                </div>
+<h3 class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">
+                  ITB Campus AI Hackathon 2025: Solusi Cerdas untuk Negeri
+                </h3>
+</div>
+<div class="space-y-1 font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+<span class="font-medium text-on-surface">HIMATIKA &amp; STEI ITB</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">location_city</span>
+<span>Gedung Kuliah Umum (GKU) Timur</span>
+</div>
+<div class="font-label-sm text-tertiary font-bold pt-1">
+                  🏆 Total Hadiah Rp 45.000.000 + Funding Inkubasi
+                </div>
+</div>
+</div>
+<div class="pt-space-sm space-y-space-sm">
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-error font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span>
+                  32 / 40 Tim (Sisa 8 Tim)
+                </span>
+<span class="font-body-sm text-on-surface-variant">Tim 3-4 Orang</span>
+</div>
+<button class="w-full py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md shadow-sm transition-all flex items-center justify-center gap-2">
+<span>Registrasi Tim</span>
+<span class="material-symbols-outlined text-[18px]">group_add</span>
+</button>
+</div>
+</div>
+<!-- Card 3: Campus Hiring & Portfolio Review -->
+<div class="group bg-surface-container-lowest rounded-2xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-2.5 py-1 rounded-full bg-secondary-container/30 text-on-secondary-container font-label-sm font-bold">CAREER &amp; INTERNSHIP</span>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-sm font-bold">Kursi Penuh</span>
+</div>
+<div class="space-y-1">
+<div class="font-label-md text-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                  12 DES • 14:00 WIB
+                </div>
+<h3 class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">
+                  Campus Hiring &amp; Portfolio Review with Top Tech Unicorns
+                </h3>
+</div>
+<div class="space-y-1 font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+<span class="font-medium text-on-surface">Career Center ITB</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">business</span>
+<span>CRCS Building Lt. 3</span>
+</div>
+</div>
+</div>
+<div class="pt-space-sm space-y-space-sm">
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-outline font-bold">Waitlist Dibuka (F52)</span>
+<span class="font-body-sm text-on-surface-variant">14 Mahasiswa Mengantre</span>
+</div>
+<button class="w-full py-2.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-on-surface font-label-md transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">how_to_reg</span>
+<span>Ikut Antrean (Waitlist)</span>
+</button>
+</div>
+</div>
+<!-- Card 4: Sharing Session LPDP & IISMA -->
+<div class="group bg-surface-container-lowest rounded-2xl p-space-md shadow-sm hover:shadow-md transition-all flex flex-col justify-between space-y-space-md">
+<div class="space-y-space-sm">
+<div class="flex items-center justify-between">
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-on-surface font-label-sm font-bold">SHARING SESSION</span>
+<span class="font-label-sm text-tertiary bg-tertiary-fixed px-2 py-0.5 rounded-full font-bold">+30 Kolaborin XP</span>
+</div>
+<div class="space-y-1">
+<div class="font-label-md text-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">schedule</span>
+                  15 DES • 19:30 WIB
+                </div>
+<h3 class="font-title-md text-title-md text-on-surface group-hover:text-primary transition-colors">
+                  Bedah Beasiswa LPDP &amp; IISMA 2025: Tips Esai &amp; Interview Lolos
+                </h3>
+</div>
+<div class="space-y-1 font-body-sm text-body-sm text-on-surface-variant">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-secondary">verified</span>
+<span class="font-medium text-on-surface">PPI &amp; International Relations Club</span>
+</div>
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]">cast_for_education</span>
+<span>Hybrid (Live Zoom &amp; Amphiteater Selasar)</span>
+</div>
+</div>
+</div>
+<div class="pt-space-sm space-y-space-sm">
+<div class="flex items-center justify-between text-body-sm">
+<span class="font-label-sm text-secondary font-bold">180 Kursi Terbuka</span>
+<span class="font-body-sm text-on-surface-variant">Terbuka untuk TPB</span>
+</div>
+<button class="w-full py-2.5 rounded-lg bg-surface-container-low hover:bg-primary hover:text-on-primary text-primary font-label-md transition-colors flex items-center justify-center gap-2">
+<span>Daftar Sekarang</span>
+<span class="material-symbols-outlined text-[18px]">open_in_new</span>
+</button>
+</div>
+</div>
+</div>
+<!-- CALENDAR VIEW CONTAINER (Dynamically Toggled) -->
+<div class="hidden bg-surface-container-lowest rounded-2xl p-space-lg shadow-sm space-y-space-md" id="events-calendar-view">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">calendar_month</span>
+<span>November - Desember 2024</span>
+</h3>
+<div class="flex items-center gap-1">
+<button class="p-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="p-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Calendar Grid Table Mockup -->
+<div class="grid grid-cols-7 gap-2 text-center font-label-sm text-outline">
+<div class="py-2">SEN</div>
+<div class="py-2">SEL</div>
+<div class="py-2">RAB</div>
+<div class="py-2">KAM</div>
+<div class="py-2">JUM</div>
+<div class="py-2 text-error">SAB</div>
+<div class="py-2 text-error">MIN</div>
+</div>
+<div class="grid grid-cols-7 gap-2">
+<!-- Dim days -->
+<div class="h-24 p-2 rounded-xl bg-surface-container-low/40 opacity-40 text-on-surface-variant font-body-sm">25</div>
+<div class="h-24 p-2 rounded-xl bg-surface-container-low/40 opacity-40 text-on-surface-variant font-body-sm">26</div>
+<div class="h-24 p-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm">27</div>
+<!-- Event day: GenAI -->
+<div class="h-24 p-2 rounded-xl bg-primary/10 text-primary font-body-sm flex flex-col justify-between">
+<div class="flex justify-between items-center font-bold">
+<span>28</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div class="font-label-sm truncate bg-primary text-on-primary px-1.5 py-0.5 rounded">Vertex AI</div>
+</div>
+<div class="h-24 p-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm">29</div>
+<div class="h-24 p-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm">30</div>
+<div class="h-24 p-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm">01</div>
+<!-- Week 2 -->
+<!-- Event day: Robotika -->
+<div class="h-24 p-2 rounded-xl bg-secondary-container/40 text-on-secondary-container font-body-sm flex flex-col justify-between">
+<div class="flex justify-between items-center font-bold">
+<span>02</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<div class="font-label-sm truncate bg-secondary text-on-secondary px-1.5 py-0.5 rounded">Robotika</div>
+</div>
+<div class="h-24 p-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm">03</div>
+<div class="h-24 p-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm">04</div>
+<div class="h-24 p-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm">05</div>
+<div class="h-24 p-2 rounded-xl bg-surface-container-low text-on-surface font-body-sm">06</div>
+<!-- Hackathon 2 days -->
+<div class="h-24 p-2 rounded-xl bg-tertiary-fixed text-tertiary font-body-sm flex flex-col justify-between">
+<div class="flex justify-between items-center font-bold">
+<span>07</span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<div class="font-label-sm truncate bg-tertiary text-on-tertiary px-1.5 py-0.5 rounded">Hackathon D1</div>
+</div>
+<div class="h-24 p-2 rounded-xl bg-tertiary-fixed text-tertiary font-body-sm flex flex-col justify-between">
+<div class="flex justify-between items-center font-bold">
+<span>08</span>
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+</div>
+<div class="font-label-sm truncate bg-tertiary text-on-tertiary px-1.5 py-0.5 rounded">Hackathon D2</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: 'TIKET SAYA & STATUS PENDAFTARAN' DRAWER (F51) (4 Cols on XL) -->
+<aside class="xl:col-span-4 space-y-space-lg">
+<!-- Live Ticket Card -->
+<div class="bg-surface-container-lowest rounded-2xl shadow-sm overflow-hidden">
+<!-- Drawer Header -->
+<div class="p-space-md bg-gradient-to-r from-primary to-primary-container text-on-primary flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[22px]">confirmation_number</span>
+<span class="font-title-sm text-title-sm">Tiket Saya &amp; Verifikasi (F51)</span>
+</div>
+<span class="font-label-sm bg-white/20 text-white px-2 py-0.5 rounded-full">1 Tiket Aktif</span>
+</div>
+<!-- Ticket Pass Body -->
+<div class="p-space-md space-y-space-md">
+<!-- Attendee Header -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<img class="w-10 h-10 rounded-full object-cover shadow-sm" data-alt="Close up student portrait of Farrel Arkan, male engineering student with energetic expression, clean lighting, wearing dark tech jacket, sharp details" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJq1HsCfTKhcGygAEz0nPIq0A8pgToNtKD85RNAZpQbLB3tIvlxf52uQ9ZChtUDEBRqEvqu3W2olgTWKKCqhSGKyETO9DiUTojD25dxY9Qf6MT6vWUHIO4l8Zo54nVcm3DphgGz3vXly74sUibCbcpFxqj8oxSH8bbvPupuelxVIzJbBZX2rBL2n_OqChRAqWyYeUOFYifUgrW6vdO_1oEao-YoyFc1UVcvCWkceGF"/>
+<div>
+<div class="font-label-md text-on-surface font-bold">Farrel Arkan</div>
+<div class="font-body-sm text-[11px] text-on-surface-variant">13521000 • STEI ITB</div>
+</div>
+</div>
+<!-- Status Badge -->
+<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-secondary-container/40 text-on-secondary-container font-label-sm font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                Terkonfirmasi
+              </span>
+</div>
+<!-- Pass Core Info -->
+<div class="p-space-md rounded-xl bg-surface-container-low space-y-2">
+<div class="font-label-sm text-primary uppercase font-bold tracking-wide">GDSC ITB Tech Talk</div>
+<div class="font-title-sm text-on-surface leading-snug">GenAI &amp; Large Language Model on Cloud Infrastructure</div>
+<div class="text-body-sm text-on-surface-variant flex items-center gap-2 pt-1">
+<span class="material-symbols-outlined text-[16px] text-primary">event</span>
+<span>28 Nov 2024 • 13:30 WIB</span>
+</div>
+<div class="text-body-sm text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-primary">location_on</span>
+<span>Auditorium CC Barat ITB</span>
+</div>
+</div>
+<!-- Scannable Paperless QR Graphic -->
+<div class="flex flex-col items-center justify-center p-space-md bg-surface-container-low rounded-xl text-center space-y-2">
+<!-- Inline Scalable Stylized QR Matrix Vector -->
+<div class="p-3 bg-surface-container-lowest rounded-xl shadow-sm">
+<svg class="text-on-surface" height="140" viewbox="0 0 140 140" width="140">
+<!-- QR Corner Top Left -->
+<rect fill="currentColor" height="36" rx="4" width="36" x="10" y="10"></rect>
+<rect fill="white" height="24" rx="2" width="24" x="16" y="16"></rect>
+<rect fill="currentColor" height="12" rx="1" width="12" x="22" y="22"></rect>
+<!-- QR Corner Top Right -->
+<rect fill="currentColor" height="36" rx="4" width="36" x="94" y="10"></rect>
+<rect fill="white" height="24" rx="2" width="24" x="100" y="16"></rect>
+<rect fill="currentColor" height="12" rx="1" width="12" x="106" y="22"></rect>
+<!-- QR Corner Bottom Left -->
+<rect fill="currentColor" height="36" rx="4" width="36" x="10" y="94"></rect>
+<rect fill="white" height="24" rx="2" width="24" x="16" y="100"></rect>
+<rect fill="currentColor" height="12" rx="1" width="12" x="22" y="106"></rect>
+<!-- Data Dots & Alignment Patterns -->
+<rect fill="currentColor" height="8" width="8" x="54" y="14"></rect>
+<rect fill="currentColor" height="8" width="8" x="70" y="14"></rect>
+<rect fill="currentColor" height="6" width="12" x="54" y="30"></rect>
+<rect fill="currentColor" height="12" width="8" x="74" y="26"></rect>
+<!-- Middle Pattern -->
+<rect fill="currentColor" height="16" width="8" x="14" y="54"></rect>
+<rect fill="currentColor" height="8" width="10" x="28" y="58"></rect>
+<rect fill="currentColor" height="12" width="12" x="46" y="48"></rect>
+<rect fill="currentColor" height="8" width="20" x="64" y="48"></rect>
+<rect fill="currentColor" height="12" width="12" x="90" y="54"></rect>
+<rect fill="currentColor" height="6" width="16" x="110" y="54"></rect>
+<rect fill="currentColor" height="18" width="8" x="52" y="68"></rect>
+<rect fill="currentColor" height="10" width="18" x="68" y="64"></rect>
+<rect fill="currentColor" height="14" width="10" x="94" y="72"></rect>
+<!-- Bottom Matrix -->
+<rect fill="currentColor" height="10" width="10" x="54" y="94"></rect>
+<rect fill="currentColor" height="8" width="12" x="72" y="90"></rect>
+<rect fill="currentColor" height="12" width="18" x="90" y="94"></rect>
+<rect fill="currentColor" height="18" width="10" x="116" y="94"></rect>
+<rect fill="currentColor" height="8" width="16" x="54" y="112"></rect>
+<rect fill="currentColor" height="16" width="8" x="76" y="108"></rect>
+<rect fill="currentColor" height="10" width="22" x="90" y="114"></rect>
+</svg>
+</div>
+<div class="space-y-0.5">
+<div class="font-label-sm text-outline uppercase tracking-wider">KODE TIKET RESMI</div>
+<div class="font-headline-sm text-[16px] text-primary font-mono font-bold tracking-widest">KOL-GDSC-8921-FAR</div>
+</div>
+</div>
+<!-- Pass Utilities -->
+<div class="space-y-2 pt-1">
+<button class="w-full py-2.5 rounded-lg bg-primary hover:bg-primary-container text-on-primary font-label-md shadow-sm transition-all flex items-center justify-center gap-2" onclick="toggleQRModal(true)">
+<span class="material-symbols-outlined text-[18px]">fullscreen</span>
+<span>Tampilkan Full QR Presensi</span>
+</button>
+<button class="w-full py-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]">wallet</span>
+<span>Tambahkan ke Google Wallet / Apple Cal</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Verified Organizers Spotlight Mini-Rail -->
+<div class="bg-surface-container-lowest rounded-2xl p-space-md shadow-sm space-y-space-sm">
+<div class="flex items-center justify-between">
+<h4 class="font-title-sm text-title-sm text-on-surface">Organisasi Penyelenggara Resmi</h4>
+<span class="font-label-sm text-primary font-bold">Lihat Semua</span>
+</div>
+<div class="space-y-2 pt-1">
+<div class="flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center font-bold text-[12px]">GD</div>
+<div>
+<div class="font-label-md text-on-surface">GDSC ITB Chapter</div>
+<div class="font-body-sm text-[11px] text-on-surface-variant">12 Event Terlaksana</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-secondary/10 text-secondary flex items-center justify-center font-bold text-[12px]">UR</div>
+<div>
+<div class="font-label-md text-on-surface">Unit Robotika ITB (URO)</div>
+<div class="font-body-sm text-[11px] text-on-surface-variant">8 Event Terlaksana</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+</div>
+<div class="flex items-center justify-between p-2 rounded-xl hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2.5">
+<div class="w-8 h-8 rounded-full bg-tertiary-fixed text-tertiary flex items-center justify-center font-bold text-[12px]">HM</div>
+<div>
+<div class="font-label-md text-on-surface">HIMATIKA ITB</div>
+<div class="font-body-sm text-[11px] text-on-surface-variant">5 Event Terlaksana</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary text-[18px]">verified</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</div>
+<!-- FULLSCREEN QR MODAL DIALOG (Interactive Client Behavior) -->
+<div class="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm hidden flex items-center justify-center p-4" id="full-qr-modal">
+<div class="bg-surface-container-lowest max-w-sm w-full rounded-2xl p-space-lg shadow-xl text-center space-y-space-md animate-in fade-in zoom-in duration-200">
+<div class="flex items-center justify-between">
+<span class="font-title-sm text-title-sm text-on-surface">Digital Boarding Pass</span>
+<button class="p-1 rounded-full text-on-surface-variant hover:bg-surface-container" onclick="toggleQRModal(false)">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="p-4 bg-surface-container-low rounded-xl flex flex-col items-center">
+<svg class="text-on-surface" height="200" viewbox="0 0 140 140" width="200">
+<!-- Expanded QR for smooth scanner recognition -->
+<rect fill="currentColor" height="36" rx="4" width="36" x="10" y="10"></rect>
+<rect fill="white" height="24" rx="2" width="24" x="16" y="16"></rect>
+<rect fill="currentColor" height="12" rx="1" width="12" x="22" y="22"></rect>
+<rect fill="currentColor" height="36" rx="4" width="36" x="94" y="10"></rect>
+<rect fill="white" height="24" rx="2" width="24" x="100" y="16"></rect>
+<rect fill="currentColor" height="12" rx="1" width="12" x="106" y="22"></rect>
+<rect fill="currentColor" height="36" rx="4" width="36" x="10" y="94"></rect>
+<rect fill="white" height="24" rx="2" width="24" x="16" y="100"></rect>
+<rect fill="currentColor" height="12" rx="1" width="12" x="22" y="106"></rect>
+<rect fill="currentColor" height="8" width="8" x="54" y="14"></rect>
+<rect fill="currentColor" height="8" width="8" x="70" y="14"></rect>
+<rect fill="currentColor" height="6" width="12" x="54" y="30"></rect>
+<rect fill="currentColor" height="12" width="8" x="74" y="26"></rect>
+<rect fill="currentColor" height="16" width="8" x="14" y="54"></rect>
+<rect fill="currentColor" height="8" width="10" x="28" y="58"></rect>
+<rect fill="currentColor" height="12" width="12" x="46" y="48"></rect>
+<rect fill="currentColor" height="8" width="20" x="64" y="48"></rect>
+<rect fill="currentColor" height="12" width="12" x="90" y="54"></rect>
+<rect fill="currentColor" height="6" width="16" x="110" y="54"></rect>
+<rect fill="currentColor" height="18" width="8" x="52" y="68"></rect>
+<rect fill="currentColor" height="10" width="18" x="68" y="64"></rect>
+<rect fill="currentColor" height="14" width="10" x="94" y="72"></rect>
+<rect fill="currentColor" height="10" width="10" x="54" y="94"></rect>
+<rect fill="currentColor" height="8" width="12" x="72" y="90"></rect>
+<rect fill="currentColor" height="12" width="18" x="90" y="94"></rect>
+<rect fill="currentColor" height="18" width="10" x="116" y="94"></rect>
+<rect fill="currentColor" height="8" width="16" x="54" y="112"></rect>
+<rect fill="currentColor" height="16" width="8" x="76" y="108"></rect>
+<rect fill="currentColor" height="10" width="22" x="90" y="114"></rect>
+</svg>
+<span class="font-mono text-primary font-bold text-headline-sm pt-2">KOL-GDSC-8921-FAR</span>
+<span class="font-body-sm text-on-surface-variant">Tunjukkan pada meja presensi pintu CC Barat</span>
+</div>
+<button class="w-full py-2.5 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md transition-colors" onclick="toggleQRModal(false)">
+        Tutup
+      </button>
+</div>
+</div>
+<script>
+    function setViewMode(mode) {
+      const gridView = document.getElementById('events-cards-grid');
+      const calView = document.getElementById('events-calendar-view');
+      const gridBtn = document.getElementById('view-grid-btn');
+      const calBtn = document.getElementById('view-cal-btn');
+
+      if (mode === 'grid') {
+        gridView.classList.remove('hidden');
+        calView.classList.add('hidden');
+        gridBtn.className = "flex items-center gap-2 px-4 py-2 rounded-lg font-label-md bg-surface-container-lowest text-primary shadow-sm transition-all";
+        calBtn.className = "flex items-center gap-2 px-4 py-2 rounded-lg font-label-md text-on-surface-variant hover:text-on-surface transition-all";
+      } else {
+        gridView.classList.add('hidden');
+        calView.classList.remove('hidden');
+        calBtn.className = "flex items-center gap-2 px-4 py-2 rounded-lg font-label-md bg-surface-container-lowest text-primary shadow-sm transition-all";
+        gridBtn.className = "flex items-center gap-2 px-4 py-2 rounded-lg font-label-md text-on-surface-variant hover:text-on-surface transition-all";
+      }
+    }
+
+    function toggleQRModal(show) {
+      const modal = document.getElementById('full-qr-modal');
+      if (show) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    // Category chips quick selector styling toggle
+    document.querySelectorAll('.category-chip').forEach(chip => {
+      chip.addEventListener('click', function() {
+        document.querySelectorAll('.category-chip').forEach(c => {
+          c.className = 'category-chip shrink-0 px-4 py-2 rounded-full font-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-all';
+        });
+        this.className = 'category-chip shrink-0 px-4 py-2 rounded-full font-label-md bg-primary text-on-primary shadow-sm transition-all';
+      });
+    });
+  </script>
+</div></main>
+<!-- CLEAN STREAMLINED FOOTER -->
+<footer class="w-full bg-surface-container-lowest border-t border-surface-container-high mt-space-xl">
+<div class="max-w-[84rem] mx-auto px-margin py-space-md flex flex-col sm:flex-row items-center justify-between gap-space-sm font-body-sm text-[12px] text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] font-bold text-primary">KOLABORIN</span>
+<span class="text-outline">•</span>
+<span>Platform Kolaborasi Kampus ITB</span>
+</div>
+<div class="flex items-center gap-space-md text-outline">
+<a class="hover:text-primary transition-colors" data-path="community-guidelines" href="#">Pedoman Komunitas</a>
+<a class="hover:text-primary transition-colors" data-path="campus-safety" href="#">Keamanan Kampus</a>
+<a class="hover:text-primary transition-colors" data-path="privacy-policy" href="#">Privasi</a>
+</div>
+<div class="text-outline">© 2025 KOLABORIN</div>
+</div>
+</footer>
+</body></html>

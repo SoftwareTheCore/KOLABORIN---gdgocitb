@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_standard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/><link href="https://fonts.googleapis.com" rel="preconnect"/><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{colors:{"on-secondary":"#ffffff","surface-bright":"#faf8ff","outline":"#777587","surface-dim":"#d2d9f4","on-secondary-container":"#00714d","background":"#faf8ff","surface-variant":"#dae2fd","on-primary":"#ffffff","surface-tint":"#4d44e3","primary-container":"#4f46e5","surface-container-high":"#e2e7ff","on-tertiary-fixed-variant":"#653e00","surface-container-highest":"#dae2fd","on-surface":"#131b2e","on-secondary-fixed-variant":"#005236","tertiary-container":"#885500","error":"#ba1a1a","on-background":"#131b2e","on-surface-variant":"#464555","secondary-container":"#6cf8bb","tertiary-fixed":"#ffddb8","secondary-fixed":"#6ffbbe","on-error-container":"#93000a","tertiary":"#684000","outline-variant":"#c7c4d8","on-tertiary":"#ffffff","tertiary-fixed-dim":"#ffb95f","on-primary-fixed-variant":"#3323cc","inverse-primary":"#c3c0ff","on-tertiary-container":"#ffd4a4","on-primary-container":"#dad7ff","surface-container":"#eaedff","inverse-on-surface":"#eef0ff","on-secondary-fixed":"#002113","surface":"#faf8ff","surface-container-low":"#f2f3ff","primary-fixed-dim":"#c3c0ff","error-container":"#ffdad6","secondary-fixed-dim":"#4edea3","primary-fixed":"#e2dfff","surface-container-lowest":"#ffffff","on-primary-fixed":"#0f0069","on-tertiary-fixed":"#2a1700","secondary":"#006c49","on-error":"#ffffff","primary":"#3525cd","inverse-surface":"#283044"},borderRadius:{"DEFAULT":"0.25rem","lg":"0.5rem","xl":"0.75rem","full":"9999px"},spacing:{"margin":"2rem","space-md":"1rem","space-sm":"0.5rem","space-lg":"1.5rem","gutter-mobile":"1rem","space-xs":"0.25rem","space-xl":"2.5rem","gutter":"1.5rem","margin-mobile":"1rem"},fontFamily:{"title-md":["Plus Jakarta Sans"],"headline-lg":["Plus Jakarta Sans"],"body-md":["Plus Jakarta Sans"],"headline-sm":["Plus Jakarta Sans"],"body-lg":["Plus Jakarta Sans"],"body-sm":["Plus Jakarta Sans"],"label-sm":["Plus Jakarta Sans"],"title-sm":["Plus Jakarta Sans"],"display-lg-mobile":["Plus Jakarta Sans"],"label-md":["Plus Jakarta Sans"],"headline-md":["Plus Jakarta Sans"],"label-lg":["Plus Jakarta Sans"],"display-lg":["Plus Jakarta Sans"],"headline-lg-mobile":["Plus Jakarta Sans"]},fontSize:{"title-md":["18px",{"lineHeight":"26px","letterSpacing":"-0.005em","fontWeight":"600"}],"headline-lg":["32px",{"lineHeight":"40px","letterSpacing":"-0.02em","fontWeight":"700"}],"body-md":["14px",{"lineHeight":"22px","letterSpacing":"0.005em","fontWeight":"400"}],"headline-sm":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"body-lg":["16px",{"lineHeight":"26px","letterSpacing":"0em","fontWeight":"400"}],"body-sm":["12px",{"lineHeight":"18px","letterSpacing":"0.01em","fontWeight":"400"}],"label-sm":["11px",{"lineHeight":"14px","letterSpacing":"0.04em","fontWeight":"700"}],"title-sm":["16px",{"lineHeight":"24px","letterSpacing":"0em","fontWeight":"600"}],"display-lg-mobile":["36px",{"lineHeight":"44px","letterSpacing":"-0.025em","fontWeight":"800"}],"label-md":["12px",{"lineHeight":"16px","letterSpacing":"0.02em","fontWeight":"600"}],"headline-md":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"700"}],"label-lg":["14px",{"lineHeight":"20px","letterSpacing":"0.01em","fontWeight":"600"}],"display-lg":["48px",{"lineHeight":"56px","letterSpacing":"-0.03em","fontWeight":"800"}],"headline-lg-mobile":["26px",{"lineHeight":"34px","letterSpacing":"-0.015em","fontWeight":"700"}]}}}}</script></head><body class="bg-surface font-body-md text-on-surface antialiased min-h-screen"><header class="fixed top-0 left-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-xl border-b border-surface-variant/70 shadow-[0_1px_8px_rgba(79,70,229,0.04)]"><div class="h-20 w-full max-w-[80rem] mx-auto px-gutter flex items-center justify-between gap-space-md"><div class="flex items-center gap-space-lg"><a class="flex items-center gap-space-xs focus:outline-none" href="#"><div class="w-9 h-9 rounded-lg bg-primary-container flex items-center justify-center text-on-primary shadow-sm"><span class="material-symbols-outlined text-[20px]">hub</span></div><span class="font-headline-sm text-headline-sm font-extrabold tracking-tight text-primary">KOLABORIN</span></a><nav class="hidden xl:flex items-center gap-space-xs" data-active-classes="bg-surface-container text-primary font-bold shadow-sm"><a class="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" data-path="home" href="#">Home</a><a class="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" data-path="live-map" href="#">Live Map</a><a aria-current="page" class="px-space-md py-space-xs rounded-full transition-colors bg-surface-container text-primary font-bold shadow-sm" data-path="open-party" href="#">Open Party</a><a class="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" data-path="chat-hub" href="#">Chat Hub</a><a class="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" data-path="events" href="#">Events</a><a class="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" data-path="leaderboard" href="#">Leaderboard</a><a class="px-space-md py-space-xs rounded-full font-label-lg text-label-lg text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors" data-path="profil" href="#">Profil</a></nav></div><div class="flex items-center gap-space-md"><div class="hidden md:flex items-center relative"><span class="material-symbols-outlined absolute left-space-md text-outline text-[20px] pointer-events-none">search</span><input class="w-56 lg:w-72 h-10 pl-10 pr-space-md rounded-full bg-surface-container-lowest border border-outline-variant/60 font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" placeholder="Cari party, topik, rekan STEI..." type="text"/><span class="absolute right-space-sm hidden lg:inline-flex items-center px-1.5 py-0.5 rounded font-label-sm text-label-sm bg-surface-container text-on-surface-variant">⌘K</span></div><div class="relative"><button aria-label="Notifications" class="w-10 h-10 rounded-full flex items-center justify-center text-on-surface-variant hover:text-on-surface hover:bg-surface-container-low transition-colors focus:outline-none" type="button"><span class="material-symbols-outlined text-[22px]">notifications</span><span class="absolute top-1.5 right-1.5 min-w-[18px] h-[18px] px-1 bg-error text-on-error font-label-sm text-label-sm rounded-full flex items-center justify-center border-2 border-surface-container-lowest">3</span></button></div><div class="h-8 w-px bg-outline-variant/50 hidden sm:block"></div><div class="flex items-center gap-space-sm pl-space-xs"><div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center shadow-sm"><span class="material-symbols-outlined text-on-primary text-[18px]">person</span></div><div class="hidden sm:flex flex-col"><div class="flex items-center gap-space-xs"><span class="font-label-lg text-label-lg text-on-surface">Farrel Arkan</span></div><div class="flex items-center gap-1"><span class="inline-flex items-center px-1.5 py-0.5 rounded-full font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed-variant leading-none">STEI ITB</span><span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed-dim inline-block ml-0.5" title="Online"></span></div></div></div></div></div></header><main class="w-full pt-20 bg-surface min-h-[calc(100vh-5rem)]"><div class="flex flex-col w-full">
+<!-- Top Command & Context Bar -->
+<section class="w-full bg-surface-container-lowest shadow-sm">
+<div class="max-w-[84rem] mx-auto px-gutter py-space-sm flex flex-col xl:flex-row xl:items-center justify-between gap-space-md">
+<!-- Breadcrumb & Status -->
+<div class="flex flex-wrap items-center gap-space-sm min-w-0">
+<a class="inline-flex items-center gap-1.5 font-label-lg text-label-lg text-primary hover:text-primary-container transition-colors group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:-translate-x-0.5 transition-transform">arrow_back</span>
+<span>Kembali ke Open Party</span>
+</a>
+<span class="text-outline-variant font-body-sm text-body-sm">/</span>
+<div class="flex items-center gap-2 truncate">
+<span class="font-title-sm text-title-sm text-on-surface truncate">Meja Belajar #4B • Review UAS Strategi Algoritma (IF2110)</span>
+<span class="hidden sm:inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-secondary-container text-on-secondary-container">
+<span class="w-2 h-2 rounded-full bg-secondary inline-block animate-ping"></span>
+            LIVE • 4 Mahasiswa Aktif
+          </span>
+<span class="hidden lg:inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full font-label-sm text-label-sm bg-surface-container text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">cell_tower</span>
+            Labtek V Ganesha
+          </span>
+</div>
+</div>
+<!-- Action & Room Control Set -->
+<div class="flex items-center flex-wrap gap-space-xs sm:gap-space-sm">
+<div class="flex items-center bg-surface-container-low px-3 py-1.5 rounded-full text-on-surface-variant font-label-md text-label-md gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary">timer</span>
+<span class="font-mono font-bold text-on-surface" id="session-timer">01:24:10</span>
+</div>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">person_add</span>
+<span class="hidden md:inline">+ Undang</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">headphones</span>
+<span class="hidden lg:inline">Lo-Fi Cafe</span>
+</button>
+<div class="h-6 w-px bg-surface-variant"></div>
+<button class="w-9 h-9 rounded-lg bg-surface-container text-on-surface flex items-center justify-center hover:bg-surface-container-high transition-colors" title="Mic Aktif" type="button">
+<span class="material-symbols-outlined text-[18px]">mic</span>
+</button>
+<button class="w-9 h-9 rounded-lg bg-surface-container text-on-surface flex items-center justify-center hover:bg-surface-container-high transition-colors" title="Kamera Nyala" type="button">
+<span class="material-symbols-outlined text-[18px]">videocam</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-lg bg-error-container text-on-error-container font-label-md text-label-md hover:bg-error hover:text-on-error transition-all shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">logout</span>
+<span>Tinggalkan Meja</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Workspace Sub-Header Topic Banner -->
+<section class="w-full bg-surface-container-low px-gutter py-space-xs">
+<div class="max-w-[84rem] mx-auto flex flex-col sm:flex-row sm:items-center justify-between gap-space-xs text-on-surface-variant">
+<div class="flex items-center gap-2 text-label-sm font-label-sm flex-wrap">
+<span class="px-2 py-0.5 rounded font-label-sm bg-primary-fixed text-on-primary-fixed-variant uppercase tracking-wider font-bold">Topik Inti</span>
+<span class="font-title-sm text-title-sm text-on-surface">IF2110 • Dynamic Programming &amp; Graph BFS/DFS</span>
+<span class="text-outline-variant">•</span>
+<span class="inline-flex items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">shield_person</span>
+          Host: <strong class="text-on-surface">Amanda Safitri (IF '22)</strong>
+</span>
+</div>
+<div class="flex items-center gap-3 text-label-sm font-label-sm">
+<span class="inline-flex items-center gap-1 text-secondary font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          Latensi Jaringan: 18ms
+        </span>
+<span class="text-outline-variant">|</span>
+<span class="text-on-surface-variant">Encrypted WebRTC P2P</span>
+</div>
+</div>
+</section>
+<!-- Main 3-Column Collaborative Workspace Canvas -->
+<main class="w-full max-w-[84rem] mx-auto px-gutter py-space-md grid grid-cols-1 lg:grid-cols-12 gap-space-md flex-1">
+<!-- ==========================================
+         COLUMN 1: Peer Presence & Virtual Table (F29, F31)
+         Span: 3 columns
+         ========================================== -->
+<aside class="lg:col-span-3 flex flex-col gap-space-md">
+<!-- Virtual Desk Panel -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">groups_3</span>
+<h2 class="font-title-sm text-title-sm text-on-surface">Virtual Desk (4/6)</h2>
+</div>
+<span class="px-2 py-0.5 rounded-full font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed-variant font-bold">Lab V-4</span>
+</div>
+<!-- Seats Grid -->
+<div class="grid grid-cols-2 gap-space-xs pt-space-xs">
+<!-- Member 1: Farrel Arkan (You) -->
+<div class="relative bg-surface-container rounded-lg p-2.5 flex flex-col justify-between overflow-hidden group">
+<div class="absolute top-2 right-2 flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary-fixed-dim inline-block animate-ping"></span>
+<span class="material-symbols-outlined text-[14px] text-secondary">mic</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="relative w-9 h-9 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold text-label-md">
+                FA
+                <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-secondary rounded-full border-2 border-surface-container-lowest"></span>
+</div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-on-surface truncate font-bold">Farrel (Anda)</p>
+<p class="font-label-sm text-label-sm text-outline truncate">13521000 • IF</p>
+</div>
+</div>
+<!-- Audio visualizer wave bar -->
+<div class="flex items-center gap-0.5 h-3 px-1 bg-surface-container-high rounded">
+<span class="w-1 bg-primary h-2 rounded-full animate-pulse"></span>
+<span class="w-1 bg-primary h-3 rounded-full animate-bounce"></span>
+<span class="w-1 bg-primary h-1 rounded-full"></span>
+<span class="w-1 bg-primary h-2.5 rounded-full animate-pulse"></span>
+<span class="text-[10px] text-on-surface-variant font-mono ml-auto">Speaking</span>
+</div>
+</div>
+<!-- Member 2: Amanda Safitri (Host) -->
+<div class="relative bg-surface-container-low rounded-lg p-2.5 flex flex-col justify-between overflow-hidden">
+<div class="absolute top-2 right-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-tertiary">star</span>
+<span class="material-symbols-outlined text-[14px] text-secondary">mic</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="relative w-9 h-9 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary font-bold text-label-md">
+                AS
+                <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-secondary rounded-full border-2 border-surface-container-lowest"></span>
+</div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-on-surface truncate font-bold">Amanda S.</p>
+<p class="font-label-sm text-label-sm text-primary truncate font-semibold">Host • IF '22</p>
+</div>
+</div>
+<div class="bg-surface-container px-1.5 py-1 rounded text-[11px] text-on-surface-variant truncate">
+              💬 Soal DP 2023 #3
+            </div>
+</div>
+<!-- Member 3: Brian Kusumo -->
+<div class="relative bg-surface-container-low rounded-lg p-2.5 flex flex-col justify-between overflow-hidden">
+<div class="absolute top-2 right-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-outline">mic_off</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="relative w-9 h-9 rounded-full bg-surface-variant flex items-center justify-center text-on-surface font-bold text-label-md">
+                BK
+                <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-secondary rounded-full border-2 border-surface-container-lowest"></span>
+</div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-on-surface truncate font-bold">Brian K.</p>
+<p class="font-label-sm text-label-sm text-outline truncate">18221045 • STI</p>
+</div>
+</div>
+<div class="bg-surface-container px-1.5 py-1 rounded text-[11px] text-on-surface-variant truncate">
+              🐞 Debugging BFS #4
+            </div>
+</div>
+<!-- Member 4: Nadira Farzana -->
+<div class="relative bg-surface-container-low rounded-lg p-2.5 flex flex-col justify-between overflow-hidden">
+<div class="absolute top-2 right-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-secondary">mic</span>
+</div>
+<div class="flex items-center gap-2 mb-2">
+<div class="relative w-9 h-9 rounded-full bg-surface-variant flex items-center justify-center text-on-surface font-bold text-label-md">
+                NF
+                <span class="absolute -bottom-0.5 -right-0.5 w-3 h-3 bg-secondary rounded-full border-2 border-surface-container-lowest"></span>
+</div>
+<div class="min-w-0">
+<p class="font-label-md text-label-md text-on-surface truncate font-bold">Nadira F.</p>
+<p class="font-label-sm text-label-sm text-outline truncate">17522012 • FSRD</p>
+</div>
+</div>
+<div class="bg-surface-container px-1.5 py-1 rounded text-[11px] text-on-surface-variant truncate">
+              ✏️ Bikin Diagram Graph
+            </div>
+</div>
+<!-- Seat 5: Empty -->
+<button class="border border-dashed border-outline-variant/60 hover:border-primary rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1 hover:bg-surface-container-low transition-colors col-span-1" type="button">
+<span class="material-symbols-outlined text-[20px] text-outline">chair</span>
+<span class="font-label-sm text-label-sm text-outline">+ Kursi #5</span>
+</button>
+<!-- Seat 6: Empty -->
+<button class="border border-dashed border-outline-variant/60 hover:border-primary rounded-lg p-3 flex flex-col items-center justify-center text-center gap-1 hover:bg-surface-container-low transition-colors col-span-1" type="button">
+<span class="material-symbols-outlined text-[20px] text-outline">chair</span>
+<span class="font-label-sm text-label-sm text-outline">+ Kursi #6</span>
+</button>
+</div>
+</div>
+<!-- Synchronized Pomodoro Focus Timer Widget (F31) -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-sm relative overflow-hidden">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[20px]">timelapse</span>
+<h3 class="font-title-sm text-title-sm text-on-surface">Pomodoro Sinergi</h3>
+</div>
+<span class="px-2 py-0.5 rounded font-label-sm text-label-sm bg-secondary-container text-on-secondary-container font-semibold">
+            Sesi #2/4
+          </span>
+</div>
+<div class="flex items-center justify-center py-2 relative">
+<!-- Circular Progress Ring SVG -->
+<svg class="w-36 h-36 transform -rotate-90" viewbox="0 0 120 120">
+<circle class="text-surface-container stroke-current" cx="60" cy="60" fill="transparent" r="52" stroke-width="8"></circle>
+<circle class="text-primary stroke-current" cx="60" cy="60" fill="transparent" r="52" stroke-dasharray="326.72" stroke-dashoffset="82" stroke-linecap="round" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+<span class="font-display-lg text-[32px] font-extrabold text-on-surface tracking-tight" id="pomo-display">18:42</span>
+<span class="font-label-sm text-label-sm text-primary uppercase font-bold tracking-wider">Fokus Penuh</span>
+</div>
+</div>
+<div class="p-2.5 rounded-lg bg-surface-container-low flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px] shrink-0 mt-0.5">workspace_premium</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant leading-snug">
+            Semua 4 rekan tersinkronisasi. Selesaikan sesi ini bersama untuk klaim <strong class="text-secondary font-bold">+25 Kolaborin XP</strong>.
+          </p>
+</div>
+<div class="flex items-center justify-between gap-space-xs pt-1">
+<button class="flex-1 py-1.5 px-2 rounded-lg bg-primary text-on-primary font-label-md text-label-md flex items-center justify-center gap-1 shadow-sm hover:bg-primary-container transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">pause</span>
+<span>Pause</span>
+</button>
+<button class="py-1.5 px-2.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" title="Tambah 5 Menit" type="button">
+            +5m
+          </button>
+<button class="py-1.5 px-2.5 rounded-lg bg-surface-container text-on-surface font-label-md text-label-md hover:bg-surface-container-high transition-colors" title="Skip ke Istirahat" type="button">
+<span class="material-symbols-outlined text-[16px]">skip_next</span>
+</button>
+</div>
+</div>
+<!-- Ambient Audio & Lo-Fi Player Widget -->
+<div class="bg-surface-container-lowest rounded-xl p-space-md shadow-sm flex flex-col gap-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-tertiary text-[18px]">graphic_eq</span>
+<h4 class="font-label-lg text-label-lg text-on-surface">Ambient Lab Soundscape</h4>
+</div>
+<span class="material-symbols-outlined text-secondary text-[18px] animate-pulse">volume_up</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant truncate">
+          🎶 Labtek V Rainy Afternoon &amp; Lo-Fi Beats
+        </p>
+<!-- Sound Sliders & Switches -->
+<div class="pt-2 flex flex-col gap-2">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">rainy</span> Hujan Rintik ITB
+            </span>
+<span class="text-primary font-bold">65%</span>
+</div>
+<div class="w-full bg-surface-container h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 65%;"></div>
+</div>
+<div class="flex items-center justify-between font-label-sm text-label-sm pt-1">
+<span class="text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">mode_fan</span> White Noise AC Lab
+            </span>
+<span class="text-outline font-bold">Off</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- ==========================================
+         COLUMN 2: Collaborative Code & Whiteboard Canvas (F30)
+         Span: 6 columns
+         ========================================== -->
+<section class="lg:col-span-6 flex flex-col gap-space-md">
+<!-- Main Workspace Canvas Card -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm flex flex-col flex-1 overflow-hidden">
+<!-- Interactive Mode Tabs -->
+<div class="flex items-center justify-between px-space-md pt-space-sm bg-surface-container-low overflow-x-auto">
+<div class="flex items-center gap-1">
+<button class="px-3.5 py-2 rounded-t-lg bg-surface-container-lowest text-primary font-label-md text-label-md font-bold flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+<span>Code Editor (C++)</span>
+</button>
+<button class="px-3.5 py-2 rounded-t-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">draw</span>
+<span>Papan Diagram</span>
+</button>
+<button class="px-3.5 py-2 rounded-t-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">edit_note</span>
+<span>Catatan Markdown</span>
+</button>
+<button class="px-3.5 py-2 rounded-t-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md flex items-center gap-1.5 transition-colors" type="button">
+<span class="material-symbols-outlined text-[16px]">picture_as_pdf</span>
+<span>UAS_2023.pdf</span>
+</button>
+</div>
+<div class="hidden sm:flex items-center gap-1 pb-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">3 Mengedit Realtime</span>
+</div>
+</div>
+<!-- Code Editor Toolbar -->
+<div class="px-space-md py-space-xs bg-surface-container-lowest flex flex-wrap items-center justify-between gap-space-xs border-b border-surface-variant/40">
+<div class="flex items-center gap-2">
+<div class="flex items-center gap-1.5 px-2.5 py-1 rounded bg-surface-container font-label-sm text-label-sm text-on-surface">
+<span class="material-symbols-outlined text-[14px] text-primary">code</span>
+<span class="font-mono font-semibold">C++ 20 (GCC 13.2)</span>
+</div>
+<span class="font-label-sm text-label-sm text-outline hidden md:inline">if2110_uas_soal3_tarjan.cpp</span>
+</div>
+<div class="flex items-center gap-1.5">
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high transition-colors flex items-center gap-1" title="Format Kode" type="button">
+<span class="material-symbols-outlined text-[14px]">auto_fix_high</span>
+<span class="hidden sm:inline">Format</span>
+</button>
+<button class="px-2.5 py-1 rounded bg-surface-container text-on-surface font-label-sm text-label-sm hover:bg-surface-container-high transition-colors flex items-center gap-1" title="Salin Kode" type="button">
+<span class="material-symbols-outlined text-[14px]">content_copy</span>
+<span class="hidden sm:inline">Salin</span>
+</button>
+<button class="px-3 py-1 rounded bg-primary text-on-primary font-label-md text-label-md font-bold hover:bg-primary-container transition-colors flex items-center gap-1.5 shadow-sm" type="button">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span>
+<span>Jalankan (F5)</span>
+</button>
+</div>
+</div>
+<!-- Monaco / Light Code Editor Surface -->
+<div class="relative bg-surface-container-lowest p-space-md font-mono text-[13px] leading-relaxed overflow-x-auto text-on-surface min-h-[380px]">
+<!-- Collaborative Active Cursors -->
+<div class="absolute left-[380px] top-[148px] pointer-events-none z-10 flex flex-col items-start">
+<div class="w-0.5 h-5 bg-tertiary-container animate-pulse"></div>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-sans font-bold bg-tertiary-container text-on-tertiary shadow-sm">
+              Amanda (Host)
+            </span>
+</div>
+<div class="absolute left-[260px] top-[265px] pointer-events-none z-10 flex flex-col items-start">
+<div class="w-0.5 h-5 bg-primary animate-pulse"></div>
+<span class="px-1.5 py-0.5 rounded text-[10px] font-sans font-bold bg-primary text-on-primary shadow-sm">
+              Farrel (Anda)
+            </span>
+</div>
+<!-- Code Lines Container -->
+<table class="w-full border-collapse">
+<tbody>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px] w-8">1</td>
+<td><span class="text-primary font-bold">#include</span> <span class="text-tertiary">&lt;iostream&gt;</span></td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">2</td>
+<td><span class="text-primary font-bold">#include</span> <span class="text-tertiary">&lt;vector&gt;</span></td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">3</td>
+<td><span class="text-primary font-bold">#include</span> <span class="text-tertiary">&lt;stack&gt;</span></td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">4</td>
+<td><span class="text-primary font-bold">using namespace</span> std;</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">5</td>
+<td> </td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">6</td>
+<td><span class="text-outline-variant">// Solusi Nomor 3: Tarjan SCC untuk Komponen Kritis Graf Kampus ITB</span></td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">7</td>
+<td><span class="text-primary font-bold">const int</span> MAXN = <span class="text-tertiary font-bold">10005</span>;</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">8</td>
+<td>vector&lt;<span class="text-primary font-bold">int</span>&gt; adj[MAXN];</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">9</td>
+<td><span class="text-primary font-bold">int</span> tin[MAXN], low[MAXN], timer = <span class="text-tertiary font-bold">0</span>;</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">10</td>
+<td><span class="text-primary font-bold">bool</span> onStack[MAXN];</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">11</td>
+<td>stack&lt;<span class="text-primary font-bold">int</span>&gt; st;</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">12</td>
+<td> </td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">13</td>
+<td><span class="text-primary font-bold">void</span> <span class="text-primary font-semibold">tarjanSCC</span>(<span class="text-primary font-bold">int</span> u) {</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">14</td>
+<td class="pl-4">tin[u] = low[u] = ++timer;</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">15</td>
+<td class="pl-4">st.push(u); onStack[u] = <span class="text-primary font-bold">true</span>;</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">16</td>
+<td class="pl-4"><span class="text-primary font-bold">for</span> (<span class="text-primary font-bold">int</span> v : adj[u]) {</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">17</td>
+<td class="pl-8"><span class="text-primary font-bold">if</span> (tin[v] == -<span class="text-tertiary font-bold">1</span>) {</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">18</td>
+<td class="pl-12">tarjanSCC(v);</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">19</td>
+<td class="pl-12">low[u] = min(low[u], low[v]);</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">20</td>
+<td class="pl-8">} <span class="text-primary font-bold">else if</span> (onStack[v]) {</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">21</td>
+<td class="pl-12"><span class="bg-primary-fixed/40 px-1 rounded">low[u] = min(low[u], tin[v]); <span class="text-secondary font-bold font-sans text-[11px]">// Handled Back-Edge</span></span></td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">22</td>
+<td class="pl-8">}</td>
+</tr>
+<tr>
+<td class="pr-4 text-right text-outline select-none text-[12px]">23</td>
+<td class="pl-4">}</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Terminal Execution Drawer -->
+<div class="bg-surface-container p-space-md border-t border-surface-variant/40 flex flex-col gap-2">
+<div class="flex items-center justify-between font-label-sm text-label-sm">
+<div class="flex items-center gap-1.5 text-secondary font-bold">
+<span class="material-symbols-outlined text-[16px]">check_circle</span>
+<span>Test Case 1–14 Passed (Semua Benar)</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant font-mono">
+<span>Waktu: 0.012s</span>
+<span>Memori: 4.2 MB</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest rounded-lg p-2.5 font-mono text-[12px] text-on-surface">
+<span class="text-secondary font-bold">[SUCCESS]</span> SCC Components Count: 3 • Topological Order: [Node 1, Node 4] -&gt; [Node 2, Node 3] -&gt; [Node 5]
+          </div>
+</div>
+<!-- Quick Sticky Scratchpad Banner (F30) -->
+<div class="p-space-sm bg-tertiary-fixed/30 flex items-center justify-between gap-space-sm">
+<div class="flex items-center gap-2 min-w-0">
+<span class="material-symbols-outlined text-tertiary-container text-[18px] shrink-0">push_pin</span>
+<p class="font-body-sm text-body-sm text-on-tertiary-fixed-variant truncate">
+<strong>Catatan Meja (Amanda):</strong> "Jangan lupa base case N=1 di rekursi memoization UAS besok!"
+            </p>
+</div>
+<button class="text-tertiary-container hover:text-tertiary font-label-sm text-label-sm underline shrink-0" type="button">
+            Edit Pin
+          </button>
+</div>
+</div>
+</section>
+<!-- ==========================================
+         COLUMN 3: Live Discussion, Q&A & Drop (F30, F31)
+         Span: 3 columns
+         ========================================== -->
+<aside class="lg:col-span-3 flex flex-col gap-space-md">
+<!-- Chat & Q&A Panel -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm flex flex-col h-full min-h-[580px]">
+<!-- Right Column Tabs -->
+<div class="flex items-center justify-between p-space-xs bg-surface-container-low rounded-t-xl">
+<button class="flex-1 py-1.5 rounded-lg bg-surface-container-lowest text-primary font-label-md text-label-md font-bold shadow-sm text-center" type="button">
+            Diskusi (18)
+          </button>
+<button class="flex-1 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md text-center transition-colors" type="button">
+            Q&amp;A Solusi
+          </button>
+<button class="flex-1 py-1.5 rounded-lg text-on-surface-variant hover:text-on-surface font-label-md text-label-md text-center transition-colors" type="button">
+            Berkas (2)
+          </button>
+</div>
+<!-- Chat Stream -->
+<div class="p-space-md flex-1 flex flex-col gap-space-md overflow-y-auto max-h-[460px]">
+<!-- Chat Message 1: Brian -->
+<div class="flex items-start gap-2.5">
+<div class="w-7 h-7 rounded-full bg-surface-variant flex items-center justify-center text-on-surface font-bold text-[11px] shrink-0">
+              BK
+            </div>
+<div class="flex flex-col gap-1 min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface font-bold">Brian Kusumo</span>
+<span class="font-label-sm text-label-sm text-outline">14:18</span>
+</div>
+<div class="bg-surface-container p-2.5 rounded-xl rounded-tl-none font-body-sm text-body-sm text-on-surface">
+                Kenapa di line 21 pakai <code class="bg-surface-container-highest px-1 rounded font-mono text-[11px]">tin[v]</code> bukan <code class="bg-surface-container-highest px-1 rounded font-mono text-[11px]">low[v]</code> ya?
+              </div>
+</div>
+</div>
+<!-- Q&A High-Value Card (F30) -->
+<div class="bg-primary-fixed/25 rounded-xl p-3 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="px-2 py-0.5 rounded font-label-sm text-label-sm bg-secondary-container text-on-secondary-container font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]">verified</span> +10 XP Solusi
+              </span>
+<span class="font-label-sm text-label-sm text-outline">Amanda menjawab</span>
+</div>
+<p class="font-body-sm text-body-sm text-on-surface">
+              Karena kalau pakai low[v] bisa ngambil cross-edge dari SCC lain yang udah selesai! Tarjan strict pakai discovery time untuk ancestor.
+            </p>
+</div>
+<!-- Automated Campus Bot Notification -->
+<div class="p-2.5 rounded-lg bg-surface-container-low flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[20px] shrink-0">bolt</span>
+<p class="font-body-sm text-body-sm text-on-surface-variant">
+              ⚡ <strong>Farrel Arkan</strong> meraih streak belajar 1 Jam! <strong>+25 Kolaborin XP</strong> telah masuk dompet.
+            </p>
+</div>
+<!-- Chat Message 2: Nadira -->
+<div class="flex items-start gap-2.5">
+<div class="w-7 h-7 rounded-full bg-surface-variant flex items-center justify-center text-on-surface font-bold text-[11px] shrink-0">
+              NF
+            </div>
+<div class="flex flex-col gap-1 min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface font-bold">Nadira Farzana</span>
+<span class="font-label-sm text-label-sm text-outline">14:22</span>
+</div>
+<div class="bg-surface-container p-2.5 rounded-xl rounded-tl-none font-body-sm text-body-sm text-on-surface">
+                Aku barusan upload rangkuman visual graph DFS di tab berkas ya guys, monggo dicek! ✨
+              </div>
+</div>
+</div>
+<!-- Shared Files Preview Widget Mini -->
+<div class="bg-surface-container-low rounded-lg p-2.5 flex items-center justify-between gap-2">
+<div class="flex items-center gap-2 truncate">
+<span class="material-symbols-outlined text-error text-[20px]">picture_as_pdf</span>
+<div class="truncate">
+<p class="font-label-sm text-label-sm text-on-surface font-bold truncate">Bank_Soal_UAS_Algo_2023.pdf</p>
+<p class="font-label-sm text-label-sm text-outline">3.2 MB • Diunggah Amanda</p>
+</div>
+</div>
+<button class="w-7 h-7 rounded bg-surface-container flex items-center justify-center text-primary hover:bg-surface-container-high transition-colors" title="Unduh Berkas" type="button">
+<span class="material-symbols-outlined text-[16px]">download</span>
+</button>
+</div>
+</div>
+<!-- Chat Input Area -->
+<div class="p-space-sm bg-surface-container-lowest border-t border-surface-variant/40 flex flex-col gap-2 rounded-b-xl">
+<div class="flex items-center gap-2 text-outline">
+<button class="hover:text-primary transition-colors p-1" title="Kirim Cuplikan Kode" type="button">
+<span class="material-symbols-outlined text-[18px]">code</span>
+</button>
+<button class="hover:text-primary transition-colors p-1" title="Unggah PDF / Soal" type="button">
+<span class="material-symbols-outlined text-[18px]">attach_file</span>
+</button>
+<button class="hover:text-primary transition-colors p-1" title="Format LaTeX / Rumus" type="button">
+<span class="material-symbols-outlined text-[18px]">functions</span>
+</button>
+<button class="hover:text-secondary transition-colors p-1 ml-auto flex items-center gap-1 font-label-sm text-label-sm font-semibold" title="Angkat Tangan" type="button">
+<span>✋ Angkat Tangan</span>
+</button>
+</div>
+<div class="flex items-center gap-2">
+<input class="flex-1 bg-surface-container-low border-0 px-3 py-2 rounded-lg font-body-sm text-body-sm text-on-surface placeholder:text-outline focus:outline-none focus:ring-2 focus:ring-primary/20" placeholder="Tanya atau diskusikan algoritma..." type="text"/>
+<button class="w-9 h-9 rounded-lg bg-primary text-on-primary flex items-center justify-center hover:bg-primary-container transition-colors shadow-sm" title="Kirim Pesan" type="button">
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Bottom Global Sinergi & Collaboration Bar -->
+<footer class="w-full bg-surface-container-lowest border-t border-surface-variant/30 py-space-xs mt-space-md">
+<div class="max-w-[84rem] mx-auto px-gutter flex flex-col sm:flex-row items-center justify-between gap-space-xs text-on-surface-variant font-label-md text-label-md">
+<div class="flex items-center gap-3">
+<span class="inline-flex items-center gap-1 text-secondary font-bold">
+<span class="material-symbols-outlined text-[16px]">stars</span>
+          +45 XP Terkumpul Sesi Ini
+        </span>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface font-medium">1 Soal UAS Terpecahkan</span>
+<span class="text-outline-variant hidden md:inline">•</span>
+<span class="text-outline hidden md:inline">Status Sync: ITB SSO Verified (Institut Teknologi Bandung)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-outline">Mode:</span>
+<span class="px-2 py-0.5 rounded font-label-sm text-label-sm bg-surface-container text-on-surface font-semibold">Peer-Review UAS</span>
+</div>
+</div>
+</footer>
+</div>
+<script>
+  // Simple Pomodoro countdown simulation for high fidelity interaction
+  (function initTimer() {
+    let secondsLeft = 18 * 60 + 42;
+    const display = document.getElementById('pomo-display');
+    if (!display) return;
+
+    setInterval(() => {
+      if (secondsLeft > 0) {
+        secondsLeft--;
+        const m = Math.floor(secondsLeft / 60).toString().padStart(2, '0');
+        const s = (secondsLeft % 60).toString().padStart(2, '0');
+        display.textContent = `${m}:${s}`;
+      }
+    }, 1000);
+  })();
+</script></main><footer class="w-full bg-surface-container-low border-t border-surface-variant/40 py-space-xl mt-space-xl"><div class="max-w-[80rem] mx-auto px-gutter flex flex-col md:flex-row items-center justify-between gap-space-md text-on-surface-variant"><div class="flex items-center gap-space-sm"><span class="font-title-sm text-title-sm text-primary font-bold tracking-tight">KOLABORIN</span><span class="font-body-sm text-body-sm text-outline">• Lebih Banyak Koneksi, Lebih Banyak Berkolaborasi</span></div><div class="font-body-sm text-body-sm text-outline">© 2025 KOLABORIN Student Network. Institut Teknologi Bandung. All rights reserved.</div></div></footer></body></html>
