@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import api from '../api';
+import StudyRoomSidebar from '../components/StudyRoomSidebar';
+import StudyRoomWorkspace from '../components/StudyRoomWorkspace';
 
 export default function GroupDetail() {
   const { id } = useParams();
@@ -127,7 +129,7 @@ export default function GroupDetail() {
   const { group, members, isMember, isCreator } = data;
 
   return (
-    <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1000px', margin: '0 auto' }}>
+    <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1400px', margin: '0 auto' }}>
       {toast && <div className="toast-pill">{toast}</div>}
 
       {/* Group Header Card */}
@@ -183,8 +185,8 @@ export default function GroupDetail() {
         )}
       </div>
 
-      {/* Main Grid: Left Q&A, Right Members */}
-      <div className="group-detail-grid" style={{ marginTop: '1.5rem', display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '1.5rem' }}>
+      {/* Study room: discussions and the group desk */}
+      <div className="group-detail-grid" style={{ marginTop: '1.5rem' }}>
         {/* Left Column: Discussion & Q&A */}
         <div>
           <div className="dash-card">
@@ -336,39 +338,8 @@ export default function GroupDetail() {
           </div>
         </div>
 
-        {/* Right Column: Members & Host */}
-        <div>
-          <div className="dash-card">
-            <h4>👥 Study Group Members ({members.length}/{group.max_members})</h4>
-            <div className="progress-bar" style={{ margin: '0.6rem 0 1rem 0' }}>
-              <div
-                className="progress-fill"
-                style={{ width: `${Math.min(100, (members.length / group.max_members) * 100)}%` }}
-              />
-            </div>
-
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
-              {members.map((m) => (
-                <div key={m.user_id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: '1px solid var(--border)' }}>
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
-                      <strong style={{ fontSize: '0.9rem' }}>{m.name}</strong>
-                      {m.badges && <span title={`Approved: ${m.badges}`}>🏅</span>}
-                      {m.user_id === group.creator_id && (
-                        <span style={{ fontSize: '0.7rem', background: 'var(--primary-soft)', color: 'var(--primary)', padding: '0.1rem 0.3rem', borderRadius: '4px', fontWeight: 600 }}>
-                          Host
-                        </span>
-                      )}
-                    </div>
-                    <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>
-                      {m.faculty} {m.major ? `• ${m.major}` : ''}
-                    </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+        <StudyRoomWorkspace />
+        <StudyRoomSidebar group={group} members={members} />
       </div>
     </div>
   );

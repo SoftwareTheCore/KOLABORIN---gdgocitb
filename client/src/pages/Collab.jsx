@@ -73,40 +73,38 @@ export default function Collab() {
   };
 
   return (
-    <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1000px', margin: '0 auto' }}>
+    <main className="container org-collab-page">
       {toast && <div className="toast-pill">{toast}</div>}
 
-      <div style={{ marginBottom: '1.5rem' }}>
-        <h2>Open for Collaboration 🤝</h2>
-        <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-          Connect and co-host campus events with other verified student organizations.
-        </p>
-      </div>
+      <header className="org-collab-hero">
+        <div><span className="eyebrow">Jaringan organisasi kampus</span><h1>Kolaborasi yang lebih besar.</h1><p>Temukan organisasi terverifikasi dan ajukan event bersama.</p></div>
+        <span className="org-home-hero-mark" aria-hidden="true">↗</span>
+      </header>
 
       {myVerifiedOrgs.length === 0 && (
-        <div className="alert-error" style={{ background: '#fef3c7', color: '#b45309', border: '1px solid #fde68a', marginBottom: '1.5rem' }}>
-          ℹ️ You must be an owner of a verified student organization to send collaboration proposals.
+        <div className="org-pending-banner">
+          <span aria-hidden="true">!</span>
+          <div><strong>Verifikasi diperlukan</strong><p>Pemilik organisasi terverifikasi dapat mengirim proposal kolaborasi.</p></div>
         </div>
       )}
 
-      {/* Grid: Left Discover Orgs, Right Collaboration Inbox */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr', gap: '1.5rem' }}>
+      <div className="org-collab-grid">
         {/* Left: Discover Organizations Open for Collab */}
         <div>
-          <div className="dash-card">
-            <h3>Organizations Open for Collaboration ({collabOrgs.length})</h3>
+          <div className="org-manage-card">
+            <div className="org-section-heading"><div><span className="eyebrow">Temukan partner</span><h2>Terbuka untuk kolaborasi</h2></div><span className="org-event-count">{collabOrgs.length} organisasi</span></div>
             <p style={{ fontSize: '0.85rem', color: 'var(--muted)', marginTop: '0.2rem', marginBottom: '1rem' }}>
-              These verified organizations have active collaboration enabled.
+              Organisasi terverifikasi yang siap merancang kegiatan bersama.
             </p>
 
             {loading ? (
               <p style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading...</p>
             ) : collabOrgs.length === 0 ? (
-              <p className="empty-state">No other organizations currently looking for collaboration.</p>
+              <p className="empty-state">Belum ada organisasi lain yang membuka kolaborasi.</p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {collabOrgs.map((org) => (
-                  <div key={org.id} className="dash-list-item" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '0.5rem' }}>
+                  <div key={org.id} className="org-collab-org-card">
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
                       <div>
                         <strong>{org.name}</strong>
@@ -118,12 +116,12 @@ export default function Collab() {
                           className="btn-primary"
                           style={{ fontSize: '0.75rem', padding: '0.25rem 0.65rem' }}
                         >
-                          Send Proposal
+                          Ajukan kolaborasi
                         </button>
                       )}
                     </div>
                     <p style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>
-                      {org.description || 'Verified student organization.'}
+                      {org.description || 'Organisasi kampus terverifikasi.'}
                     </p>
                   </div>
                 ))}
@@ -134,26 +132,26 @@ export default function Collab() {
 
         {/* Right: Inbox Proposals */}
         <div>
-          <div className="dash-card">
-            <h3>📥 Collaboration Inbox ({inbox.length})</h3>
+          <div className="org-manage-card">
+            <div className="org-section-heading"><div><span className="eyebrow">Permintaan masuk</span><h2>Kotak kolaborasi</h2></div><span className="org-event-count">{inbox.length}</span></div>
             <p style={{ fontSize: '0.85rem', color: 'var(--muted)', marginTop: '0.2rem', marginBottom: '1rem' }}>
-              Joint event proposals sent to your organization.
+              Proposal event bersama yang dikirim ke organisasi Anda.
             </p>
 
             {inbox.length === 0 ? (
-              <p className="empty-state">Inbox empty. No proposals received yet.</p>
+              <p className="empty-state">Belum ada proposal kolaborasi.</p>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {inbox.map((req) => (
-                  <div key={req.id} className="dash-list-item" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: '0.4rem' }}>
+                  <div key={req.id} className="org-collab-inbox-item">
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', alignItems: 'center' }}>
-                      <strong style={{ fontSize: '0.9rem' }}>From: {req.from_org_name}</strong>
+                      <strong style={{ fontSize: '0.9rem' }}>Dari: {req.from_org_name}</strong>
                       <span className={`status-badge status-${req.status === 'accepted' ? 'verified' : req.status === 'declined' ? 'rejected' : 'pending'}`}>
                         {req.status.toUpperCase()}
                       </span>
                     </div>
                     <span style={{ fontSize: '0.75rem', color: 'var(--muted)' }}>
-                      Sender: {req.sender_name} ({req.sender_email})
+                      Pengirim: {req.sender_name} ({req.sender_email})
                     </span>
                     <p style={{ fontSize: '0.85rem', background: 'var(--card)', padding: '0.5rem', borderRadius: '4px', border: '1px solid var(--border)', width: '100%' }}>
                       "{req.message}"
@@ -166,14 +164,14 @@ export default function Collab() {
                           className="btn-secondary"
                           style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem', color: 'var(--danger)', borderColor: 'var(--danger)' }}
                         >
-                          Decline
+                          Tolak
                         </button>
                         <button
                           onClick={() => handleRespond(req.id, 'accept')}
                           className="btn-primary"
                           style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}
                         >
-                          Accept Proposal
+                          Terima proposal
                         </button>
                       </div>
                     )}
@@ -189,14 +187,14 @@ export default function Collab() {
       {selectedToOrg && (
         <div className="modal-backdrop">
           <div className="modal-box">
-            <h3>🤝 Propose Collaboration</h3>
+            <h3>🤝 Ajukan kolaborasi</h3>
             <p style={{ fontSize: '0.85rem', color: 'var(--muted)', marginTop: '0.2rem', marginBottom: '1rem' }}>
-              Sending proposal to <strong>{selectedToOrg.name}</strong> from <strong>{myVerifiedOrgs[0]?.name}</strong>.
+              Mengirim proposal ke <strong>{selectedToOrg.name}</strong> dari <strong>{myVerifiedOrgs[0]?.name}</strong>.
             </p>
 
             <form onSubmit={handleSendRequest} className="auth-form">
               <div className="form-group">
-                <label>Collaboration Proposal Message *</label>
+                <label>Rencana kolaborasi *</label>
                 <textarea
                   required
                   rows={4}
@@ -215,16 +213,16 @@ export default function Collab() {
 
               <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.5rem', marginTop: '0.5rem' }}>
                 <button type="button" onClick={() => setSelectedToOrg(null)} className="btn-secondary">
-                  Cancel
+                  Batal
                 </button>
                 <button type="submit" disabled={submitting} className="btn-primary">
-                  {submitting ? 'Sending...' : 'Send Request'}
+                  {submitting ? 'Mengirim...' : 'Kirim proposal'}
                 </button>
               </div>
             </form>
           </div>
         </div>
       )}
-    </div>
+    </main>
   );
 }

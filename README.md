@@ -44,6 +44,36 @@ Pastikan service MySQL aktif. Buat schema dengan MySQL CLI atau phpMyAdmin:
 mysql -u root -p < server/db/schema.sql
 ```
 
+Windows PowerShell (jalankan dari root proyek):
+
+```powershell
+cmd /c "mysql -u root -p < server\db\schema.sql"
+```
+
+Jika database sudah dibuat sebelum fitur meeting organisasi ditambahkan, jalankan migrasi satu kali:
+
+```bash
+mysql -u root -p kolaborin < server/db/migrations/001_organization_meetings.sql
+```
+
+Windows PowerShell:
+
+```powershell
+cmd /c "mysql -u root -p kolaborin < server\db\migrations\001_organization_meetings.sql"
+```
+
+Jika database sudah dibuat sebelum tiket QR dan check-in event ditambahkan, jalankan migrasi berikut satu kali:
+
+```bash
+mysql -u root -p kolaborin < server/db/migrations/002_event_check_ins.sql
+```
+
+Windows PowerShell:
+
+```powershell
+cmd /c "mysql -u root -p kolaborin < server\db\migrations\002_event_check_ins.sql"
+```
+
 Kemudian isi data demo:
 
 ```bash
@@ -51,6 +81,17 @@ cd server
 npm install
 npm run seed
 ```
+
+PERINGATAN: `npm run seed` mengosongkan tabel database sebelum mengisi data demo. Jalankan hanya pada database lokal/dev yang boleh di-reset, bukan database berisi data penting atau production.
+
+Untuk menambahkan atau memperbarui data demo Live Spot organisasi tanpa menghapus data lain:
+
+```bash
+cd server
+npm run seed:live-spot
+```
+
+Perintah ini idempotent dan menyiapkan ruang meeting, venue event, satu meeting, satu event, satu pendaftar demo dengan tiket QR, serta satu pengajuan fasilitas contoh untuk HMIF.
 
 ### 2. Jalankan backend
 

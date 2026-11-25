@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-container": "#6cf8bb",
+            "on-tertiary-fixed-variant": "#653e00",
+            "outline": "#777587",
+            "on-secondary-fixed": "#002113",
+            "on-tertiary": "#ffffff",
+            "primary": "#3525cd",
+            "primary-fixed-dim": "#c3c0ff",
+            "on-primary-fixed": "#0f0069",
+            "on-surface-variant": "#464555",
+            "tertiary-container": "#885500",
+            "surface-container-highest": "#dae2fd",
+            "secondary-fixed-dim": "#4edea3",
+            "on-error-container": "#93000a",
+            "surface-container-low": "#f2f3ff",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#dae2fd",
+            "on-primary-container": "#dad7ff",
+            "surface-container": "#eaedff",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#eef0ff",
+            "inverse-primary": "#c3c0ff",
+            "surface-dim": "#d2d9f4",
+            "outline-variant": "#c7c4d8",
+            "surface-container-lowest": "#ffffff",
+            "inverse-surface": "#283044",
+            "on-tertiary-container": "#ffd4a4",
+            "tertiary-fixed-dim": "#ffb95f",
+            "background": "#faf8ff",
+            "secondary": "#006c49",
+            "on-surface": "#131b2e",
+            "on-secondary-fixed-variant": "#005236",
+            "on-primary-fixed-variant": "#3323cc",
+            "primary-fixed": "#e2dfff",
+            "error-container": "#ffdad6",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed": "#2a1700",
+            "tertiary-fixed": "#ffddb8",
+            "surface-tint": "#4d44e3",
+            "on-secondary-container": "#00714d",
+            "surface-container-high": "#e2e7ff",
+            "surface-bright": "#faf8ff",
+            "error": "#ba1a1a",
+            "on-background": "#131b2e",
+            "tertiary": "#684000",
+            "surface": "#faf8ff",
+            "secondary-fixed": "#6ffbbe",
+            "primary-container": "#4f46e5"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem",
+            "space-md": "1rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "title-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased">
+<!-- 1. SIMPLIFIED SLEEK HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md border-b border-surface-container-high">
+<div class="h-16 max-w-[84rem] mx-auto px-margin-mobile md:px-margin flex items-center justify-between gap-space-md">
+<!-- Left: Logo & Core Nav -->
+<div class="flex items-center gap-space-xl">
+<a class="flex items-center gap-2 group" data-path="home" href="#">
+<img alt="KOLABORIN Brand Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDBA2oyd-4v9RxabshcrZIiDseUEQA1Z-hVYp3k4C7d77dbL3CJxeEHuJK2Gsg4BlbzsAO01rxuNJPLhBhCy9pABnhJumONdOOK6AvUOs5TQgDF04dCcX4aTxdbvEUGdmFHtLrOjoQ7eldtzS096i_9zPetjM4dn8gWlLlf36wkvhEF2TDvaTqa7FWYHywzYTdTtEyzLKvQZFyOaRCArjr8hktBoI1BITWSlOGTCyru"/>
+<span class="font-headline-sm text-[20px] text-primary tracking-tight font-extrabold">KOLABORIN</span>
+</a>
+<!-- Navigation tabs: Home, Live Map, Open Party, Chat Hub, Events -->
+<nav class="hidden md:flex items-center gap-space-lg text-body-md font-medium" data-active-classes="text-primary font-bold border-b-2 border-primary">
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="home" href="#">Home</a>
+<a aria-current="page" class="py-4 transition-colors text-primary font-bold border-b-2 border-primary" data-path="live-map" href="#">Live Map</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="open-party" href="#">Open Party</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="chat-hub" href="#">Chat Hub</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="events" href="#">Events</a>
+</nav>
+</div>
+<!-- Right: Search, Notification, Compact Avatar -->
+<div class="flex items-center gap-space-sm">
+<div class="relative hidden sm:flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">search</span>
+<input class="bg-surface-container-low pl-9 pr-8 py-1.5 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline w-52 lg:w-64 focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="Cari spot, matkul, teman..." type="text"/>
+<kbd class="absolute right-2.5 font-label-sm text-[10px] bg-surface-container-highest px-1.5 py-0.5 rounded text-on-surface-variant">⌘K</kbd>
+</div>
+<button aria-label="Notifikasi" class="relative p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-error px-1 text-[10px] font-bold text-on-error">3</span>
+</button>
+<!-- Student Profile Avatar: Farrel Arkan -->
+<div class="flex items-center gap-2 pl-1 py-1 pr-2 rounded-full hover:bg-surface-container cursor-pointer transition-colors">
+<img alt="Farrel Arkan" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACSJPR27gVwFzxNagQ1pVASbkIN3ZlaR2Dcxl6aXnoU-gDd5vSPLPsZ6I9GZJBpGUfTJFvGdKUjRwOcHmugPB8dnuA11rTbqHSh5vrjXPeml9umagg4sTYGGaCdbzMMLnUI8AplCEc4niLSF-uzqHoTSQhen3l2upvdjxfX_eOkcsFdhkYeuUCNczsHH1GkUQIYSLhfEzvJ9H0PxIqEm9TJMVWQNqAQh3RAOBFDQGf"/>
+<div class="hidden lg:flex flex-col text-left">
+<span class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Farrel Arkan</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant leading-none">STEI ITB</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN VIEWPORT -->
+<main class="w-full pt-16 bg-surface min-h-[calc(100vh-120px)]"><div class="flex flex-col w-full">
+<!-- TOP CONTROLS & DYNAMIC FILTER BAR -->
+<section class="w-full bg-surface-container-lowest shadow-sm z-30 relative px-margin-mobile md:px-margin py-space-sm space-y-space-sm">
+<!-- Row 1: Search, Campus Zones & Primary Actions -->
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-sm">
+<!-- Search Input Capsule -->
+<div class="relative flex-1 max-w-xl">
+<span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-[20px]">explore</span>
+<input class="w-full h-11 pl-11 pr-24 rounded-full bg-surface-container-low font-body-md text-on-surface placeholder:text-outline focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/25 outline-none transition-all shadow-inner" placeholder="Cari spot belajar, nama gedung, kode ruang (cth: Labtek V, Selasar TVST, Oktagon)..." type="text" value="Perpustakaan Pusat Lt. 2"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-1.5 pointer-events-none">
+<span class="font-label-sm text-[10px] bg-surface-container-highest px-2 py-0.5 rounded text-on-surface-variant uppercase font-bold tracking-wider">ITB Ganesha</span>
+</div>
+</div>
+<!-- Zone Pills Scrollable Container -->
+<div class="flex items-center gap-2 overflow-x-auto py-1 scrollbar-none">
+<button class="px-3.5 py-1.5 rounded-full font-label-md bg-primary text-on-primary shadow-sm hover:bg-primary-container transition-colors whitespace-nowrap flex items-center gap-1.5">
+<span>Semua Zona</span>
+<span class="bg-white/20 text-on-primary px-1.5 py-0.2 rounded-full text-[10px] font-bold">18</span>
+</button>
+<button class="px-3.5 py-1.5 rounded-full font-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors whitespace-nowrap">
+          Kawasan Barat (STEI/FTI)
+        </button>
+<button class="px-3.5 py-1.5 rounded-full font-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors whitespace-nowrap">
+          Kawasan Timur (SBM/FSRD)
+        </button>
+<button class="px-3.5 py-1.5 rounded-full font-label-md bg-surface-container text-primary font-bold shadow-sm whitespace-nowrap flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+          Perpustakaan &amp; Pusat
+        </button>
+<button class="px-3.5 py-1.5 rounded-full font-label-md bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high transition-colors whitespace-nowrap">
+          Outdoor &amp; Selasar
+        </button>
+</div>
+<!-- Action Utilities -->
+<div class="flex items-center gap-2 shrink-0">
+<!-- Toggle Heatmap / Vector -->
+<button class="flex items-center gap-1.5 px-3 py-2 rounded-lg bg-surface-container-low hover:bg-surface-container text-on-surface font-label-md transition-colors shadow-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">layers</span>
+<span>Heatmap Okupansi</span>
+</button>
+<!-- Ajukan Spot Baru Button (PRD F19) -->
+<button class="flex items-center gap-1.5 px-4 py-2 rounded-lg bg-secondary text-on-secondary hover:bg-on-secondary-container font-label-md shadow-sm transition-all group">
+<span class="material-symbols-outlined text-[18px] group-hover:rotate-90 transition-transform">add_circle</span>
+<span>Ajukan Spot</span>
+<span class="bg-secondary-container text-on-secondary-fixed text-[10px] font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-tighter">F19</span>
+</button>
+</div>
+</div>
+<!-- Row 2: Quick Amenity Toggles -->
+<div class="flex items-center justify-between border-t-0 pt-1 text-label-sm overflow-x-auto gap-2">
+<div class="flex items-center gap-2">
+<span class="font-label-sm text-outline uppercase tracking-wider shrink-0 flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]">filter_list</span> Filter Cepat:
+        </span>
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-800 hover:bg-emerald-100 transition-colors font-medium">
+<span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+          Lengang (&lt;40%)
+        </button>
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors">
+<span>⚡ Colokan Banyak (&gt;10)</span>
+</button>
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-primary/10 text-primary font-bold shadow-sm">
+<span>🤫 Silent Zone</span>
+<span class="material-symbols-outlined text-[14px]">check</span>
+</button>
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors">
+<span>❄️ AC Dingin</span>
+</button>
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors">
+<span>🕒 Buka 24 Jam</span>
+</button>
+<button class="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container hover:text-on-surface transition-colors">
+<span>☕ Dekat Kantin/Kopi</span>
+</button>
+</div>
+<!-- Quick stats ticker -->
+<div class="hidden xl:flex items-center gap-4 text-outline font-body-sm shrink-0">
+<span>Menampilkan <strong class="text-on-surface font-semibold">18 dari 24 Spot</strong></span>
+<span>•</span>
+<span class="flex items-center gap-1 text-emerald-700 font-medium">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> 5 Spot Lengang
+        </span>
+</div>
+</div>
+</section>
+<!-- MAIN SPLIT CANVAS: 70% MAP + 30% SPOT INSPECTION DRAWER -->
+<section class="w-full flex-1 flex flex-col lg:flex-row min-h-[calc(100vh-175px)] relative overflow-hidden bg-surface-container-low">
+<!-- LEFT: 70% INTERACTIVE VECTOR CAMPUS MAP -->
+<div class="relative flex-1 w-full lg:w-[68%] min-h-[520px] lg:min-h-full overflow-hidden select-none bg-[#eef3fb]">
+<!-- Vector Map Canvas (Custom Architectural Stylized ITB Canvas) -->
+<div class="absolute inset-0 w-full h-full overflow-hidden">
+<svg class="w-full h-full object-cover" fill="none" viewbox="0 0 1200 800" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<radialgradient cx="50%" cy="50%" id="mapBgGlow" r="50%">
+<stop offset="0%" stop-color="#ffffff" stop-opacity="0.8"></stop>
+<stop offset="100%" stop-color="#e2ebf8" stop-opacity="1"></stop>
+</radialgradient>
+<pattern height="40" id="gridPattern" patternunits="userSpaceOnUse" width="40">
+<path d="M 40 0 L 0 0 0 40" fill="none" stroke="#d5e0f2" stroke-dasharray="2 2" stroke-width="0.75"></path>
+</pattern>
+<filter height="120%" id="shadowFilter" width="120%" x="-10%" y="-10%">
+<fedropshadow dx="0" dy="4" flood-color="#1e293b" flood-opacity="0.08" stddeviation="6"></fedropshadow>
+</filter>
+</defs>
+<!-- Campus Ground Matrix -->
+<rect fill="url(#mapBgGlow)" height="800" width="1200"></rect>
+<rect fill="url(#gridPattern)" height="800" width="1200"></rect>
+<!-- Campus Boulevards & Pathways -->
+<!-- Main South-to-North Axis (Gerbang Utama ITB to Plaza Widya) -->
+<path d="M 600 800 L 600 350 L 600 120" stroke="#cbd5e1" stroke-linecap="round" stroke-width="48"></path>
+<path d="M 600 800 L 600 350 L 600 120" stroke="#ffffff" stroke-linecap="round" stroke-width="40"></path>
+<!-- West-East Academic Loop Ring -->
+<path d="M 220 540 L 980 540" filter="url(#shadowFilter)" stroke="#ffffff" stroke-linecap="round" stroke-width="28"></path>
+<path d="M 260 280 L 940 280" filter="url(#shadowFilter)" stroke="#ffffff" stroke-linecap="round" stroke-width="28"></path>
+<path d="M 280 280 C 180 380 180 440 280 540" stroke="#ffffff" stroke-linecap="round" stroke-width="24"></path>
+<path d="M 920 280 C 1020 380 1020 440 920 540" stroke="#ffffff" stroke-linecap="round" stroke-width="24"></path>
+<!-- Greenery Parks & Lawns (Lap. Cinta, Plaza Indonesia Tenggelam) -->
+<rect fill="#d1fae5" height="70" rx="16" width="130" x="420" y="440"></rect>
+<rect fill="#d1fae5" height="70" rx="16" width="130" x="650" y="440"></rect>
+<text fill="#065f46" font-family="Plus Jakarta Sans" font-size="11" font-weight="600" text-anchor="middle" x="485" y="480">Plaza Widya Nusantara</text>
+<text fill="#065f46" font-family="Plus Jakarta Sans" font-size="11" font-weight="600" text-anchor="middle" x="715" y="480">Taman Cinta &amp; Kolam</text>
+<!-- Iconic Landmark 1: Aula Barat -->
+<g filter="url(#shadowFilter)">
+<rect fill="#ffffff" height="75" rx="8" width="120" x="420" y="580"></rect>
+<polygon fill="#f1f5f9" points="410,580 480,545 550,580"></polygon>
+<text fill="#334155" font-family="Plus Jakarta Sans" font-size="12" font-weight="700" text-anchor="middle" x="480" y="625">Aula Barat ITB</text>
+</g>
+<!-- Iconic Landmark 2: Aula Timur -->
+<g filter="url(#shadowFilter)">
+<rect fill="#ffffff" height="75" rx="8" width="120" x="660" y="580"></rect>
+<polygon fill="#f1f5f9" points="650,580 720,545 790,580"></polygon>
+<text fill="#334155" font-family="Plus Jakarta Sans" font-size="12" font-weight="700" text-anchor="middle" x="720" y="625">Aula Timur ITB</text>
+</g>
+<!-- Center Landmark: Plaza Indonesia Tenggelam (Sunken Court) -->
+<circle cx="600" cy="475" fill="#e0f2fe" r="32" stroke="#38bdf8" stroke-dasharray="4 4" stroke-width="2"></circle>
+<circle cx="600" cy="475" fill="#0284c7" r="14"></circle>
+<!-- Building Clusters: West / STEI / FTI Campus -->
+<!-- Labtek V (Benny Subianto) -->
+<rect fill="#ffffff" filter="url(#shadowFilter)" height="60" rx="8" width="110" x="220" y="340"></rect>
+<text fill="#1e293b" font-family="Plus Jakarta Sans" font-size="12" font-weight="700" text-anchor="middle" x="275" y="375">Labtek V (STEI)</text>
+<!-- TVST (Teater Wakil Sarwono T.) -->
+<rect fill="#ffffff" filter="url(#shadowFilter)" height="50" rx="8" width="80" x="360" y="340"></rect>
+<text fill="#475569" font-family="Plus Jakarta Sans" font-size="11" font-weight="600" text-anchor="middle" x="400" y="370">TVST Selasar</text>
+<!-- GKU Barat -->
+<rect fill="#ffffff" filter="url(#shadowFilter)" height="55" rx="8" width="110" x="180" y="440"></rect>
+<text fill="#1e293b" font-family="Plus Jakarta Sans" font-size="12" font-weight="700" text-anchor="middle" x="235" y="472">GKU Barat</text>
+<!-- Building Clusters: Center Campus / Library -->
+<!-- Gedung Perpustakaan Pusat ITB -->
+<g filter="url(#shadowFilter)">
+<rect fill="#ffffff" height="90" rx="12" width="160" x="520" y="160"></rect>
+<!-- Highlight border to indicate selection -->
+<rect fill="none" height="90" rx="12" stroke="#4f46e5" stroke-width="3" width="160" x="520" y="160"></rect>
+<text fill="#1e1b4b" font-family="Plus Jakarta Sans" font-size="13" font-weight="800" text-anchor="middle" x="600" y="200">PERPUSTAKAAN PUSAT</text>
+<text fill="#4f46e5" font-family="Plus Jakarta Sans" font-size="11" font-weight="600" text-anchor="middle" x="600" y="220">Lantai 2 &amp; 3 Silent Zone</text>
+</g>
+<!-- Building Clusters: East / SBM / Oktagon / FSRD -->
+<!-- Oktagon & TPB Complex -->
+<polygon fill="#ffffff" filter="url(#shadowFilter)" points="860,330 920,330 950,370 920,410 860,410 830,370"></polygon>
+<text fill="#1e293b" font-family="Plus Jakarta Sans" font-size="12" font-weight="700" text-anchor="middle" x="890" y="375">Oktagon</text>
+<!-- Kantin Borju & FSRD Studio Alley -->
+<rect fill="#ffffff" filter="url(#shadowFilter)" height="55" rx="8" width="120" x="850" y="450"></rect>
+<text fill="#1e293b" font-family="Plus Jakarta Sans" font-size="12" font-weight="700" text-anchor="middle" x="910" y="482">Kantin Borju / SR</text>
+<!-- Labtek VIII (Pending Review Area) -->
+<rect fill="#ffffff" filter="url(#shadowFilter)" height="50" rx="8" stroke="#f59e0b" stroke-dasharray="4 3" stroke-width="1.5" width="110" x="250" y="210"></rect>
+<text fill="#92400e" font-family="Plus Jakarta Sans" font-size="11" font-weight="600" text-anchor="middle" x="305" y="240">Labtek VIII Lt. 4</text>
+</svg>
+</div>
+<!-- MAP INTERACTION LAYER (Pin markers placed with CSS absolute positions) -->
+<!-- PIN 1: SELECTED ACTIVE PIN — Perpustakaan Pusat Lt. 2 (PRD F16, F17, F18) -->
+<div class="absolute left-[50%] top-[26%] -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer group">
+<!-- Pulse Radar Animation -->
+<span class="absolute -inset-3 rounded-full bg-amber-400/40 animate-ping"></span>
+<div class="relative flex items-center bg-surface-container-lowest rounded-full p-1.5 shadow-xl ring-2 ring-primary gap-2 transition-transform duration-200 group-hover:scale-105">
+<div class="w-8 h-8 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-[13px] shadow-sm">
+            74%
+          </div>
+<div class="pr-2.5 text-left">
+<div class="flex items-center gap-1.5">
+<span class="font-label-md text-on-surface font-extrabold leading-tight">Perpus Pusat Lt. 2</span>
+<span class="material-symbols-outlined text-[15px] text-primary" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<div class="flex items-center gap-2 font-body-sm text-[11px] text-amber-700 font-semibold">
+<span>🟡 Sedang Padat</span>
+<span>•</span>
+<span class="text-on-surface-variant font-normal">14 kursi sisa</span>
+</div>
+</div>
+</div>
+<!-- Pointer Tip -->
+<div class="w-3 h-3 bg-surface-container-lowest rotate-45 mx-auto -mt-1.5 shadow-sm ring-r-2 ring-b-2 ring-primary"></div>
+</div>
+<!-- PIN 2: Labtek V Comlabs STEI (🟢 Lengang) -->
+<div class="absolute left-[24%] top-[45%] -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer group hover:z-30">
+<div class="flex items-center bg-surface-container-lowest/95 backdrop-blur-sm rounded-full p-1 shadow-md hover:shadow-lg ring-1 ring-slate-200 gap-1.5 transition-all group-hover:scale-105">
+<div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-[11px]">
+            28%
+          </div>
+<div class="pr-2 text-left">
+<span class="font-label-md text-on-surface text-[12px] block">Comlabs STEI</span>
+<span class="font-body-sm text-[10px] text-emerald-700 font-medium">⚡ 32 Colokan</span>
+</div>
+</div>
+</div>
+<!-- PIN 3: Selasar Barat TVST (🟡 Sedang) -->
+<div class="absolute left-[33%] top-[42%] -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer group hover:z-30">
+<div class="flex items-center bg-surface-container-lowest/95 backdrop-blur-sm rounded-full p-1 shadow-md hover:shadow-lg ring-1 ring-slate-200 gap-1.5 transition-all group-hover:scale-105">
+<div class="w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-[11px]">
+            52%
+          </div>
+<div class="pr-2 text-left">
+<span class="font-label-md text-on-surface text-[12px] block">Selasar TVST</span>
+<span class="font-body-sm text-[10px] text-on-surface-variant">Outdoor santai</span>
+</div>
+</div>
+</div>
+<!-- PIN 4: Kantin Borju & Selasar Seni (🔴 Ramai) -->
+<div class="absolute left-[76%] top-[58%] -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer group hover:z-30">
+<div class="flex items-center bg-surface-container-lowest/95 backdrop-blur-sm rounded-full p-1 shadow-md hover:shadow-lg ring-1 ring-slate-200 gap-1.5 transition-all group-hover:scale-105">
+<div class="w-6 h-6 rounded-full bg-rose-500 text-white flex items-center justify-center font-bold text-[11px]">
+            88%
+          </div>
+<div class="pr-2 text-left">
+<span class="font-label-md text-on-surface text-[12px] block">Kantin Borju</span>
+<span class="font-body-sm text-[10px] text-rose-700 font-semibold">🔴 Hampir Penuh</span>
+</div>
+</div>
+</div>
+<!-- PIN 5: GKU Barat Lt. 3 (🟢 Kosong) -->
+<div class="absolute left-[19%] top-[60%] -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer group hover:z-30">
+<div class="flex items-center bg-surface-container-lowest/95 backdrop-blur-sm rounded-full p-1 shadow-md hover:shadow-lg ring-1 ring-slate-200 gap-1.5 transition-all group-hover:scale-105">
+<div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-[11px]">
+            15%
+          </div>
+<div class="pr-2 text-left">
+<span class="font-label-md text-on-surface text-[12px] block">GKU Barat Lt. 3</span>
+<span class="font-body-sm text-[10px] text-emerald-700 font-medium">❄️ Hening &amp; Dingin</span>
+</div>
+</div>
+</div>
+<!-- PIN 6: Oktagon Co-working (🟡 Sedang) -->
+<div class="absolute left-[74%] top-[45%] -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer group hover:z-30">
+<div class="flex items-center bg-surface-container-lowest/95 backdrop-blur-sm rounded-full p-1 shadow-md hover:shadow-lg ring-1 ring-slate-200 gap-1.5 transition-all group-hover:scale-105">
+<div class="w-6 h-6 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-[11px]">
+            45%
+          </div>
+<div class="pr-2 text-left">
+<span class="font-label-md text-on-surface text-[12px] block">Oktagon Lt. 1</span>
+<span class="font-body-sm text-[10px] text-on-surface-variant">Co-working Hub</span>
+</div>
+</div>
+</div>
+<!-- PIN 7: PENDING REVIEW PIN (PRD F20) -->
+<div class="absolute left-[26%] top-[27%] -translate-x-1/2 -translate-y-1/2 z-10 cursor-pointer group hover:z-30">
+<div class="flex items-center bg-amber-50/95 backdrop-blur-sm rounded-full p-1 shadow-sm hover:shadow-md border border-amber-300 border-dashed gap-1.5 transition-all group-hover:scale-105">
+<div class="w-6 h-6 rounded-full bg-amber-400 text-amber-950 flex items-center justify-center font-bold text-[11px]">
+<span class="material-symbols-outlined text-[15px]">schedule</span>
+</div>
+<div class="pr-2 text-left">
+<div class="flex items-center gap-1">
+<span class="font-label-md text-amber-950 text-[11px] font-bold">Balkon Labtek VIII</span>
+<span class="bg-amber-200 text-amber-900 text-[9px] font-extrabold px-1 rounded">F20</span>
+</div>
+<span class="font-body-sm text-[9px] text-amber-800">Menunggu Verifikasi</span>
+</div>
+</div>
+</div>
+<!-- FLOATING CANVAS CONTROLS & HUD -->
+<!-- Live IoT Telemetry Status Badge -->
+<div class="absolute top-4 left-4 z-20 flex items-center gap-2 bg-surface-container-lowest/90 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-md">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+</span>
+<span class="font-label-md text-[12px] text-on-surface font-semibold">Live IoT Sync: <span class="text-on-surface-variant font-normal">15 detik lalu</span></span>
+<span class="text-outline text-xs">•</span>
+<span class="font-body-sm text-[11px] text-primary font-bold">Kampus Ganesha</span>
+</div>
+<!-- Map Legend Indicator Pill -->
+<div class="absolute bottom-4 left-4 z-20 bg-surface-container-lowest/90 backdrop-blur-md px-4 py-2 rounded-xl shadow-md flex items-center gap-3 text-label-sm">
+<span class="text-outline font-semibold text-[11px] uppercase tracking-wider">Kepadatan:</span>
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+<span>Lengang (0-40%)</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span>
+<span>Sedang (41-75%)</span>
+</div>
+<div class="flex items-center gap-1.5 text-on-surface">
+<span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span>
+<span>Penuh (&gt;75%)</span>
+</div>
+</div>
+<!-- Floating Zoom & Compass Tool Stack -->
+<div class="absolute bottom-4 right-4 z-20 flex flex-col gap-1.5 bg-surface-container-lowest rounded-xl p-1 shadow-md">
+<button class="w-9 h-9 rounded-lg hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors" title="Zoom In">
+<span class="material-symbols-outlined text-[20px]">add</span>
+</button>
+<div class="w-full h-px bg-surface-container-high"></div>
+<button class="w-9 h-9 rounded-lg hover:bg-surface-container flex items-center justify-center text-on-surface transition-colors" title="Zoom Out">
+<span class="material-symbols-outlined text-[20px]">remove</span>
+</button>
+<div class="w-full h-px bg-surface-container-high"></div>
+<button class="w-9 h-9 rounded-lg hover:bg-surface-container flex items-center justify-center text-primary transition-colors" title="Recenter Kampus">
+<span class="material-symbols-outlined text-[20px]">my_location</span>
+</button>
+</div>
+</div>
+<!-- RIGHT: 30% SPOT INSPECTION DRAWER / SIDEBAR (PRD F17, F18) -->
+<aside class="w-full lg:w-[32%] bg-surface-container-lowest shadow-xl z-20 flex flex-col justify-between overflow-y-auto max-h-[calc(100vh-175px)]">
+<!-- Drawer Content Scroll Area -->
+<div class="p-space-md space-y-space-md">
+<!-- Header: Hero Image Render & Verified Status -->
+<div class="space-y-space-sm">
+<!-- Spot Photo with Scrim & Badges -->
+<div class="relative w-full h-44 rounded-xl overflow-hidden shadow-sm group">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Modern university library quiet study floor with Scandinavian minimalist wooden desks, ergonomic chairs, individual study lamps with warm glow, students focused on laptops, floor-to-ceiling glass windows showing lush green campus trees outside in natural daylight, crisp modern architectural interior." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2CfIF1DrsoTuZTrOvUf9Run_Iqb5WGnQz3vI-izKjrWAgF5gkvZihpUuVAQxQ4OOFHpp54yXMBd0TJLsp_RQr-FwSEZ3zOdVMDA_MLPBXV92zg9sLn4xhLjU8elSTffHgT-HS49hQrbMKLbsF-SFwENi_QRZsOJwEAQbDkytduVVBq3uObP_cp-BiNgZ1_xaIfUTgSYxa4Wz26gIimKUV3duIZQWizhaUm57lWbF9"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+<!-- Live Status Badges Floating on Image -->
+<div class="absolute top-3 left-3 flex items-center gap-1.5">
+<span class="px-2.5 py-1 rounded-full bg-emerald-500/90 backdrop-blur-sm text-white font-label-sm text-[11px] font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                Buka Sekarang
+              </span>
+<span class="px-2 py-0.5 rounded-full bg-black/50 backdrop-blur-sm text-white font-body-sm text-[11px]">
+                Hingga 22:00 WIB
+              </span>
+</div>
+<!-- Spot ID & Bookmark Button -->
+<div class="absolute top-3 right-3 flex items-center gap-1.5">
+<button class="w-8 h-8 rounded-full bg-white/80 hover:bg-white text-on-surface flex items-center justify-center shadow-md transition-colors" title="Simpan Spot Favorit">
+<span class="material-symbols-outlined text-[18px]">bookmark_border</span>
+</button>
+</div>
+<!-- Image Caption Overlay -->
+<div class="absolute bottom-3 left-3 right-3 flex items-end justify-between text-white">
+<div>
+<span class="text-[11px] font-medium tracking-wide uppercase text-indigo-200">Zona Pusat Akademik</span>
+<h2 class="font-headline-sm text-white leading-tight font-extrabold text-[18px]">Perpustakaan Pusat Lt. 2</h2>
+</div>
+<span class="font-label-sm bg-white/20 backdrop-blur-md px-2 py-0.5 rounded text-[11px] font-mono">Gedung 12</span>
+</div>
+</div>
+<!-- Spot Meta Subtitle -->
+<div class="flex items-center justify-between pt-1">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+<span class="font-label-md text-primary font-bold">Spot Terverifikasi ITB</span>
+<span class="text-outline text-xs">•</span>
+<span class="font-body-sm text-on-surface-variant">Lantai 2 Barat</span>
+</div>
+<div class="flex items-center gap-1 text-amber-500 font-label-md text-[12px]">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="font-bold text-on-surface">4.8</span>
+<span class="text-outline font-normal">(142 ulasan)</span>
+</div>
+</div>
+</div>
+<!-- Real-Time Telemetry Grid (PRD F16, F18) -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<h3 class="font-label-md text-on-surface uppercase tracking-wider text-[11px] font-extrabold flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-primary">sensors</span> Telemetri Real-Time (IoT Spot)
+            </h3>
+<span class="font-body-sm text-[10px] text-outline">Sensor diupdate 14:02 WIB</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<!-- Metric 1: Okupansi Kursi -->
+<div class="p-3 rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm">
+<span>Kursi Terisi</span>
+<span class="material-symbols-outlined text-[16px] text-amber-600">chair_alt</span>
+</div>
+<div class="my-1.5">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-on-surface font-extrabold text-[20px]">42</span>
+<span class="font-body-sm text-outline text-[12px]">/ 56 Kursi</span>
+</div>
+<!-- Mini Progress Bar -->
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden mt-1.5">
+<div class="h-full bg-amber-500 rounded-full transition-all" style="width: 75%;"></div>
+</div>
+</div>
+<span class="font-body-sm text-[10px] text-amber-700 font-bold">🟡 Tersisa 14 Kursi</span>
+</div>
+<!-- Metric 2: Colokan Bebas -->
+<div class="p-3 rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm">
+<span>Colokan Bebas</span>
+<span class="material-symbols-outlined text-[16px] text-primary">power</span>
+</div>
+<div class="my-1.5">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-primary font-extrabold text-[20px]">14</span>
+<span class="font-body-sm text-outline text-[12px]">Port Aktif</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden mt-1.5">
+<div class="h-full bg-primary rounded-full transition-all" style="width: 60%;"></div>
+</div>
+</div>
+<span class="font-body-sm text-[10px] text-on-surface-variant">Port di setiap meja</span>
+</div>
+<!-- Metric 3: Desibel Noise -->
+<div class="p-3 rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm">
+<span>Kebisingan</span>
+<span class="material-symbols-outlined text-[16px] text-emerald-600">volume_down</span>
+</div>
+<div class="my-1.5">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-emerald-700 font-extrabold text-[20px]">31</span>
+<span class="font-body-sm text-outline text-[12px]">dB</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden mt-1.5">
+<div class="h-full bg-emerald-500 rounded-full transition-all" style="width: 25%;"></div>
+</div>
+</div>
+<span class="font-body-sm text-[10px] text-emerald-700 font-bold">🟢 Sangat Hening</span>
+</div>
+<!-- Metric 4: Suhu & Bandwidth -->
+<div class="p-3 rounded-xl bg-surface-container-low flex flex-col justify-between">
+<div class="flex items-center justify-between text-on-surface-variant font-label-sm">
+<span>Suhu &amp; WiFi</span>
+<span class="material-symbols-outlined text-[16px] text-indigo-600">wifi</span>
+</div>
+<div class="my-1.5">
+<div class="flex items-baseline gap-1">
+<span class="font-headline-sm text-on-surface font-extrabold text-[20px]">21°C</span>
+<span class="font-body-sm text-outline text-[12px]">AC Central</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container-high rounded-full overflow-hidden mt-1.5">
+<div class="h-full bg-indigo-500 rounded-full transition-all" style="width: 85%;"></div>
+</div>
+</div>
+<span class="font-body-sm text-[10px] text-on-surface-variant">120 Mbps (eduroam)</span>
+</div>
+</div>
+</div>
+<!-- Rules & Amenities Chips -->
+<div class="space-y-space-xs">
+<h3 class="font-label-md text-on-surface uppercase tracking-wider text-[11px] font-extrabold">Fasilitas &amp; Ketentuan</h3>
+<div class="flex flex-wrap gap-1.5">
+<span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-body-sm text-[11px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">headphones</span>
+              Wajib Headphone
+            </span>
+<span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-body-sm text-[11px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">electric_bolt</span>
+              Colokan 220V
+            </span>
+<span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-body-sm text-[11px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">ac_unit</span>
+              AC Dingin
+            </span>
+<span class="px-2.5 py-1 rounded-md bg-surface-container text-on-surface font-body-sm text-[11px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-primary">mosque</span>
+              Mushola 50m
+            </span>
+<span class="px-2.5 py-1 rounded-md bg-rose-50 text-rose-800 font-body-sm text-[11px] font-medium flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-rose-600">no_meals</span>
+              Dilarang Makan Berat
+            </span>
+</div>
+</div>
+<!-- Active Open Party Study Groups in This Spot (PRD F17 Linkage) -->
+<div class="space-y-space-xs">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-primary text-[18px]">group_work</span>
+<h3 class="font-label-md text-on-surface uppercase tracking-wider text-[11px] font-extrabold">Open Party Belajar Aktif (2)</h3>
+</div>
+<a class="font-label-sm text-primary hover:underline text-[11px]" href="#">Lihat Semua</a>
+</div>
+<!-- Group Card 1 -->
+<div class="p-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div>
+<span class="font-label-sm text-primary font-bold bg-primary/10 px-2 py-0.5 rounded text-[10px]">Meja 4B (Dekat Jendela)</span>
+<h4 class="font-label-md text-on-surface font-bold text-[13px] leading-snug mt-1">Review UAS Strategi Algoritma</h4>
+<p class="font-body-sm text-on-surface-variant text-[11px]">Host: Amanda S. (IF'22) • Fokus &amp; Santai</p>
+</div>
+<span class="font-label-sm bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold text-[11px] shrink-0">
+                4 / 6 Kursi
+              </span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<!-- Avatar Stack -->
+<div class="flex items-center -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" data-alt="Student headshot portrait female smiling in glasses campus study setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU2wuy7oP1Jqg0phM26TzTlj-ia9kRrEHZH_68b5mDs2ly6YAyAzpPT_5c5IATrhpFhc96T_yGJi8UxlXlHMCDC0UhscG6MzgCdlUpsfMFXcyZsygz1CCIV2pjwrYL2as_LzfKr9R_CQFMsSh74RA8P7oC-vasn0ShXd0i9zpeYW9RhagcNdTzgwtRMMqF7yojh38HgY2dfDxBpgDah9MO6MIHLlv7-Pdt2exIlrBe"/>
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" data-alt="Student headshot portrait male in tech hoodie laptop screen background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYnonsU_dths5K2fx_rAlBpeUMg0Hc2PDD9qn_YzSHRZt0e0Dexs14QsHa95_5z2OA-PUs3PCZKLVtTlQtuBuo8Z5ftpr8Yb25k6z_kQTaTNsW2oyAB-rsOrMLD-ev8_C88tZEokGS_z1NqAXx0IX1B7aGT4VIyf-AgyK2TVcUweoZZgWIA5PPppK-PWTyQayVeKt88tqsNwr78TfYvVEFJ7tbwLMOO50-MMnC9JYu"/>
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" data-alt="University female student with notebook library background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC240uai7EDe1G1XcCbfh7W-0t89BVzWuIQJl8jC81f8oKi7P9rmA-KwDVtnA8Gv1nGo-bmAVo3bRV6I9DbzGqCVblWSCf2WwGPqOjSzVdJewtYOgFNxovSzImTw_2LPUAnCLKfB_3UX4ksJr42lN1Zend62f-bKxCHZi9CjtP56fyRuEmQYSSJQET3qtCGLqIABhEORxLWPapiFzfijJ5888ALnnoNZ9uuV-6SEMlM"/>
+<div class="inline-flex items-center justify-center w-6 h-6 rounded-full ring-2 ring-white bg-primary text-white text-[9px] font-bold">+1</div>
+</div>
+<button class="px-3 py-1 rounded-lg bg-primary text-on-primary font-label-md text-[11px] hover:bg-primary-container shadow-sm transition-colors">
+                Gabung Meja
+              </button>
+</div>
+</div>
+<!-- Group Card 2 -->
+<div class="p-3 rounded-xl bg-surface-container-low hover:bg-surface-container transition-colors space-y-2">
+<div class="flex items-start justify-between gap-2">
+<div>
+<span class="font-label-sm text-on-surface-variant font-medium bg-surface-container px-2 py-0.5 rounded text-[10px]">Meja 8 (Pojok Barat)</span>
+<h4 class="font-label-md text-on-surface font-bold text-[13px] leading-snug mt-1">Sprint Tubes Sinyal &amp; Sistem</h4>
+<p class="font-body-sm text-on-surface-variant text-[11px]">Host: Kevin L. (EL'21) • Bawa Laptop &amp; Kertas</p>
+</div>
+<span class="font-label-sm bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full font-bold text-[11px] shrink-0">
+                3 / 4 Kursi
+              </span>
+</div>
+<div class="flex items-center justify-between pt-1">
+<!-- Avatar Stack -->
+<div class="flex items-center -space-x-2 overflow-hidden">
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" data-alt="Indonesian male engineering student wearing dark polo shirt smiling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA_BNVdHwMy8z011t623K207GaIyQEQUImSrLCvHo4mKeI6G8jK251PSSR4i-yygNJp24AD99dEcjbkt10QBPLjX0vHThxRczzXSgCBS-p1ny7tjN5FzZUWmnB0U_IoHD-ORh2uICWOkTWz2pWNMYY1Ytzu0VxvQKPJOADvDge00NPE1gf8WJtwrg7wAaCfTwo5_SgYzUmPfBRNLQUSTNgX8F_kyJa2GzyW32oX5lK9"/>
+<img class="inline-block h-6 w-6 rounded-full ring-2 ring-white object-cover" data-alt="Female student studying coding on laptop screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAG8Ma9SG22udAuYTYJu7y8_iS4we4x6WkiV9XdpsBEvAbLaQbxOuRgWrwPeTT4p18F2Huak1SFSI-Wsz18f9bC8dIts5ZovEB09d655uq-qxkqZNaXXrulXnqOOffIRptDfT-UXipnDYMjfIRvmVtBfc1fNuJMOMFjmHhhbVn4rF269mBrYOLWxGW2zaVljbg6EWUE0CVlEO9W2r2B6V3vEqb9WhdlSK_shgTsbdLW"/>
+<div class="inline-flex items-center justify-center w-6 h-6 rounded-full ring-2 ring-white bg-surface-container-highest text-on-surface text-[9px] font-bold">+1</div>
+</div>
+<button class="px-3 py-1 rounded-lg bg-primary text-on-primary font-label-md text-[11px] hover:bg-primary-container shadow-sm transition-colors">
+                Gabung Meja
+              </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Sticky Drawer Footer: Primary Action Buttons (PRD F15, F17, F22) -->
+<div class="p-space-md bg-surface-container-lowest border-t-0 space-y-2 shadow-lg">
+<button class="w-full h-11 rounded-xl bg-primary text-on-primary hover:bg-primary-container font-label-md flex items-center justify-center gap-2 shadow-md transition-all active:scale-[0.99]">
+<span class="material-symbols-outlined text-[18px]">directions_walk</span>
+<span>Navigasi ke Lokasi (Rute Kampus)</span>
+</button>
+<button class="w-full h-10 rounded-xl bg-surface-container hover:bg-surface-container-high text-primary font-label-md flex items-center justify-center gap-2 transition-colors">
+<span class="material-symbols-outlined text-[18px]">add_reaction</span>
+<span>Buka Open Party di Sini</span>
+</button>
+<div class="flex items-center justify-center gap-1.5 pt-1 text-outline font-body-sm text-[11px]">
+<span>Laporan telemetri tidak akurat?</span>
+<button class="text-primary hover:underline font-medium">Laporkan Status Spot</button>
+</div>
+</div>
+</aside>
+</section>
+</div></main>
+<!-- CLEAN FOOTER WITH CAMPUS LINKS AND COPYRIGHT -->
+<footer class="w-full bg-surface-container-lowest border-t border-surface-container-high mt-space-xl">
+<div class="max-w-[84rem] mx-auto px-margin py-space-md flex flex-col sm:flex-row items-center justify-between gap-space-sm font-body-sm text-[12px] text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] font-bold text-primary">KOLABORIN</span>
+<span class="text-outline">•</span>
+<span>Platform Kolaborasi Kampus ITB</span>
+</div>
+<div class="flex items-center gap-space-md text-outline">
+<a class="hover:text-primary transition-colors" data-path="pedoman-komunitas" href="#">Pedoman Komunitas</a>
+<a class="hover:text-primary transition-colors" data-path="keamanan-kampus" href="#">Keamanan Kampus</a>
+<a class="hover:text-primary transition-colors" data-path="privasi" href="#">Privasi</a>
+</div>
+<div class="text-outline">© 2025 KOLABORIN. All rights reserved.</div>
+</div>
+</footer>
+</body></html>

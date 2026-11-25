@@ -15,98 +15,75 @@ export default function OrgDetail() {
   }, [id]);
 
   if (loading) {
-    return <div className="container" style={{ padding: '3rem 1rem', textAlign: 'center' }}>Loading organization...</div>;
+    return <main className="container org-detail-page"><p className="empty-state">Memuat profil organisasi...</p></main>;
   }
 
   if (!data) {
-    return <div className="container" style={{ padding: '2rem 1rem' }}><div className="alert-error">Organization not found.</div></div>;
+    return <main className="container org-detail-page"><div className="alert-error">Organisasi tidak ditemukan.</div></main>;
   }
 
   const { organization, events, community, isOwner } = data;
 
   return (
-    <div className="container" style={{ padding: '2rem 1rem', maxWidth: '900px', margin: '0 auto' }}>
+    <main className="container org-detail-page">
       {/* Pending status banner */}
       {organization.status === 'pending' && (
-        <div className="alert-error" style={{ background: '#fef3c7', color: '#b45309', marginBottom: '1.5rem', border: '1px solid #fde68a' }}>
-          ⚠️ <strong>Pending verification:</strong> You cannot publish events yet. An admin must verify this organization.
+        <div className="org-pending-banner">
+          <span aria-hidden="true">!</span>
+          <div><strong>Menunggu verifikasi</strong><p>Event organisasi akan muncul setelah admin menyelesaikan verifikasi.</p></div>
         </div>
       )}
 
-      <div className="group-detail-header">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.75rem' }}>
+      <header className="org-public-hero">
+        <div className="org-public-identity">
+          <span className="org-public-mark" aria-hidden="true">{organization.name.charAt(0).toUpperCase()}</span>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
-              <span className="tag-subject">{organization.category || 'Organization'}</span>
-              <span className={`status-badge status-${organization.status}`}>
-                {organization.status.toUpperCase()}
-              </span>
-              {organization.open_for_collab && (
-                <span className="status-badge" style={{ background: '#e0e7ff', color: '#4338ca' }}>
-                  🤝 Open for Collaboration
-                </span>
-              )}
+            <div className="org-public-tags">
+              <span className="tag-subject">{organization.category || 'Organisasi kampus'}</span>
+              <span className={`status-badge status-${organization.status}`}>{organization.status.toUpperCase()}</span>
+              {organization.open_for_collab && <span className="org-open-collab-tag">🤝 Terbuka untuk kolaborasi</span>}
             </div>
-            <h2>{organization.name}</h2>
-            <p style={{ color: 'var(--muted)', fontSize: '0.85rem', marginTop: '0.25rem' }}>
-              Led by {organization.owner_name}
-            </p>
+            <span className="eyebrow">Profil organisasi</span>
+            <h1>{organization.name}</h1>
+            <p>Dipimpin oleh {organization.owner_name}</p>
           </div>
-
-          {isOwner && (
-            <Link to={`/orgs/${organization.id}/manage`} className="btn-secondary" style={{ fontSize: '0.85rem' }}>
-              ⚙️ Manage Organization
-            </Link>
-          )}
         </div>
-
-        <p style={{ marginTop: '1rem', fontSize: '0.95rem', lineHeight: 1.5 }}>
-          {organization.description || 'No description provided.'}
-        </p>
+        {isOwner && <Link to={`/orgs/${organization.id}/manage`} className="btn-primary">Kelola organisasi →</Link>}
+        <p className="org-public-description">{organization.description || 'Organisasi ini belum menambahkan deskripsi.'}</p>
 
         {community && (
-          <div style={{ marginTop: '1.25rem', padding: '0.75rem', background: 'var(--bg)', borderRadius: 'var(--radius-btn)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <div className="org-linked-community">
+            <span className="org-community-mark">#</span>
             <div>
-              <strong>Official Community:</strong> {community.name}
+              <strong>Chat Hub resmi</strong>
+              <span>{community.name}</span>
             </div>
-            <Link to={`/communities/${community.id}`} className="btn-primary" style={{ fontSize: '0.8rem', padding: '0.3rem 0.6rem' }}>
-              Open Chat Hub →
-            </Link>
+            <Link to={`/communities/${community.id}`} className="btn-secondary">Buka komunitas →</Link>
           </div>
         )}
-      </div>
+      </header>
 
       {/* Events Hosted */}
-      <div className="dash-card" style={{ marginTop: '1.5rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
-          <h3>Upcoming Events Hosted ({events.length})</h3>
-          {isOwner && organization.status === 'verified' && (
-            <Link to={`/orgs/${organization.id}/manage`} className="btn-primary" style={{ fontSize: '0.8rem', padding: '0.35rem 0.75rem' }}>
-              + Create Event
-            </Link>
-          )}
+      <section className="org-events-panel">
+        <div className="org-section-heading">
+          <div><span className="eyebrow">Agenda kampus</span><h2>Event mendatang</h2></div>
+          <span className="org-event-count">{events.length} event</span>
         </div>
 
         {events.length === 0 ? (
-          <p className="empty-state">No upcoming events hosted by this organization.</p>
+          <p className="empty-state">Belum ada event mendatang.</p>
         ) : (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+          <div className="org-event-list">
             {events.map((e) => (
-              <div key={e.id} className="dash-list-item">
-                <div>
-                  <strong>{e.title}</strong>
-                  <span style={{ display: 'block', fontSize: '0.8rem', color: 'var(--muted)', marginTop: '0.2rem' }}>
-                    🕒 {new Date(e.start_at).toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' })}
-                  </span>
-                </div>
-                <Link to={`/events/${e.id}`} className="btn-secondary" style={{ fontSize: '0.8rem', padding: '0.3rem 0.6rem' }}>
-                  View Event
-                </Link>
-              </div>
+              <Link key={e.id} to={`/events/${e.id}`} className="org-event-row">
+                <span className="org-event-date">{new Date(e.start_at).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' })}</span>
+                <span className="org-event-copy"><strong>{e.title}</strong><small>{new Date(e.start_at).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}</small></span>
+                <span className="org-event-arrow">→</span>
+              </Link>
             ))}
           </div>
         )}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 }

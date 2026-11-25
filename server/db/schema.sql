@@ -169,11 +169,35 @@ CREATE TABLE event_applications (
   user_id INT NOT NULL,
   message TEXT,
   status ENUM('pending','accepted','rejected') NOT NULL DEFAULT 'pending',
+  ticket_code CHAR(64) NULL,
+  checked_in_at DATETIME NULL,
+  checked_in_by INT NULL,
   applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY uq_event_user (event_id, user_id),
+  UNIQUE KEY uq_event_ticket_code (ticket_code),
   INDEX idx_event_status (event_id, status),
+  INDEX idx_event_check_in (event_id, checked_in_at),
   FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (checked_in_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE organization_meetings (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  organization_id INT NOT NULL,
+  location_id INT NOT NULL,
+  created_by INT NOT NULL,
+  title VARCHAR(150) NOT NULL,
+  description TEXT,
+  start_at DATETIME NOT NULL,
+  end_at DATETIME NOT NULL,
+  status ENUM('scheduled','cancelled') NOT NULL DEFAULT 'scheduled',
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  INDEX idx_org_meeting_time (organization_id, status, start_at),
+  INDEX idx_room_meeting_time (location_id, status, start_at, end_at),
+  FOREIGN KEY (organization_id) REFERENCES organizations(id) ON DELETE CASCADE,
+  FOREIGN KEY (location_id) REFERENCES locations(id) ON DELETE CASCADE,
+  FOREIGN KEY (created_by) REFERENCES users(id) ON DELETE CASCADE
 );
 
 CREATE TABLE point_rules (

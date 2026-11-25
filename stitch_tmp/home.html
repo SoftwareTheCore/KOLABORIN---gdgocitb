@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta content="web_standard" name="shell-type"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    @layer base {
+      html, body { margin: 0; padding: 0; }
+      body { overscroll-behavior: none; }
+      main > :first-child { margin-top: 0 !important; }
+      main > :last-child { margin-bottom: 0 !important; }
+    }
+    ::-webkit-scrollbar { display: none; }
+  </style>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "secondary-container": "#6cf8bb",
+            "on-tertiary-fixed-variant": "#653e00",
+            "outline": "#777587",
+            "on-secondary-fixed": "#002113",
+            "on-tertiary": "#ffffff",
+            "primary": "#3525cd",
+            "primary-fixed-dim": "#c3c0ff",
+            "on-primary-fixed": "#0f0069",
+            "on-surface-variant": "#464555",
+            "tertiary-container": "#885500",
+            "surface-container-highest": "#dae2fd",
+            "secondary-fixed-dim": "#4edea3",
+            "on-error-container": "#93000a",
+            "surface-container-low": "#f2f3ff",
+            "on-secondary": "#ffffff",
+            "surface-variant": "#dae2fd",
+            "on-primary-container": "#dad7ff",
+            "surface-container": "#eaedff",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#eef0ff",
+            "inverse-primary": "#c3c0ff",
+            "surface-dim": "#d2d9f4",
+            "outline-variant": "#c7c4d8",
+            "surface-container-lowest": "#ffffff",
+            "inverse-surface": "#283044",
+            "on-tertiary-container": "#ffd4a4",
+            "tertiary-fixed-dim": "#ffb95f",
+            "background": "#faf8ff",
+            "secondary": "#006c49",
+            "on-surface": "#131b2e",
+            "on-secondary-fixed-variant": "#005236",
+            "on-primary-fixed-variant": "#3323cc",
+            "primary-fixed": "#e2dfff",
+            "error-container": "#ffdad6",
+            "on-error": "#ffffff",
+            "on-tertiary-fixed": "#2a1700",
+            "tertiary-fixed": "#ffddb8",
+            "surface-tint": "#4d44e3",
+            "on-secondary-container": "#00714d",
+            "surface-container-high": "#e2e7ff",
+            "surface-bright": "#faf8ff",
+            "error": "#ba1a1a",
+            "on-background": "#131b2e",
+            "tertiary": "#684000",
+            "surface": "#faf8ff",
+            "secondary-fixed": "#6ffbbe",
+            "primary-container": "#4f46e5"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "gutter": "1.5rem",
+            "space-lg": "1.5rem",
+            "margin": "2rem",
+            "space-xs": "0.25rem",
+            "space-sm": "0.5rem",
+            "gutter-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1rem",
+            "space-md": "1rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Plus Jakarta Sans"],
+            "title-sm": ["Plus Jakarta Sans"],
+            "headline-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "headline-lg": ["Plus Jakarta Sans"],
+            "display-lg-mobile": ["Plus Jakarta Sans"],
+            "display-lg": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"]
+          }
+        }
+      }
+    };
+  </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased">
+<!-- 1. SIMPLIFIED SLEEK HEADER -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface-container-lowest/95 backdrop-blur-md border-b border-surface-container-high">
+<div class="h-16 max-w-[84rem] mx-auto px-margin-mobile md:px-margin flex items-center justify-between gap-space-md">
+<!-- Left: Logo & Core Nav -->
+<div class="flex items-center gap-space-xl">
+<a class="flex items-center gap-2 group" data-path="home" href="#">
+<img alt="KOLABORIN Brand Logo" class="h-7 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrDBA2oyd-4v9RxabshcrZIiDseUEQA1Z-hVYp3k4C7d77dbL3CJxeEHuJK2Gsg4BlbzsAO01rxuNJPLhBhCy9pABnhJumONdOOK6AvUOs5TQgDF04dCcX4aTxdbvEUGdmFHtLrOjoQ7eldtzS096i_9zPetjM4dn8gWlLlf36wkvhEF2TDvaTqa7FWYHywzYTdTtEyzLKvQZFyOaRCArjr8hktBoI1BITWSlOGTCyru"/>
+<span class="font-headline-sm text-[20px] text-primary tracking-tight font-extrabold">KOLABORIN</span>
+</a>
+<!-- Streamlined core nav links -->
+<nav class="hidden md:flex items-center gap-space-lg text-body-md font-medium">
+<a class="text-primary font-bold border-b-2 border-primary py-4 transition-colors" data-path="home" href="#">Home</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="live-map-&amp;-spots" href="#">Live Map</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="open-party-(study-groups)" href="#">Open Party</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="community-hub" href="#">Chat Hub</a>
+<a class="text-on-surface-variant hover:text-primary py-4 transition-colors" data-path="campus-events" href="#">Events</a>
+</nav>
+</div>
+<!-- Right: Search, Notification, Compact Avatar -->
+<div class="flex items-center gap-space-sm">
+<div class="relative hidden sm:flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline text-[18px]">search</span>
+<input class="bg-surface-container-low pl-9 pr-8 py-1.5 rounded-full font-body-sm text-body-sm text-on-surface placeholder:text-outline w-52 lg:w-64 focus:bg-surface-container-lowest focus:ring-2 focus:ring-primary/20 outline-none transition-all" placeholder="Cari spot, matkul, teman..." type="text"/>
+<kbd class="absolute right-2.5 font-label-sm text-[10px] bg-surface-container-highest px-1.5 py-0.5 rounded text-on-surface-variant">⌘K</kbd>
+</div>
+<button aria-label="Notifikasi" class="relative p-2 rounded-full hover:bg-surface-container text-on-surface-variant hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined text-[20px]">notifications</span>
+<span class="absolute top-1 right-1 flex h-4 min-w-[1rem] items-center justify-center rounded-full bg-error px-1 text-[10px] font-bold text-on-error">3</span>
+</button>
+<!-- Compact User Profile -->
+<div class="flex items-center gap-2 pl-1 py-1 pr-2 rounded-full hover:bg-surface-container cursor-pointer transition-colors">
+<img alt="Farrel Arkan" class="w-8 h-8 rounded-full object-cover ring-2 ring-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuACSJPR27gVwFzxNagQ1pVASbkIN3ZlaR2Dcxl6aXnoU-gDd5vSPLPsZ6I9GZJBpGUfTJFvGdKUjRwOcHmugPB8dnuA11rTbqHSh5vrjXPeml9umagg4sTYGGaCdbzMMLnUI8AplCEc4niLSF-uzqHoTSQhen3l2upvdjxfX_eOkcsFdhkYeuUCNczsHH1GkUQIYSLhfEzvJ9H0PxIqEm9TJMVWQNqAQh3RAOBFDQGf"/>
+<div class="hidden lg:flex flex-col text-left">
+<span class="font-label-md text-label-md text-on-surface font-semibold leading-tight">Farrel Arkan</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant leading-none">STEI ITB</span>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN VIEWPORT -->
+<main class="w-full pt-16 bg-surface min-h-[calc(100vh-120px)]"><div class="flex flex-col w-full">
+<!-- TOP CONTEXT & LIVE METRICS HUB -->
+<section class="max-w-[84rem] mx-auto w-full px-margin-mobile md:px-margin pt-4 pb-6">
+<!-- Header Greeting and Quick Action Strip -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md mb-6">
+<div class="flex items-center gap-space-md">
+<div class="relative">
+<img class="w-14 h-14 rounded-full object-cover shadow-sm" data-alt="Close-up portrait of Farrel Arkan, a male Southeast Asian university computer science student smiling confident in modern campus library background with soft natural lighting and warm intellectual ambiance" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdiAbfMWEVsMlusU9R_Gex8QkEoRd8HIhOkPhEXfK0v4B27VebGkzssWnlwtmzIq2JAS_B3JXQtSJHme8tuPLTwnSUCh_jlvgQEqTWGqtdO4ddLC43CUdzybizHCPRegST7Yr6t9hYJSs37K8MbtG68H4tWAJMadY7c3BKfLYezE-KuXhpoD_WTt6YR12fer-uCI47tMCaRh-mMNXsrcUEqTTci4x7-hT3Iqk6JYI9"/>
+<span class="absolute bottom-0 right-0 w-3.5 h-3.5 bg-secondary rounded-full ring-2 ring-surface-container-lowest"></span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-space-sm flex-wrap">
+<h1 class="font-headline-md text-headline-md text-on-surface tracking-tight">Selamat pagi, Farrel 👋</h1>
+<span class="font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full uppercase tracking-wider">Informatika 2022 • STEI ITB</span>
+<span class="font-label-sm text-label-sm bg-secondary-fixed text-on-secondary-fixed px-2.5 py-0.5 rounded-full flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+              Aktif Belajar
+            </span>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-0.5">Persiapkan UTS Pekan ke-9. Rekan sekelasmu sedang aktif berkumpul di Labtek V &amp; Perpustakaan.</p>
+</div>
+</div>
+<!-- Quick Action Controls -->
+<div class="flex items-center gap-space-sm flex-wrap">
+<button class="bg-primary hover:bg-primary-container text-on-primary font-label-lg text-label-lg px-4 py-2.5 rounded-lg shadow-sm flex items-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]">group_add</span>
+<span>Buka Study Group Baru</span>
+</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-primary font-label-lg text-label-lg px-4 py-2.5 rounded-lg transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">search</span>
+<span>Cari Spot Belajar</span>
+</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface font-label-lg text-label-lg px-3.5 py-2.5 rounded-lg transition-colors flex items-center gap-1.5" title="Radar spot terdekat">
+<span class="material-symbols-outlined text-secondary text-[18px]">near_me</span>
+<span class="hidden sm:inline">Terdekat Saya</span>
+</button>
+</div>
+</div>
+<!-- Live Campus Pulse Banner -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-4 flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[22px]">sensors</span>
+</div>
+<div class="flex flex-col sm:flex-row sm:items-center gap-x-3 gap-y-1">
+<div class="flex items-center gap-2">
+<span class="relative flex h-2.5 w-2.5">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-secondary"></span>
+</span>
+<span class="font-title-sm text-title-sm text-on-surface">1,420 Mahasiswa Aktif di Ganesha</span>
+</div>
+<span class="hidden sm:inline text-outline">•</span>
+<span class="font-body-md text-body-md text-on-surface-variant"><strong class="text-primary font-semibold">14 Sesi Open Party</strong> Terbuka Saat Ini</span>
+<span class="hidden sm:inline text-outline">•</span>
+<span class="font-body-sm text-body-sm text-tertiary font-medium bg-tertiary-fixed/60 px-2 py-0.5 rounded">Perpustakaan 24 Jam Pekan UTS</span>
+</div>
+</div>
+<div class="flex items-center gap-4 text-outline font-label-sm text-label-sm self-end md:self-auto">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px] text-secondary">wifi</span> ITB-Hotspot 99.8% Up</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px] text-primary">bolt</span> 342 Colokan Kosong</span>
+</div>
+</div>
+</section>
+<!-- HERO EXPANSIVE SPLIT: RADAR MAP (65%) & CHAT HUB (35%) -->
+<section class="max-w-[84rem] mx-auto w-full px-margin-mobile md:px-margin pb-space-lg">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT 65% (lg:col-span-8): Interactive Campus Map & Live Spot Radar -->
+<div class="lg:col-span-8 flex flex-col gap-space-md">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-5 flex flex-col">
+<!-- Filter & Controls Header -->
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-sm pb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[24px]">map</span>
+<h2 class="font-title-md text-title-md text-on-surface">Live Campus Radar: Kawasan ITB Ganesha</h2>
+</div>
+<!-- Quick Map Filter Tabs -->
+<div class="flex items-center gap-1.5 overflow-x-auto pb-1 sm:pb-0 scrollbar-none">
+<button class="bg-primary text-on-primary font-label-sm text-label-sm px-3 py-1.5 rounded-full shrink-0 transition-all">Semua Spot (12)</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm px-3 py-1.5 rounded-full shrink-0 transition-colors">Lengang (&lt;40%)</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm px-3 py-1.5 rounded-full shrink-0 transition-colors">Colokan Siap</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm px-3 py-1.5 rounded-full shrink-0 transition-colors">Silent (&lt;40 dB)</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm px-3 py-1.5 rounded-full shrink-0 transition-colors">Buka 24 Jam</button>
+</div>
+</div>
+<!-- Stylized Visual Vector Heatmap of ITB Campus -->
+<div class="relative w-full h-[360px] md:h-[400px] bg-surface-container-low rounded-lg overflow-hidden p-4 select-none">
+<!-- Background Topology & Paths SVG -->
+<svg class="absolute inset-0 w-full h-full opacity-60 pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<pattern height="40" id="campus-grid" patternunits="userSpaceOnUse" width="40">
+<path class="text-surface-container-high" d="M 40 0 L 0 0 0 40" fill="none" stroke="currentColor" stroke-width="1"></path>
+</pattern>
+</defs>
+<rect fill="url(#campus-grid)" height="100%" width="100%"></rect>
+<!-- Boulevard & Greenery -->
+<path class="text-surface-container-highest" d="M 300 0 L 300 450" stroke="currentColor" stroke-width="28"></path>
+<path class="text-surface-container-highest" d="M 0 200 L 900 200" stroke="currentColor" stroke-width="20"></path>
+<path class="text-surface-container-high" d="M 120 80 Q 240 180 320 280 T 560 380" fill="none" stroke="currentColor" stroke-dasharray="6,6" stroke-width="3"></path>
+<!-- Green Zones -->
+<circle class="text-secondary/15" cx="280" cy="180" fill="currentColor" r="45"></circle>
+<circle class="text-secondary/15" cx="580" cy="90" fill="currentColor" r="35"></circle>
+<circle class="text-secondary/10" cx="160" cy="310" fill="currentColor" r="40"></circle>
+</svg>
+<!-- Map Floating Legend Overlay -->
+<div class="absolute top-3 left-3 bg-surface-container-lowest/90 backdrop-blur-md px-3 py-2 rounded-lg shadow-sm font-label-sm text-label-sm flex items-center gap-3 z-20">
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-secondary"></span> 6 Lengang</span>
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-tertiary-fixed-dim"></span> 4 Sedang</span>
+<span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-error"></span> 2 Penuh</span>
+</div>
+<!-- Compass / North Indicator -->
+<div class="absolute top-3 right-3 bg-surface-container-lowest/90 backdrop-blur-md w-8 h-8 rounded-full shadow-sm flex items-center justify-center font-label-sm text-on-surface-variant font-bold z-20">
+              U
+            </div>
+<!-- Interactive Campus Building Pins -->
+<!-- Pin 1: Perpustakaan Pusat (Active/Selected) -->
+<div class="absolute top-[28%] left-[42%] -translate-x-1/2 -translate-y-1/2 z-30 cursor-pointer group">
+<div class="relative flex flex-col items-center">
+<!-- Pin Bubble Badge -->
+<div class="bg-primary text-on-primary px-2.5 py-1 rounded-full shadow-md font-label-sm text-label-sm flex items-center gap-1.5 ring-2 ring-primary-fixed">
+<span class="material-symbols-outlined text-[14px]">local_library</span>
+<span>Perpus Pusat (Lt. 2)</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed text-[10px] px-1.5 py-0.2 rounded font-bold">74%</span>
+</div>
+<div class="w-3 h-3 bg-primary rotate-45 -mt-1 shadow-sm"></div>
+<div class="w-3.5 h-1.5 bg-primary/30 rounded-full blur-[1px] mt-0.5"></div>
+</div>
+</div>
+<!-- Pin 2: Labtek V (STEI Headquarters) -->
+<div class="absolute top-[18%] left-[20%] -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer group hover:scale-105 transition-transform">
+<div class="bg-surface-container-lowest text-on-surface px-2.5 py-1 rounded-full shadow-sm font-label-sm text-label-sm flex items-center gap-1.5 ring-1 ring-secondary">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Labtek V (IF/EL)</span>
+<span class="text-secondary font-bold">35%</span>
+</div>
+</div>
+<!-- Pin 3: Selasar TVST / CC Barat -->
+<div class="absolute top-[68%] left-[34%] -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer group hover:scale-105 transition-transform">
+<div class="bg-surface-container-lowest text-on-surface px-2 py-1 rounded-full shadow-sm font-label-sm text-label-sm flex items-center gap-1.5 ring-1 ring-outline-variant">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span>
+<span>Selasar TVST</span>
+<span class="text-tertiary font-bold">58%</span>
+</div>
+</div>
+<!-- Pin 4: Labtek VIII & Oktagon -->
+<div class="absolute top-[32%] left-[78%] -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer group hover:scale-105 transition-transform">
+<div class="bg-surface-container-lowest text-on-surface px-2 py-1 rounded-full shadow-sm font-label-sm text-label-sm flex items-center gap-1.5 ring-1 ring-outline-variant">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>Oktagon Lt. 1</span>
+<span class="text-secondary font-bold">22%</span>
+</div>
+</div>
+<!-- Pin 5: Kantin Barat & Co-Working -->
+<div class="absolute top-[72%] left-[72%] -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer group hover:scale-105 transition-transform">
+<div class="bg-surface-container-lowest text-on-surface px-2 py-1 rounded-full shadow-sm font-label-sm text-label-sm flex items-center gap-1.5 ring-1 ring-error/50">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+<span>Kantin Barat</span>
+<span class="text-error font-bold">88% (Padat)</span>
+</div>
+</div>
+<!-- Pin 6: GKU Timur Co-Study -->
+<div class="absolute top-[82%] left-[16%] -translate-x-1/2 -translate-y-1/2 z-20 cursor-pointer group hover:scale-105 transition-transform">
+<div class="bg-surface-container-lowest text-on-surface px-2 py-1 rounded-full shadow-sm font-label-sm text-label-sm flex items-center gap-1.5 ring-1 ring-outline-variant">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>GKU Timur Lt. 3</span>
+<span class="text-secondary font-bold">18%</span>
+</div>
+</div>
+<!-- Overlay Card: Selected Pin Quick Telemetry Detail -->
+<div class="absolute bottom-3 left-3 right-3 bg-surface-container-lowest/95 backdrop-blur-md rounded-lg p-3.5 shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-3 z-30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-primary-fixed flex items-center justify-center text-primary shrink-0">
+<span class="material-symbols-outlined text-[20px]">menu_book</span>
+</div>
+<div class="flex flex-col">
+<div class="flex items-center gap-2">
+<span class="font-title-sm text-title-sm text-on-surface font-semibold">Perpustakaan Pusat - Lt. 2 Silent Reading Room</span>
+<span class="font-label-sm text-[10px] bg-secondary-fixed text-on-secondary-fixed px-1.5 py-0.5 rounded">Zona Tenang</span>
+</div>
+<div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-on-surface-variant font-body-sm text-body-sm mt-0.5">
+<span class="flex items-center gap-1 text-on-surface font-medium">
+<span class="material-symbols-outlined text-[15px] text-tertiary">chair</span> 42/56 Kursi Terisi (74%)
+                    </span>
+<span>•</span>
+<span class="flex items-center gap-1 text-secondary font-medium">
+<span class="material-symbols-outlined text-[15px]">power</span> 18 Colokan Kosong
+                    </span>
+<span>•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">volume_down</span> 32 dB (Sangat Tenang)
+                    </span>
+<span>•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">thermostat</span> 21°C
+                    </span>
+<span>•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[15px]">speed</span> 120 Mbps (eduroam)
+                    </span>
+</div>
+</div>
+</div>
+<!-- Action to Join Spot Study Group -->
+<div class="flex items-center gap-2 w-full md:w-auto shrink-0 pt-2 md:pt-0">
+<div class="hidden xl:flex flex-col text-right">
+<span class="font-label-sm text-[11px] text-on-surface font-semibold">Open Party: IF2110 Review</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Host: Nadhira (4/6 kursi)</span>
+</div>
+<button class="bg-primary hover:bg-primary-container text-on-primary font-label-sm text-label-sm px-3.5 py-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors w-full md:w-auto">
+<span class="material-symbols-outlined text-[16px]">how_to_reg</span>
+<span>Gabung Meja Belajar</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- RIGHT 35% (lg:col-span-4): Live Chat Hub & Active Discussion Channels -->
+<div class="lg:col-span-4 flex flex-col">
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-4 flex flex-col h-[480px] md:h-[515px]">
+<!-- Chat Header & Channel Selectors -->
+<div class="flex flex-col gap-2.5 pb-3">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[22px]">forum</span>
+<h3 class="font-title-sm text-title-sm text-on-surface font-bold">Chat Hub Kampus</h3>
+</div>
+<span class="font-label-sm text-[11px] bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded-full flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary animate-ping"></span>
+                96 Online
+              </span>
+</div>
+<!-- Channel Pills -->
+<div class="flex items-center gap-1.5 overflow-x-auto scrollbar-none pb-1">
+<button class="bg-primary text-on-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full shrink-0 flex items-center gap-1">
+<span>#tugas-algo</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary-fixed"></span>
+</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm px-2.5 py-1 rounded-full shrink-0 transition-colors">#itb-general</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm px-2.5 py-1 rounded-full shrink-0 transition-colors">GDSC ITB</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface font-label-sm text-label-sm px-2.5 py-1 rounded-full shrink-0 transition-colors">HIMATIKA</button>
+</div>
+</div>
+<!-- Active Voice Study Room Callout Box -->
+<div class="bg-surface-container-low rounded-lg p-2.5 mb-3 flex items-center justify-between gap-2">
+<div class="flex items-center gap-2 min-w-0">
+<div class="w-7 h-7 rounded-full bg-secondary/15 text-secondary flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-[16px]">graphic_eq</span>
+</div>
+<div class="flex flex-col min-w-0">
+<span class="font-label-sm text-[11px] text-on-surface font-bold truncate">Labtek V Rm. 204 (4 Mahasiswa)</span>
+<span class="font-body-sm text-[10px] text-secondary font-medium">Voice Live • Review Graph DFS/BFS</span>
+</div>
+</div>
+<button class="bg-secondary text-on-secondary font-label-sm text-[11px] px-2.5 py-1 rounded shadow-sm hover:opacity-95 transition-opacity shrink-0">
+              Join Voice
+            </button>
+</div>
+<!-- Message Stream Container -->
+<div class="flex-1 overflow-y-auto space-y-3 pr-1 text-body-sm scrollbar-none">
+<!-- Message 1 -->
+<div class="flex items-start gap-2.5">
+<img class="w-7 h-7 rounded-full object-cover shrink-0 mt-0.5" data-alt="Portrait of Amanda S, female college student with glasses studying in modern tech lab setting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlu4DUOd2RdA9X0RrTrGr2i_sqXs09AmKHQal-pGTTldVrC7tj4biSwWBEVQYeI-o41ykZ6eXmYSsm-tY2_vqvLA-sNgXqjAcxnLmJS5kVRc7fPQ1iiBMbJHzAANVarPfuawyF4uVJ_rcnnFTKjmT3EaCxjqRjjHANq8xyHAD_kuGitxG6j13pUjebqq0CYITaCkgkBA5ustkKpGltOsyWyuvIop-fhwUyzybgVrZh"/>
+<div class="flex flex-col max-w-[85%]">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Amanda S.</span>
+<span class="font-body-sm text-[10px] text-outline">10:14</span>
+</div>
+<div class="bg-surface-container-low text-on-surface p-2 rounded-lg rounded-tl-none mt-1 font-body-sm text-body-sm">
+                  Ada yang bawa kabel Type-C to HDMI di Labtek V? Mau debug kuis DP bareng temen-temen! 🙏
+                </div>
+</div>
+</div>
+<!-- Message 2 -->
+<div class="flex items-start gap-2.5">
+<img class="w-7 h-7 rounded-full object-cover shrink-0 mt-0.5" data-alt="Portrait of Daffa, young male IT student coding in laptop campus cafe with headphones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBANcRNLC4G7awNOYZQxFBK7AsOo-6hHp_I1lZunYoIP-c-kW2V5B7by4ELkCSvbu6dgYIbPM-kUy2oCspo_mLCHZynNu1RQEcAEpkj_Ar8daWm1X64DtQm2LuYbc4eZtjDM_3pZBVypQnWzTRjJMt-JeMwsfiQNnJzp3AaYYwwwpyVA5YcuZPkADEylmL_azPplme-M1R8c830Rxdw2cscnzQCf6Tii66kWtVOWx6y"/>
+<div class="flex flex-col max-w-[85%]">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Daffa R.</span>
+<span class="font-body-sm text-[10px] text-outline">10:18</span>
+</div>
+<div class="bg-surface-container-low text-on-surface p-2 rounded-lg rounded-tl-none mt-1 font-body-sm text-body-sm">
+                  Gue di meja pojok Man, bawa dong! Sini join Open Party IF3170 kita, sisa 2 kursi lagi nih.
+                </div>
+</div>
+</div>
+<!-- Message 3: System Bot Telemetry Notification -->
+<div class="bg-primary-fixed/40 rounded-lg p-2 flex items-start gap-2">
+<span class="material-symbols-outlined text-primary text-[18px] shrink-0 mt-0.5">smart_toy</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-[11px] text-primary font-bold">Bot Kolaborin Radar</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Update: Perpus Lt. 2 tersisa 14 kursi lagi. Silakan check-in sebelum penuh jam makan siang.</span>
+</div>
+</div>
+<!-- Message 4 -->
+<div class="flex items-start gap-2.5">
+<img class="w-7 h-7 rounded-full object-cover shrink-0 mt-0.5" data-alt="Portrait of Raditya, young male student in ITB blue campus jacket smiling" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPdSdv2XLRSL0tnr7QbYVHWl1YHSm9ix0ci86qhuS14KnNC-IOiGSgMff3BGUykdAPZBMYUPxqHwXBkPGBpBpTrUt2VG6ZhlkIgVjJosBQV__MglVdlo7YsVQGQxRq5gR-Zb55PIIUw0f_Eym2nGsSb2tp1_ybCpTTWT6mx3Xc6iabl8UxeMltUZPL9CJTRxZIXDojeTeDUlO2kBbIjPvylvTwh0MYABqHjWhfHL3a"/>
+<div class="flex flex-col max-w-[85%]">
+<div class="flex items-center gap-1.5">
+<span class="font-label-sm text-label-sm text-on-surface font-semibold">Raditya T.</span>
+<span class="font-body-sm text-[10px] text-outline">10:22</span>
+</div>
+<div class="bg-surface-container-low text-on-surface p-2 rounded-lg rounded-tl-none mt-1 font-body-sm text-body-sm">
+                  Template laporan praktikum udah di-upload di media vault drive ya guys, tinggal pakai.
+                </div>
+</div>
+</div>
+</div>
+<!-- Bottom Chat Input Bar -->
+<div class="pt-3">
+<div class="relative flex items-center bg-surface-container-low rounded-lg p-1.5">
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">add_circle</span>
+</button>
+<input class="w-full bg-transparent font-body-sm text-body-sm text-on-surface placeholder:text-outline px-2 py-1 outline-none border-none focus:ring-0" placeholder="Ketik pesan di #tugas-algo..." type="text"/>
+<div class="flex items-center gap-1 shrink-0">
+<button class="p-1 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">mood</span>
+</button>
+<button class="bg-primary hover:bg-primary-container text-on-primary w-8 h-8 rounded-lg flex items-center justify-center shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[18px]">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- MIDDLE SECTION: METRICS & EXPANSIVE CAMPUS INTELLIGENCE (3 COLUMNS) -->
+<section class="max-w-[84rem] mx-auto w-full px-margin-mobile md:px-margin pb-space-lg">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<!-- COLUMN 1: Trending Spots Kampus Detail -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-5 flex flex-col">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">local_fire_department</span>
+<h3 class="font-title-sm text-title-sm text-on-surface font-bold">Trending Spot Kampus</h3>
+</div>
+<span class="font-label-sm text-[11px] text-outline">Real-time IoT</span>
+</div>
+<div class="space-y-3.5">
+<!-- Spot Item 1 -->
+<div class="bg-surface-container-low rounded-lg p-3 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Perpustakaan Pusat (Lt. 2)</span>
+<span class="font-label-sm text-[11px] text-tertiary bg-tertiary-fixed/70 px-2 py-0.5 rounded font-bold">74% Terisi</span>
+</div>
+<!-- Live Progress Bar -->
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-tertiary-fixed-dim h-full rounded-full" style="width: 74%;"></div>
+</div>
+<div class="flex items-center justify-between font-body-sm text-[11px] text-on-surface-variant pt-0.5">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-secondary">power</span> 18 Colokan Bebas</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">volume_down</span> 32 dB</span>
+<span class="text-outline">Update 2m lalu</span>
+</div>
+</div>
+<!-- Spot Item 2 -->
+<div class="bg-surface-container-low rounded-lg p-3 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Labtek V - Comlabs IF</span>
+<span class="font-label-sm text-[11px] text-secondary bg-secondary-fixed px-2 py-0.5 rounded font-bold">35% Lengang</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-secondary h-full rounded-full" style="width: 35%;"></div>
+</div>
+<div class="flex items-center justify-between font-body-sm text-[11px] text-on-surface-variant pt-0.5">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-secondary">power</span> 32 Colokan Bebas</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">volume_up</span> 48 dB (Diskusi)</span>
+<span class="text-outline">Update 1m lalu</span>
+</div>
+</div>
+<!-- Spot Item 3 -->
+<div class="bg-surface-container-low rounded-lg p-3 flex flex-col gap-2">
+<div class="flex items-center justify-between">
+<span class="font-label-lg text-label-lg text-on-surface font-semibold">Selasar TVST &amp; CC Barat</span>
+<span class="font-label-sm text-[11px] text-on-surface-variant bg-surface-container-highest px-2 py-0.5 rounded font-bold">58% Sedang</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 58%;"></div>
+</div>
+<div class="flex items-center justify-between font-body-sm text-[11px] text-on-surface-variant pt-0.5">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px] text-secondary">power</span> 8 Colokan Bebas</span>
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[14px]">nature</span> Outdoor Adem</span>
+<span class="text-outline">Update 4m lalu</span>
+</div>
+</div>
+</div>
+</div>
+<!-- COLUMN 2: XP, Misi Harian & Kolaborasi Streak -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-5 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-tertiary-container text-[20px]">military_tech</span>
+<h3 class="font-title-sm text-title-sm text-on-surface font-bold">Progres &amp; Streak Belajar</h3>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">Rank #14 STEI</span>
+</div>
+<!-- Total XP Fuel Gauge Card -->
+<div class="bg-surface-container-low rounded-lg p-3.5 mb-4 flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-body-sm text-[11px] text-on-surface-variant">Total XP Semester Ini</span>
+<div class="flex items-baseline gap-1 mt-0.5">
+<span class="font-headline-md text-headline-md text-primary font-extrabold">1,840</span>
+<span class="font-label-sm text-label-sm text-outline font-semibold">XP</span>
+</div>
+<span class="font-body-sm text-[11px] text-secondary font-medium">Top 5% mahasiswa teraktif</span>
+</div>
+<!-- 6-Day Study Streak Badge -->
+<div class="bg-surface-container-lowest p-2.5 rounded-lg shadow-sm flex flex-col items-center justify-center border-none">
+<div class="flex items-center gap-1 text-tertiary">
+<span class="material-symbols-outlined text-[20px]">whatshot</span>
+<span class="font-headline-sm text-headline-sm font-bold leading-none">6</span>
+</div>
+<span class="font-label-sm text-[10px] text-on-surface-variant font-medium mt-1">Hari Streak!</span>
+<span class="font-label-sm text-[9px] text-secondary font-bold">+50 XP besok</span>
+</div>
+</div>
+<!-- Daily Mission Checklist -->
+<div class="space-y-2 mb-4">
+<div class="font-label-sm text-[11px] text-outline uppercase tracking-wider">Misi Harian (180 / 250 XP)</div>
+<div class="flex items-center justify-between bg-surface-container-low p-2 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface line-through opacity-70">Host sesi kelompok matkul</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold">+25 XP</span>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low p-2 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span class="font-body-sm text-body-sm text-on-surface line-through opacity-70">Bantu jawab pertanyaan matkul</span>
+</div>
+<span class="font-label-sm text-label-sm text-secondary font-bold">+10 XP</span>
+</div>
+<div class="flex items-center justify-between bg-surface-container-low p-2 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-outline text-[18px]">radio_button_unchecked</span>
+<span class="font-body-sm text-body-sm text-on-surface font-medium">Check-in spot belajar verifikasi</span>
+</div>
+<span class="font-label-sm text-label-sm text-primary font-bold">+15 XP</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md py-2.5 rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">redeem</span>
+<span>Tukar Voucher Kantin &amp; Kupon Print</span>
+</button>
+</div>
+<!-- COLUMN 3: Top Kolaborator STEI Scope -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-5 flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">leaderboard</span>
+<h3 class="font-title-sm text-title-sm text-on-surface font-bold">Top Kolaborator STEI</h3>
+</div>
+<span class="font-label-sm text-[11px] bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded font-bold">Pekan 9</span>
+</div>
+<!-- Leaderboard Podium List -->
+<div class="space-y-3">
+<!-- Rank #1 -->
+<div class="flex items-center justify-between p-2.5 bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-6 text-center font-headline-sm text-headline-sm text-tertiary-container font-extrabold">1</div>
+<img class="w-9 h-9 rounded-full object-cover" data-alt="Portrait of Alifia Putri, a female Indonesian engineering student smiling gently in white laboratory coat" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD87H-HxrTFl67oeh3lN-_eBx8u4ZZbKzFbarNDqWdtNRKsGdLE3duYZDhL__KSohPo23AoUD5M7nIe1eNBtlUqspW9PXok6PJzP-t4GCzOQMRgNUjTjpT-Cnf4gJTpDSPIeOIbrLLfju1nxc6oC-2pWcBCcYgcB0fwYKjZm6ruu36XNXtg0DHnx-iInaF6PgpSeEA9daskdkB8LAfnxbL4EFVvs-_vRsJsgtXv2EUi"/>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Alifia Putri</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Teknik Elektro '22</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-md text-label-md text-primary font-bold">2,450 XP</span>
+<span class="block font-body-sm text-[10px] text-secondary">32 Sesi Host</span>
+</div>
+</div>
+<!-- Rank #2 -->
+<div class="flex items-center justify-between p-2.5 bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-6 text-center font-headline-sm text-headline-sm text-outline font-extrabold">2</div>
+<img class="w-9 h-9 rounded-full object-cover" data-alt="Portrait of Raditya, a male college student in casual dark hoodie working in computer lab" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyQfFPE1qvC4Sae-Q3rXlPVnGBpxawyo7MeoXRa3c9VZS7KIoNQWPyiBCCe6F6q5mFMr5oUPsHMTAou9HqpE5ZChFs7E6jlwzmrCQVn3w91v-8sdnlANdpB8Iqqjbc9rk0Ne7qZgmnEvYNJQnC0q31zAdorJibAnMpzbGalCb7z0Umx3E2HRGJU1zBEzTcPqu4X4rzS2Ajq-q7etdEqjSA9VcCJLppP4dV6SRFRm3Z"/>
+<div class="flex flex-col">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Raditya T.</span>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Informatika '22</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-md text-label-md text-primary font-bold">2,180 XP</span>
+<span class="block font-body-sm text-[10px] text-secondary">28 Sesi Host</span>
+</div>
+</div>
+<!-- Rank #3: YOU (Farrel) -->
+<div class="flex items-center justify-between p-2.5 bg-primary-fixed/30 rounded-lg">
+<div class="flex items-center gap-3">
+<div class="w-6 text-center font-headline-sm text-headline-sm text-primary font-extrabold">3</div>
+<img class="w-9 h-9 rounded-full object-cover ring-2 ring-primary" data-alt="Close-up portrait of Farrel Arkan smiling with campus badge" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF1hn9TekX9GHYt3YYEO_MEz2QCwcYL5f8_J_7Ev8fBr4AvYMuVl1W7JGOhNmMlPm3I5TPi6qsfBiE883p-aironuQc2XaIowRaFdK7SmNhdU1mGalqGMK2OSvl1YdbPvsJ_sQqNs2waTzYIGTPC6DXHCjhRXbxKxA8x_1Akwk6tphGp0hlNU--Tc2JDcvJWcMs-fiwuwgMDimfyi9VNvuWIhMFbbRYLDsVOpWeWOI"/>
+<div class="flex flex-col">
+<div class="flex items-center gap-1.5">
+<span class="font-label-lg text-label-lg text-on-surface font-bold">Farrel (Kamu)</span>
+<span class="bg-primary text-on-primary font-label-sm text-[9px] px-1 rounded">YOU</span>
+</div>
+<span class="font-body-sm text-[11px] text-on-surface-variant">Informatika '22</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-md text-label-md text-primary font-bold">1,840 XP</span>
+<span class="block font-body-sm text-[10px] text-secondary">22 Sesi Host</span>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-4 flex items-center justify-between text-body-sm text-[12px] text-on-surface-variant">
+<span>Tersisa 3 hari di Season UTS</span>
+<a class="text-primary font-semibold hover:underline flex items-center gap-0.5" href="#">
+            Lihat Semua (Top 100) <span class="material-symbols-outlined text-[14px]">chevron_right</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- BOTTOM SECTION: OPEN PARTY GRID & UPCOMING EVENTS -->
+<section class="max-w-[84rem] mx-auto w-full px-margin-mobile md:px-margin pb-space-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg items-start">
+<!-- LEFT (lg:col-span-8): Rekomendasi Open Party Untukmu -->
+<div class="lg:col-span-8 flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[24px]">group_work</span>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Open Party Untukmu</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Rekomendasi otomatis berdasarkan matkul semester 5 Informatika</p>
+</div>
+</div>
+<button class="bg-surface-container-low hover:bg-surface-container text-primary font-label-md text-label-md px-3.5 py-1.5 rounded-lg flex items-center gap-1 transition-colors">
+<span>Lihat Semua (14)</span>
+<span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md">
+<!-- Open Party Card 1 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-4 flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded font-bold">IF2110</span>
+<span class="font-label-sm text-[11px] text-secondary font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> 4/6 Kursi
+                </span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-bold line-clamp-2">Review UAS Algoritma: Dynamic Programming &amp; Graph</h4>
+<div class="flex items-center gap-2 my-3">
+<img class="w-6 h-6 rounded-full object-cover" data-alt="Portrait of student host Nadhira smiling friendly on library bench" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8fHGbS5Gdl02Rx9570BtDlmIt-uDZLV9cS1HKhqku0N4MuAVrzAed_KTbjf3JogTfjy1HaNv9EhIntEbRR6eFNmQActXKu5G7KkzfibWfn1XXhCNVUD86FqMngNnphC6aPAWvgV9g_WKaz9Pm-oYHMdS-rPbf-5spdO7tYtXxbRZ8P5PSUF3OPqkTkX1mLPsm7YOcosP99vcZJpuutkxCegLB6kYn9kQjij_N6ncz"/>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Host: <strong>Nadhira (IF'22)</strong></span>
+</div>
+<div class="flex flex-wrap gap-1.5 mb-4">
+<span class="bg-surface-container-low text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded">Perpus Lt. 2</span>
+<span class="bg-surface-container-low text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded">Colokan Ready</span>
+<span class="bg-surface-container-low text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded">Tenang</span>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md py-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">group_add</span>
+<span>Gabung Sekarang</span>
+</button>
+</div>
+<!-- Open Party Card 2 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-4 flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded font-bold">IF3170</span>
+<span class="font-label-sm text-[11px] text-tertiary font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> 3/4 Kursi
+                </span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-bold line-clamp-2">Sprint Machine Learning: PyTorch Transformer Setup</h4>
+<div class="flex items-center gap-2 my-3">
+<img class="w-6 h-6 rounded-full object-cover" data-alt="Portrait of student host Brian wearing glasses at computer workstation" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1MS7-eCGpSsrient247VOL3x01AgBepnKsmLCeU8747549MOZToRZV7c5W3gPpXO9bI1QOeFsShmG-edlfAdqDmRgPQTN6QvQRTd3gu7cTimjfMYdVVRCUCO5xpaMzrfN9TQOkcC4qMapcvP9O5-GbknJJABLW9_63tbHNx_B_NIwq6nLYuMJ14ZKyyzYbUhDZrxzlxtyh1i07Se6_hijyAEK3kqAna0mKYJTNe5K"/>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Host: <strong>Brian (IF'21)</strong></span>
+</div>
+<div class="flex flex-wrap gap-1.5 mb-4">
+<span class="bg-surface-container-low text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded">Labtek V Rm 204</span>
+<span class="bg-surface-container-low text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded">GPU Ready</span>
+<span class="bg-surface-container-low text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded">Diskusi Aktif</span>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md py-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">group_add</span>
+<span>Gabung Sekarang</span>
+</button>
+</div>
+<!-- Open Party Card 3 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-4 flex flex-col justify-between hover:shadow-md transition-shadow">
+<div>
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-sm text-label-sm bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded font-bold">KU2071</span>
+<span class="font-label-sm text-[11px] text-secondary font-bold flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> 2/5 Kursi
+                </span>
+</div>
+<h4 class="font-title-sm text-title-sm text-on-surface font-bold line-clamp-2">Diskusi Kelompok Esai Pancasila &amp; Etika Teknologi</h4>
+<div class="flex items-center gap-2 my-3">
+<img class="w-6 h-6 rounded-full object-cover" data-alt="Portrait of student host Cindy smiling in green campus park garden" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUo4AXSfNgNmWfTekR3fXe4R_EVVTqNnZivvNJyLNusqfgFhJBQNLe1cyQoD72xTBl4PlkHV-L7-JtFYtxi4Os7qKs-myZHqwkwVV9006nwAPmCqbpoGeuIltj6QwMqW92r_xeGnNl6O0yPDlg4kK1CCnLwSqp5oqnbuWLDVnCUXjXellbNtLH7b2TxVNgyjT58uANeMXqZkODb7i35Qz4CE7vRE8NgdvM9pF-rQ6M"/>
+<span class="font-body-sm text-[12px] text-on-surface-variant">Host: <strong>Cindy (SBM'22)</strong></span>
+</div>
+<div class="flex flex-wrap gap-1.5 mb-4">
+<span class="bg-surface-container-low text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded">Selasar TVST</span>
+<span class="bg-surface-container-low text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded">Suasana Santai</span>
+<span class="bg-surface-container-low text-on-surface-variant font-label-sm text-[10px] px-2 py-0.5 rounded">Ngopi Bareng</span>
+</div>
+</div>
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary font-label-md text-label-md py-2 rounded-lg flex items-center justify-center gap-1.5 transition-colors">
+<span class="material-symbols-outlined text-[16px]">group_add</span>
+<span>Gabung Sekarang</span>
+</button>
+</div>
+</div>
+</div>
+<!-- RIGHT (lg:col-span-4): Verified Campus Events & Workshops -->
+<div class="lg:col-span-4 flex flex-col gap-space-md">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[24px]">event_available</span>
+<div>
+<h3 class="font-title-md text-title-md text-on-surface font-bold">Event &amp; Workshop Kampus</h3>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Terverifikasi BEM &amp; Kemahasiswaan ITB</p>
+</div>
+</div>
+</div>
+<div class="space-y-3.5">
+<!-- Event Item 1 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-4 flex flex-col gap-3">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-lg bg-primary-fixed text-primary flex flex-col items-center justify-center shrink-0">
+<span class="font-label-sm text-[10px] uppercase font-bold leading-none">NOV</span>
+<span class="font-headline-sm text-headline-sm font-extrabold leading-none mt-1">28</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-primary font-bold uppercase tracking-wider">GDSC ITB • Tech Talk</span>
+<h4 class="font-title-sm text-title-sm text-on-surface font-bold">GenAI &amp; Large Language Model on Cloud Infrastructure</h4>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm text-[12px] text-on-surface-variant pt-1">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">location_on</span> Aud. CC Barat ITB</span>
+<span class="font-medium text-secondary flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">qr_code</span> E-Ticket Ready</span>
+</div>
+<div class="flex items-center gap-2 pt-1">
+<button class="flex-1 bg-surface-container-low hover:bg-surface-container text-primary font-label-sm text-label-sm py-2 rounded-lg flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px]">qr_code_2</span>
+<span>Lihat E-Ticket QR</span>
+</button>
+<button class="bg-surface-container-low hover:bg-surface-container text-on-surface p-2 rounded-lg transition-colors" title="Simpan ke kalender">
+<span class="material-symbols-outlined text-[16px]">calendar_month</span>
+</button>
+</div>
+</div>
+<!-- Event Item 2 -->
+<div class="bg-surface-container-lowest rounded-xl shadow-sm p-4 flex flex-col gap-3">
+<div class="flex items-start justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-lg bg-surface-container-highest text-on-surface-variant flex flex-col items-center justify-center shrink-0">
+<span class="font-label-sm text-[10px] uppercase font-bold leading-none">DES</span>
+<span class="font-headline-sm text-headline-sm font-extrabold leading-none mt-1">02</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-sm text-[10px] text-secondary font-bold uppercase tracking-wider">Lab Robotika STEI</span>
+<h4 class="font-title-sm text-title-sm text-on-surface font-bold">Seminar Robotika &amp; Autonomous Systems 2025</h4>
+</div>
+</div>
+</div>
+<div class="flex items-center justify-between text-body-sm text-[12px] text-on-surface-variant pt-1">
+<span class="flex items-center gap-1"><span class="material-symbols-outlined text-[15px]">location_on</span> Aula Barat ITB</span>
+<span class="font-medium text-tertiary">Sisa 24 Slot Kursi</span>
+</div>
+<div class="flex items-center gap-2 pt-1">
+<button class="flex-1 bg-primary hover:bg-primary-container text-on-primary font-label-sm text-label-sm py-2 rounded-lg flex items-center justify-center gap-1 transition-colors">
+<span class="material-symbols-outlined text-[16px]">app_registration</span>
+<span>Daftar Sekarang (Free)</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div></main>
+<!-- CLEAN STREAMLINED FOOTER -->
+<footer class="w-full bg-surface-container-lowest border-t border-surface-container-high mt-space-xl">
+<div class="max-w-[84rem] mx-auto px-margin py-space-md flex flex-col sm:flex-row items-center justify-between gap-space-sm font-body-sm text-[12px] text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-[14px] font-bold text-primary">KOLABORIN</span>
+<span class="text-outline">•</span>
+<span>Platform Kolaborasi Kampus ITB</span>
+</div>
+<div class="flex items-center gap-space-md text-outline">
+<a class="hover:text-primary transition-colors" data-path="community-guidelines" href="#">Pedoman Komunitas</a>
+<a class="hover:text-primary transition-colors" data-path="campus-safety" href="#">Keamanan Kampus</a>
+<a class="hover:text-primary transition-colors" data-path="privacy-policy" href="#">Privasi</a>
+</div>
+<div class="text-outline">© 2025 KOLABORIN</div>
+</div>
+</footer>
+</body></html>

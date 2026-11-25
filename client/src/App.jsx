@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute, { StudentRoute, VerifiedOrgRoute } from './auth/ProtectedRoute';
@@ -17,6 +17,7 @@ import EventDetail from './pages/EventDetail';
 import OrgNew from './pages/OrgNew';
 import OrgDetail from './pages/OrgDetail';
 import OrgManage from './pages/OrgManage';
+import OrgEventWorkspace from './pages/OrgEventWorkspace';
 import Communities from './pages/Communities';
 import CommunityRoom from './pages/CommunityRoom';
 import Leaderboard from './pages/Leaderboard';
@@ -24,6 +25,8 @@ import Collab from './pages/Collab';
 import Admin from './pages/Admin';
 import Landing from './pages/Landing';
 import { useAuth } from './auth/AuthContext';
+
+const OrgLiveSpot = lazy(() => import('./pages/OrgLiveSpot'));
 
 function LandingOrHome() {
   const { user, loading } = useAuth();
@@ -133,6 +136,40 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <OrgManage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orgs/:id/settings"
+            element={
+              <ProtectedRoute allowedRoles={['organization']}>
+                <OrgManage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orgs/:id/events"
+            element={
+              <ProtectedRoute allowedRoles={['organization']}>
+                <OrgEventWorkspace />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orgs/:id/recruitment"
+            element={
+              <ProtectedRoute allowedRoles={['organization']}>
+                <OrgEventWorkspace mode="recruitment" />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/orgs/:id/live-spot"
+            element={
+              <ProtectedRoute allowedRoles={['organization']}>
+                <Suspense fallback={<main className="container"><p className="empty-state">Memuat Live Spot organisasi...</p></main>}>
+                  <OrgLiveSpot />
+                </Suspense>
               </ProtectedRoute>
             }
           />

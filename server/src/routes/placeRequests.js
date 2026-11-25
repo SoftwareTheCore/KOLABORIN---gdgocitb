@@ -19,6 +19,20 @@ router.post('/', authMiddleware, async (req, res, next) => {
       return res.status(400).json({ error: 'Invalid place type.' });
     }
 
+    if (organization_id) {
+      if (req.user.role !== 'organization') {
+        return res.status(403).json({ error: 'Only organization accounts can request a space for an organization.' });
+      }
+
+      const [orgRows] = await pool.query(
+        'SELECT id FROM organizations WHERE id = ? AND owner_id = ?',
+        [organization_id, requesterId]
+      );
+      if (orgRows.length === 0) {
+        return res.status(403).json({ error: 'You can only request a space for your own organization.' });
+      }
+    }
+
     const [result] = await pool.query(
       `INSERT INTO place_requests
        (requester_id, name, type, address, latitude, longitude, short_description, organization_id, status)
