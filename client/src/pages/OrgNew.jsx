@@ -30,18 +30,19 @@ export default function OrgNew() {
   };
 
   return (
-    <div className="container" style={{ padding: '2rem 1rem', maxWidth: '600px', margin: '0 auto' }}>
-      <div className="auth-card" style={{ maxWidth: '100%' }}>
-        <h2>🏛️ Register Student Organization</h2>
+    <main className="container org-new-page">
+      <div className="auth-card org-new-card">
+        <span className="eyebrow">Campus organization</span>
+        <h1>Daftarkan organisasi</h1>
         <p style={{ color: 'var(--muted)', fontSize: '0.85rem', marginBottom: '1.25rem' }}>
-          Register your campus club or department association. All new organizations require admin verification before publishing events.
+          Daftarkan himpunan atau unit kegiatan kampus. Organisasi baru perlu diverifikasi admin sebelum dapat mempublikasikan event.
         </p>
 
         {error && <div className="alert-error">{error}</div>}
 
         <form onSubmit={handleSubmit} className="auth-form">
           <div className="form-group">
-            <label>Organization Name *</label>
+            <label>Nama organisasi *</label>
             <input
               required
               type="text"
@@ -52,7 +53,7 @@ export default function OrgNew() {
           </div>
 
           <div className="form-group">
-            <label>Category</label>
+            <label>Kategori</label>
             <select
               value={formData.category}
               onChange={(e) => setFormData({ ...formData, category: e.target.value })}
@@ -72,7 +73,7 @@ export default function OrgNew() {
           </div>
 
           <div className="form-group">
-            <label>Description & Mission</label>
+            <label>Deskripsi & misi</label>
             <textarea
               rows={3}
               placeholder="Visi, misi, dan kegiatan utama organisasi..."
@@ -95,7 +96,7 @@ export default function OrgNew() {
               className="btn-secondary"
               style={{ flex: 1 }}
             >
-              Cancel
+              Batal
             </button>
             <button
               type="submit"
@@ -103,11 +104,11 @@ export default function OrgNew() {
               className="btn-primary"
               style={{ flex: 1 }}
             >
-              {submitting ? 'Registering...' : 'Register (Pending Verification)'}
+              {submitting ? 'Mendaftarkan...' : 'Kirim untuk verifikasi'}
             </button>
           </div>
         </form>
       </div>
-    </div>
+    </main>
   );
 }

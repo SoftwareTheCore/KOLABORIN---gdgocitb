@@ -1,8 +1,36 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { lazy, Suspense, useState, useEffect } from 'react';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import api from '../api';
 import PlaceMap from '../components/PlaceMap';
+
+const OrganizationTrendChart = lazy(() => import('../components/OrganizationTrendChart'));
+const OrganizationEventChart = lazy(() => import('../components/OrganizationEventChart'));
+
+function exportOrganizationReport(analytics) {
+  const rows = [['Tanggal', 'Menunggu', 'Diterima', 'Ditolak']];
+  const totalsByDate = new Map();
+  analytics.forEach((organization) => {
+    (organization.daily || []).forEach((row) => {
+      const totals = totalsByDate.get(row.date) || { pending: 0, accepted: 0, rejected: 0 };
+      totals.pending += row.pending;
+      totals.accepted += row.accepted;
+      totals.rejected += row.rejected;
+      totalsByDate.set(row.date, totals);
+    });
+  });
+  [...totalsByDate.entries()].sort(([dateA], [dateB]) => dateA.localeCompare(dateB)).forEach(([date, counts]) => {
+    rows.push([date, counts.pending, counts.accepted, counts.rejected]);
+  });
+
+  const csv = `\uFEFF${rows.map((row) => row.join(',')).join('\r\n')}`;
+  const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'kolaborin-organization-report.csv';
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
 
 export default function Home() {
   const { user } = useAuth();
@@ -10,6 +38,9 @@ export default function Home() {
 
   const [homeData, setHomeData] = useState(null);
   const [livePlaces, setLivePlaces] = useState([]);
+  const [organizationAnalytics, setOrganizationAnalytics] = useState([]);
+  const [organizationDataUpdatedAt, setOrganizationDataUpdatedAt] = useState(null);
+  const [rangeDays, setRangeDays] = useState(7);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -19,11 +50,24 @@ export default function Home() {
         api.get('/home'),
         api.get('/locations/live')
       ]);
+      const orgAnalytics = user?.role === 'organization'
+        ? await Promise.all((resHome.data.orgs || []).map(async (org) => {
+          const resAnalytics = await api.get(`/orgs/${org.id}/analytics?days=${rangeDays}`);
+          return {
+            ...resAnalytics.data,
+            orgId: org.id,
+            orgName: org.name,
+            orgStatus: org.status
+          };
+        }))
+        : [];
       setHomeData(resHome.data);
       setLivePlaces(resLive.data);
+      setOrganizationAnalytics(orgAnalytics);
+      if (user?.role === 'organization') setOrganizationDataUpdatedAt(new Date());
     } catch (err) {
       console.error('Failed to load home data:', err);
-      setError('Could not load campus data. Please refresh.');
+      setError(err.response?.data?.error || 'Data Home tidak dapat dimuat. Silakan coba lagi.');
     } finally {
       setLoading(false);
     }
@@ -36,7 +80,7 @@ export default function Home() {
       fetchHomeData();
     }, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [user?.role, rangeDays]);
 
   if (loading) {
     return (
@@ -55,85 +99,278 @@ export default function Home() {
   }
 
   if (user?.role === 'organization') {
+    const orgs = homeData?.orgs || [];
+    const organizationSummary = organizationAnalytics.reduce((summary, organization) => ({
+      events: summary.events + organization.summary.publishedEvents,
+      applications: summary.applications + organization.summary.applications,
+      pending: summary.pending + organization.summary.pendingApplications,
+      accepted: summary.accepted + organization.summary.acceptedApplications,
+      rejected: summary.rejected + organization.summary.rejectedApplications
+    }), { events: 0, applications: 0, pending: 0, accepted: 0, rejected: 0 });
+    const applicationsByDate = new Map();
+    organizationAnalytics.forEach((organization) => {
+      (organization.daily || []).forEach((row) => {
+        const total = applicationsByDate.get(row.date) || 0;
+        applicationsByDate.set(row.date, total + row.pending + row.accepted + row.rejected);
+      });
+    });
+    const dateAnchor = organizationAnalytics[0]?.today || new Date().toISOString().slice(0, 10);
+    const trendData = Array.from({ length: rangeDays }, (_, index) => {
+      const date = new Date(`${dateAnchor}T12:00:00`);
+      date.setDate(date.getDate() - rangeDays + 1 + index);
+      const key = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}`;
+      return {
+        label: date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }),
+        applications: applicationsByDate.get(key) || 0
+      };
+    });
+    const eventApplications = new Map();
+    organizationAnalytics.forEach((organization) => {
+      (organization.events || []).forEach((event) => {
+        if (event.status !== 'published') return;
+        const current = eventApplications.get(event.id) || {
+          title: event.title,
+          applications: 0
+        };
+        current.applications += event.application_count;
+        eventApplications.set(event.id, current);
+      });
+    });
+    const eventDistribution = [...eventApplications.entries()]
+      .map(([id, event]) => ({
+        id,
+        label: event.title.length > 20 ? `${event.title.slice(0, 18)}…` : event.title,
+        applications: event.applications
+      }))
+      .sort((a, b) => b.applications - a.applications)
+      .slice(0, 6);
+    const recentApplications = organizationAnalytics
+      .flatMap((organization) => (organization.recentApplications || []).map((application) => ({
+        ...application,
+        orgName: organization.orgName
+      })))
+      .sort((a, b) => new Date(b.applied_at) - new Date(a.applied_at))
+      .slice(0, 6);
+    const upcomingEvents = organizationAnalytics
+      .flatMap((organization) => (organization.upcomingEvents || []).map((event) => ({
+        ...event,
+        orgName: organization.orgName
+      })))
+      .sort((a, b) => new Date(a.start_at) - new Date(b.start_at))
+      .slice(0, 5);
+    const hasVerifiedOrganization = orgs.some((org) => org.status === 'verified');
+    const acceptanceRate = organizationSummary.applications
+      ? Math.round((organizationSummary.accepted / organizationSummary.applications) * 100)
+      : 0;
+    const statusStages = [
+      { label: 'Menunggu review', value: organizationSummary.pending, color: 'pending' },
+      { label: 'Diterima', value: organizationSummary.accepted, color: 'accepted' },
+      { label: 'Ditolak', value: organizationSummary.rejected, color: 'rejected' }
+    ];
+
     return (
-      <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1100px', margin: '0 auto' }}>
-        <div className="hero-banner">
-          <h1>Organization Workspace</h1>
-          <p style={{ marginTop: '0.4rem', opacity: 0.9 }}>
-            Manage events, applicants, communities, venues, and campus collaborations.
-          </p>
-          <div className="hero-actions" style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-            {homeData?.orgs?.[0] && (
-              <Link to={`/orgs/${homeData.orgs[0].id}/manage`} className="btn-hero">Manage Organization</Link>
-            )}
-            <Link to="/collab" className="btn-hero-outline">Find Collaborators</Link>
-            <Link to="/map" className="btn-hero-outline">Find Venue</Link>
+      <main className="container org-home-page org-executive-home" id="org-dashboard">
+        <div className="org-home-status-banner">
+          <span className={`org-home-status-pulse ${hasVerifiedOrganization ? '' : 'is-pending'}`} />
+          <div>
+            <strong>{hasVerifiedOrganization ? 'Workspace organisasi aktif' : 'Menunggu verifikasi organisasi'}</strong>
+            <span>{orgs.length ? `${orgs.length} organisasi · ${organizationSummary.events} event dipublikasikan` : 'Daftarkan organisasi untuk mulai mengelola kegiatan kampus.'}</span>
           </div>
+          <span className="org-home-auto-refresh">● Sinkron otomatis · 30 dtk</span>
+          {orgs[0] && <Link to={`/orgs/${orgs[0].id}`}>Lihat profil publik ↗</Link>}
         </div>
 
-        <div className="dashboard-grid" style={{ marginTop: '1.5rem' }}>
-          {(homeData?.orgs || []).map((org) => (
-            <div key={org.id} className="dash-card">
-              <div className="dash-card-header">
-                <h3>{org.name}</h3>
-                <span className={`status-badge status-${org.status}`}>{org.status.toUpperCase()}</span>
-              </div>
-              {org.status === 'pending' ? (
-                <p className="empty-state">Pending admin verification. Event publishing is not available yet.</p>
-              ) : (
-                <p style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>
-                  Verified organization. Publishing and collaboration tools are available.
-                </p>
-              )}
-              <div className="org-stats-row" style={{ marginTop: '1rem', display: 'grid', gap: '0.75rem' }}>
-                <span>📅 <strong>{org.publishedEvents}</strong> Published Events</span>
-                <span>📥 <strong>{org.pendingApplicants}</strong> Pending Applicants</span>
-                <span>🤝 <strong>{org.pendingCollab}</strong> Collaboration Requests</span>
-              </div>
-              <Link
-                to={`/orgs/${org.id}/manage`}
-                className="btn-primary"
-                style={{ marginTop: '1rem', textAlign: 'center' }}
-              >
-                Open Organization
-              </Link>
-            </div>
-          ))}
-        </div>
+        <nav className="org-home-tabs" aria-label="Navigasi workspace organisasi">
+          <NavLink to="/" end>Home</NavLink>
+          {orgs[0] && (
+            <>
+              <NavLink to={`/orgs/${orgs[0].id}/events`}>Event &amp; Workshop</NavLink>
+              <NavLink to={`/orgs/${orgs[0].id}/recruitment`}>Rekrutmen</NavLink>
+              <NavLink to={`/orgs/${orgs[0].id}/live-spot`}>Live Spot</NavLink>
+              <NavLink to={`/orgs/${orgs[0].id}/settings`}>Pengaturan Organisasi</NavLink>
+            </>
+          )}
+        </nav>
 
-        <div className="dashboard-grid" style={{ marginTop: '1.5rem' }}>
-          <div className="dash-card">
-            <div className="dash-card-header"><h3>Upcoming Events</h3><Link to="/events">See all</Link></div>
-            {(homeData?.upcomingEvents || []).length === 0 ? (
-              <p className="empty-state">No upcoming events yet.</p>
+        <header className="org-executive-header">
+          <div>
+            <span className="eyebrow">Analisis eksekutif · {orgs[0]?.name || 'Organisasi kampus'}</span>
+            <h1>Dashboard pertumbuhan &amp; analitik organisasi</h1>
+            <p>Pantau tren pendaftaran event, respons aplikasi, dan aktivitas organisasi dari data aktual.</p>
+          </div>
+          <div className="org-executive-actions">
+            <button type="button" className="btn-secondary" onClick={() => exportOrganizationReport(organizationAnalytics)} disabled={!organizationAnalytics.length}>
+              ↓ Ekspor laporan
+            </button>
+            <button type="button" className="btn-secondary" onClick={fetchHomeData}>
+              ↻ Perbarui data
+            </button>
+            {orgs[0] ? (
+              <Link to={`/orgs/${orgs[0].id}/manage`} className="btn-primary">＋ Publikasikan event</Link>
             ) : (
-              <div className="dash-list">
-                {homeData.upcomingEvents.map((evt) => (
-                  <Link key={evt.id} to={`/events/${evt.id}`} className="dash-list-item">
-                    <strong>{evt.title}</strong>
-                    <span style={{ color: 'var(--primary)', fontSize: '0.8rem' }}>View</span>
-                  </Link>
-                ))}
-              </div>
+              <Link to="/orgs/new" className="btn-primary">＋ Daftarkan organisasi</Link>
             )}
           </div>
-          <div className="dash-card">
-            <div className="dash-card-header"><h3>Communities</h3><Link to="/communities">Open hub</Link></div>
-            {(homeData?.myCommunities || []).length === 0 ? (
-              <p className="empty-state">No joined communities.</p>
-            ) : (
-              <div className="dash-list">
-                {homeData.myCommunities.map((community) => (
-                  <Link key={community.id} to={`/communities/${community.id}`} className="dash-list-item">
-                    <strong>{community.name}</strong>
-                    <span style={{ color: 'var(--primary)', fontSize: '0.8rem' }}>Open</span>
-                  </Link>
-                ))}
-              </div>
-            )}
+        </header>
+
+        {orgs.length === 0 ? (
+          <div className="org-home-empty">
+            <strong>Belum ada organisasi terhubung</strong>
+            <p>Daftarkan organisasi kampus agar bisa mengelola event dan melihat analitik pendaftar.</p>
+            <Link to="/orgs/new" className="btn-primary">Mulai pendaftaran</Link>
           </div>
-        </div>
-      </div>
+        ) : (
+          <>
+            <section className="org-executive-kpis" aria-label="Metrik organisasi">
+              <article className="org-executive-kpi">
+                <div><span>Total pendaftar</span><i className="primary">↗</i></div>
+                <strong>{organizationSummary.applications}</strong>
+                <small>Akumulasi aplikasi event</small>
+              </article>
+              <article className="org-executive-kpi">
+                <div><span>Menunggu review</span><i className="amber">◷</i></div>
+                <strong>{organizationSummary.pending}</strong>
+                <small>Perlu tindak lanjut</small>
+              </article>
+              <article className="org-executive-kpi">
+                <div><span>Peserta diterima</span><i className="green">✓</i></div>
+                <strong>{organizationSummary.accepted}</strong>
+                <small>{acceptanceRate}% dari seluruh pendaftar</small>
+              </article>
+              <article className="org-executive-kpi">
+                <div><span>Event dipublikasi</span><i className="lavender">▣</i></div>
+                <strong>{organizationSummary.events}</strong>
+                <small>{upcomingEvents.length} event mendatang</small>
+              </article>
+            </section>
+
+            <section className="org-executive-analytics-grid">
+              <article className="org-executive-card org-trend-card">
+                <div className="org-executive-card-heading">
+                  <div><h2>Tren pendaftaran peserta</h2><p>Jumlah aplikasi masuk per hari</p></div>
+                  <div className="org-range-tabs" role="group" aria-label="Rentang waktu grafik">
+                    {[7, 14, 30].map((days) => (
+                      <button type="button" key={days} className={rangeDays === days ? 'active' : ''} onClick={() => setRangeDays(days)}>
+                        {days}H
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="org-executive-chart">
+                  <Suspense fallback={<div className="org-chart-placeholder">Memuat grafik...</div>}>
+                    <OrganizationTrendChart data={trendData} />
+                  </Suspense>
+                </div>
+                <div className="org-trend-footnote">
+                  <span>{organizationSummary.applications} total pendaftar di semua organisasi</span>
+                  <span>Periode {rangeDays} hari</span>
+                </div>
+              </article>
+
+              <article className="org-executive-card org-application-status-card">
+                <div className="org-executive-card-heading">
+                  <div><h2>Status aplikasi</h2><p>Distribusi status pendaftar event</p></div>
+                  <span className="org-neutral-chip">Semua event</span>
+                </div>
+                <div className="org-status-summary">
+                  <strong>{organizationSummary.applications}</strong>
+                  <span>Total pendaftar</span>
+                </div>
+                <div className="org-status-stages">
+                  {statusStages.map((stage) => {
+                    const percent = organizationSummary.applications
+                      ? Math.round((stage.value / organizationSummary.applications) * 100)
+                      : 0;
+                    return (
+                      <div className="org-status-stage" key={stage.label}>
+                        <div><span><i className={stage.color} />{stage.label}</span><strong>{stage.value} <small>{percent}%</small></strong></div>
+                        <div className="org-status-track"><span className={stage.color} style={{ width: `${percent}%` }} /></div>
+                      </div>
+                    );
+                  })}
+                </div>
+                <div className="org-acceptance-summary">
+                  <span>Tingkat penerimaan</span><strong>{acceptanceRate}%</strong>
+                </div>
+              </article>
+            </section>
+
+            <section className="org-executive-lower-grid">
+              <article className="org-executive-card org-distribution-card">
+                <div className="org-executive-card-heading">
+                  <div><h2>Pendaftar per event</h2><p>Event dengan aplikasi terbanyak</p></div>
+                  <Link to="/events">Semua event →</Link>
+                </div>
+                {eventDistribution.length ? (
+                  <div className="org-distribution-chart">
+                    <Suspense fallback={<div className="org-chart-placeholder">Memuat grafik...</div>}>
+                      <OrganizationEventChart data={eventDistribution} />
+                    </Suspense>
+                  </div>
+                ) : (
+                  <p className="org-executive-empty">Belum ada data pendaftar event.</p>
+                )}
+              </article>
+
+              <div className="org-executive-activity-column">
+                <article className="org-executive-card" id="recentApplications">
+                  <div className="org-executive-card-heading">
+                    <div><h2>Aktivitas pendaftar</h2><p>Aplikasi terbaru yang masuk</p></div>
+                    <span className="org-neutral-chip">{recentApplications.length} terbaru</span>
+                  </div>
+                  {recentApplications.length ? (
+                    <div className="org-recent-applications">
+                      {recentApplications.map((application) => (
+                        <Link to={`/events/${application.event_id}`} className="org-recent-application" key={`${application.orgName}-${application.id}`}>
+                          <span className="org-applicant-avatar">{application.applicant_name?.trim().charAt(0).toUpperCase() || '?'}</span>
+                          <span className="org-applicant-copy">
+                            <strong>{application.applicant_name}</strong>
+                            <small>{application.major || application.faculty || application.orgName} · {application.event_title}</small>
+                          </span>
+                          <span className={`org-application-badge ${application.status}`}>{application.status === 'pending' ? 'Menunggu' : application.status === 'accepted' ? 'Diterima' : 'Ditolak'}</span>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="org-executive-empty">Aktivitas pendaftar akan tampil di sini setelah ada aplikasi.</p>
+                  )}
+                </article>
+
+                <article className="org-executive-card org-upcoming-card">
+                  <div className="org-executive-card-heading">
+                    <div><h2>Agenda mendatang</h2><p>Event organisasi berikutnya</p></div>
+                    <Link to="/events">Kalender →</Link>
+                  </div>
+                  {upcomingEvents.length ? (
+                    <div className="org-upcoming-list">
+                      {upcomingEvents.map((event) => (
+                        <Link to={`/events/${event.id}`} className="org-upcoming-event" key={event.id}>
+                          <span className="org-upcoming-date">
+                            <strong>{new Date(event.start_at).toLocaleDateString('id-ID', { day: '2-digit' })}</strong>
+                            <small>{new Date(event.start_at).toLocaleDateString('id-ID', { month: 'short' })}</small>
+                          </span>
+                          <span className="org-upcoming-copy">
+                            <strong>{event.title}</strong>
+                            <small>{event.orgName} · {event.location_name || 'Lokasi belum ditentukan'}</small>
+                          </span>
+                          <span className="org-event-arrow">→</span>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="org-executive-empty">Belum ada event mendatang yang dipublikasikan.</p>
+                  )}
+                </article>
+              </div>
+            </section>
+
+            <footer className="org-executive-footer">
+              <span><i />Data dari aplikasi event organisasi · pembaruan otomatis setiap 30 detik.</span>
+              <span>{organizationDataUpdatedAt ? `Terakhir diperbarui ${organizationDataUpdatedAt.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}` : 'Menunggu sinkronisasi data'}</span>
+            </footer>
+          </>
+        )}
+      </main>
     );
   }
 
@@ -189,26 +426,25 @@ export default function Home() {
   const bp = homeData?.me?.badgeProgress || { subject: 'Database Systems', answers: 0, needed: 5 };
 
   return (
-    <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1100px', margin: '0 auto' }}>
-      {/* 1. Hero Banner */}
-      <div className="hero-banner">
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
+    <div className="container home-page">
+      <section className="home-context-card">
+        <div className="home-context-copy">
+          <div className="home-greeting-avatar" aria-hidden="true">{firstName.charAt(0).toUpperCase()}</div>
           <div>
-            <h1>Hi, {firstName}! 👋</h1>
-            <p style={{ marginTop: '0.4rem', opacity: 0.9 }}>
-              🟢 <strong>{homeData?.summary?.peopleStudying || 0} people</strong> are studying right now across{' '}
-              {homeData?.summary?.placesActive || 0} active campus places.
-            </p>
+            <div className="home-greeting-tags">
+              <span className="eyebrow">{homeData?.me?.faculty || user?.faculty || 'Kampus ITB'}</span>
+              <span className="home-live-pill"><span aria-hidden="true">●</span> Data kampus live</span>
+            </div>
+            <h1>Selamat datang, {firstName} 👋</h1>
+            <p>{homeData?.summary?.peopleStudying || 0} mahasiswa sedang belajar di {livePlaces.length} lokasi kampus.</p>
           </div>
         </div>
-
-        {/* 3 Quick Action Buttons */}
-        <div className="hero-actions" style={{ marginTop: '1.5rem', display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <Link to="/groups/new" className="btn-hero">➕ Create Study Group</Link>
-          <Link to="/map" className="btn-hero-outline">🔍 Find Place</Link>
-          <Link to="/map?request=1" className="btn-hero-outline">📍 Request a Place</Link>
+        <div className="home-quick-actions">
+          <Link to="/groups/new" className="btn-primary">＋ Buka study group</Link>
+          <Link to="/map" className="btn-secondary">Cari spot belajar</Link>
+          <Link to="/map?request=1" className="home-request-link">Ajukan lokasi →</Link>
         </div>
-      </div>
+      </section>
 
       {/* Org Owner Section (If owns any organizations) */}
       {homeData?.orgs && homeData.orgs.length > 0 && (
@@ -245,8 +481,18 @@ export default function Home() {
         </div>
       )}
 
-      {/* 2. Stats Row (3 Cards) */}
-      <div className="stats-grid" style={{ marginTop: '1.5rem' }}>
+      <section className="home-pulse-banner">
+        <div>
+          <span className="home-pulse-indicator" aria-hidden="true" />
+          <div>
+            <strong>{homeData?.summary?.peopleStudying || 0} mahasiswa aktif di kampus</strong>
+            <span>{homeData?.summary?.placesActive || 0} lokasi dengan aktivitas belajar</span>
+          </div>
+        </div>
+        <Link to="/map">Lihat radar kampus →</Link>
+      </section>
+
+      <div className="stats-grid home-stats-grid">
         <div className="stat-card">
           <span className="stat-label">Total Points</span>
           <span className="stat-val">⭐ {homeData?.me?.points ?? 0}</span>
@@ -274,17 +520,17 @@ export default function Home() {
         </div>
       </div>
 
-      {/* 3. Live Map Preview Card (Full Width) */}
-      <div className="map-preview-card" style={{ marginTop: '1.5rem' }}>
+      <div className="home-radar-grid">
+      <div className="map-preview-card home-map-preview">
         <div className="card-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
           <div>
-            <h3>🗺️ Live Campus Activity Map</h3>
+            <h3>Live Campus Radar</h3>
             <p style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>
-              {homeData?.summary?.peopleStudying || 0} people studying across {livePlaces.length} campus spots
+              Pantau aktivitas belajar di sekitar kampus
             </p>
           </div>
           <Link to="/map" className="btn-secondary" style={{ fontSize: '0.85rem' }}>
-            Open full map ↗
+            Peta penuh ↗
           </Link>
         </div>
 
@@ -310,12 +556,46 @@ export default function Home() {
 
         <div style={{ marginTop: '0.75rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <span style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>
-            Hover pins for details • Click any spot to see open study groups
+            Pilih penanda untuk melihat detail dan study group
           </span>
           <Link to="/map" style={{ fontSize: '0.85rem', color: 'var(--primary)', fontWeight: 600 }}>
-            Open Full Map →
+            Buka peta →
           </Link>
         </div>
+      </div>
+      <section className="home-chat-hub">
+        <div className="home-section-heading">
+          <div>
+            <span className="eyebrow">Percakapan kampus</span>
+            <h2>Chat Hub</h2>
+          </div>
+          <Link to="/communities">Semua →</Link>
+        </div>
+        {!homeData?.myCommunities?.length ? (
+          <div className="home-chat-empty">
+            <span aria-hidden="true">💬</span>
+            <p>Kamu belum bergabung dengan komunitas.</p>
+            <Link to="/communities" className="btn-secondary">Jelajahi komunitas</Link>
+          </div>
+        ) : (
+          <div className="home-chat-list">
+            {homeData.myCommunities.slice(0, 4).map((community) => (
+              <Link to={`/communities/${community.id}`} className="home-chat-item" key={community.id}>
+                <span className="home-chat-avatar">{community.name.charAt(0).toUpperCase()}</span>
+                <span className="home-chat-copy">
+                  <strong>{community.name}</strong>
+                  <small>
+                    {community.lastMessage
+                      ? `${community.lastMessage.author}: ${community.lastMessage.content}`
+                      : 'Belum ada pesan'}
+                  </small>
+                </span>
+                <span aria-hidden="true">→</span>
+              </Link>
+            ))}
+          </div>
+        )}
+      </section>
       </div>
 
       {/* 4. Card Grid: Busiest now, Groups, Events, Communities, Top 3 */}

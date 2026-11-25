@@ -6,6 +6,8 @@ export default function Communities() {
   const navigate = useNavigate();
   const [communities, setCommunities] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState('');
 
   // Create community modal state
   const [showModal, setShowModal] = useState(false);
@@ -37,6 +39,16 @@ export default function Communities() {
     loadCommunities();
   }, []);
 
+  const categories = [...new Set(communities.map((community) => community.category).filter(Boolean))];
+  const visibleCommunities = communities.filter((community) => {
+    const query = searchTerm.trim().toLowerCase();
+    const matchesSearch = !query
+      || [community.name, community.description, community.org_name, community.category]
+        .filter(Boolean)
+        .some((value) => value.toLowerCase().includes(query));
+    return matchesSearch && (!categoryFilter || community.category === categoryFilter);
+  });
+
   const handleJoin = async (id) => {
     try {
       await api.post(`/communities/${id}/join`);
@@ -64,62 +76,89 @@ export default function Communities() {
   };
 
   return (
-    <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1000px', margin: '0 auto' }}>
+    <div className="container communities-page">
       {toast && <div className="toast-pill">{toast}</div>}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+      <section className="communities-hero">
         <div>
-          <h2>Community Hub 💬</h2>
-          <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-            Official organization channels, study groups, and interactive auto-reply chat rooms.
-          </p>
+          <span className="eyebrow">Chat Hub · Komunitas kampus</span>
+          <h1>Temukan ruang diskusi yang tepat</h1>
+          <p>Gabung komunitas, bertukar ide, dan ikuti percakapan kampus.</p>
         </div>
         <button onClick={() => setShowModal(true)} className="btn-primary">
-          ➕ Create Community
+          ＋ Buat komunitas
         </button>
-      </div>
+      </section>
+
+      <section className="communities-controls">
+        <label className="open-party-search">
+          <span aria-hidden="true">⌕</span>
+          <input
+            type="search"
+            placeholder="Cari komunitas, organisasi, atau topik..."
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+          />
+        </label>
+        <div className="filter-scroll open-party-subjects" aria-label="Filter kategori komunitas">
+          <button type="button" className={!categoryFilter ? 'btn-primary' : 'btn-secondary'} onClick={() => setCategoryFilter('')}>
+            Semua kategori
+          </button>
+          {categories.map((category) => (
+            <button
+              type="button"
+              key={category}
+              className={categoryFilter === category ? 'btn-primary' : 'btn-secondary'}
+              onClick={() => setCategoryFilter(category)}
+            >
+              {category}
+            </button>
+          ))}
+        </div>
+      </section>
 
       {loading ? (
-        <p style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading communities...</p>
-      ) : communities.length === 0 ? (
-        <div className="empty-state" style={{ padding: '3rem 1rem', background: 'var(--card)', borderRadius: 'var(--radius-card)', border: '1px solid var(--border)' }}>
-          <h3>No communities found</h3>
-          <p style={{ color: 'var(--muted)', marginTop: '0.5rem' }}>Be the first to start a campus community!</p>
+        <p className="empty-state">Memuat komunitas...</p>
+      ) : visibleCommunities.length === 0 ? (
+        <div className="empty-state communities-empty">
+          <h3>{communities.length ? 'Komunitas tidak ditemukan' : 'Belum ada komunitas'}</h3>
+          <p>{communities.length ? 'Coba kata kunci atau kategori lain.' : 'Jadilah yang pertama membuat ruang komunitas kampus.'}</p>
         </div>
       ) : (
-        <div className="party-grid">
-          {communities.map((c) => (
-            <div key={c.id} className="party-card">
+        <div className="party-grid communities-grid">
+          {visibleCommunities.map((c) => (
+            <article key={c.id} className="party-card community-card">
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                <span className="tag-subject">{c.category || 'General'}</span>
+                <span className="tag-subject">{c.category || 'Umum'}</span>
                 {c.org_name && (
                   <span style={{ fontSize: '0.75rem', color: 'var(--primary)', fontWeight: 600 }}>
-                    🏛️ {c.org_name} {c.org_status === 'verified' && '✅'}
+                    🏛️ {c.org_name} {c.org_status === 'verified' && '✓'}
                   </span>
                 )}
               </div>
 
-              <h3 style={{ fontSize: '1.2rem', marginBottom: '0.4rem' }}>{c.name}</h3>
+              <span className="community-card-avatar" aria-hidden="true">{c.name.charAt(0).toUpperCase()}</span>
+              <h2>{c.name}</h2>
               <p style={{ fontSize: '0.85rem', color: 'var(--muted)', marginBottom: '1rem', flex: 1 }}>
-                {c.description || 'No description provided.'}
+                {c.description || 'Ruang diskusi untuk komunitas kampus.'}
               </p>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
                 <span style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>
-                  👥 <strong>{c.member_count}</strong> members
+                  👥 <strong>{c.member_count}</strong> anggota
                 </span>
 
                 {c.is_member ? (
-                  <Link to={`/communities/${c.id}`} className="btn-primary" style={{ fontSize: '0.85rem' }}>
-                    Open Chat Room →
+                  <Link to={`/communities/${c.id}`} className="btn-primary" style={{ fontSize: '0.8rem' }}>
+                    Buka Chat Hub →
                   </Link>
                 ) : (
-                  <button onClick={() => handleJoin(c.id)} className="btn-secondary" style={{ fontSize: '0.85rem' }}>
-                    Join Community
+                  <button onClick={() => handleJoin(c.id)} className="btn-secondary" style={{ fontSize: '0.8rem' }}>
+                    Gabung
                   </button>
                 )}
               </div>
-            </div>
+            </article>
           ))}
         </div>
       )}

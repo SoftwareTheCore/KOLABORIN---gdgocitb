@@ -7,10 +7,13 @@ import PlaceMap from '../components/PlaceMap';
 export default function MapPage() {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
-  const { refreshProfile } = useAuth();
+  const { refreshProfile, user, extra } = useAuth();
+  const isOrganization = user?.role === 'organization';
 
   const [places, setPlaces] = useState([]);
   const [selectedPlaceId, setSelectedPlaceId] = useState(null);
+  const [placeSearch, setPlaceSearch] = useState('');
+  const [typeFilter, setTypeFilter] = useState('');
   const [placeGroups, setPlaceGroups] = useState([]);
   const [pendingPins, setPendingPins] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +24,7 @@ export default function MapPage() {
   const [pickedLatLng, setPickedLatLng] = useState(null);
   const [placeForm, setPlaceForm] = useState({
     name: '',
-    type: 'study_spot',
+    type: searchParams.get('organization') ? 'meeting_room' : 'study_spot',
     address: '',
     short_description: ''
   });
@@ -69,13 +72,26 @@ export default function MapPage() {
 
   // When selected place changes, fetch groups at this place
   useEffect(() => {
-    if (!selectedPlaceId) return;
+    if (!selectedPlaceId || isOrganization) {
+      setPlaceGroups([]);
+      return;
+    }
     api.get(`/groups?location=${selectedPlaceId}`)
       .then(res => setPlaceGroups(res.data))
       .catch(console.error);
-  }, [selectedPlaceId]);
+  }, [selectedPlaceId, isOrganization]);
 
-  const selectedPlace = places.find(p => p.id === selectedPlaceId);
+  const normalizedPlaceSearch = placeSearch.trim().toLowerCase();
+  const visiblePlaces = places.filter((place) => {
+    const matchesType = !typeFilter || place.type === typeFilter;
+    const matchesSearch = !normalizedPlaceSearch
+      || [place.name, place.address, place.short_description, place.description]
+        .filter(Boolean)
+        .some((value) => value.toLowerCase().includes(normalizedPlaceSearch));
+    return matchesType && matchesSearch;
+  });
+  const selectedPlace = visiblePlaces.find((place) => place.id === selectedPlaceId);
+  const placeTypes = [...new Set(places.map((place) => place.type).filter(Boolean))];
 
   // Handle map pick for place request
   const handleMapPick = (latlng) => {
@@ -93,10 +109,18 @@ export default function MapPage() {
         address: placeForm.address,
         short_description: placeForm.short_description,
         latitude: pickedLatLng.lat,
-        longitude: pickedLatLng.lng
+        longitude: pickedLatLng.lng,
+        organization_id: user?.role === 'organization'
+          ? searchParams.get('organization') || extra?.ownedOrgs?.[0]?.id || null
+          : null
       });
       setShowRequestModal(false);
-      setPlaceForm({ name: '', type: 'study_spot', address: '', short_description: '' });
+      setPlaceForm({
+        name: '',
+        type: searchParams.get('organization') ? 'meeting_room' : 'study_spot',
+        address: '',
+        short_description: ''
+      });
       showToast('Place request submitted! Pending admin review.');
       loadMapData();
     } catch (err) {
@@ -119,9 +143,40 @@ export default function MapPage() {
   };
 
   return (
-    <div className="map-page-layout">
+    <div className="map-page-layout map-stitch-page">
       {/* Toast Alert */}
       {toast && <div className="toast-pill">{toast}</div>}
+
+      <section className="map-discovery-header">
+        <div className="map-discovery-topline">
+          <div>
+            <span className="eyebrow">ITB Ganesha · Radar kampus</span>
+            <h1>Temukan spot belajar di sekitar</h1>
+          </div>
+          <span className="map-live-count"><span aria-hidden="true">●</span> {places.length} lokasi terpantau</span>
+        </div>
+        <div className="map-discovery-controls">
+          <label className="map-search">
+            <span aria-hidden="true">⌕</span>
+            <input
+              type="search"
+              placeholder="Cari gedung, spot, atau fasilitas..."
+              value={placeSearch}
+              onChange={(event) => setPlaceSearch(event.target.value)}
+            />
+          </label>
+          <div className="map-type-filters" aria-label="Filter tipe lokasi">
+            <button type="button" className={!typeFilter ? 'active' : ''} onClick={() => setTypeFilter('')}>
+              Semua spot
+            </button>
+            {placeTypes.map((type) => (
+              <button type="button" className={typeFilter === type ? 'active' : ''} key={type} onClick={() => setTypeFilter(type)}>
+                {type.replace(/_/g, ' ')}
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* Pick mode banner */}
       {pickMode && (
@@ -137,7 +192,7 @@ export default function MapPage() {
       <div className="map-view-column">
         <div className="map-top-bar">
           <div>
-            <h3>Campus Live Map</h3>
+            <h3>Live Campus Radar</h3>
             <span style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>
               🟢 Live numbers estimate people studying now
             </span>
@@ -154,7 +209,7 @@ export default function MapPage() {
         <div className="map-render-container">
           <PlaceMap
             mini={false}
-            places={places}
+            places={visiblePlaces}
             selectedId={selectedPlaceId}
             onSelect={(id) => setSelectedPlaceId(id)}
             pendingPins={pendingPins}
@@ -166,9 +221,9 @@ export default function MapPage() {
 
         {/* Legend */}
         <div className="map-legend">
-          <span><span className="legend-dot dot-blue"></span> Blue: Place (headcount)</span>
-          <span><span className="legend-dot dot-orange"></span> Orange: Selected</span>
-          <span><span className="legend-dot dot-grey"></span> Grey ⏳: Pending review</span>
+          <span><span className="legend-dot dot-blue"></span> Lokasi belajar</span>
+          <span><span className="legend-dot dot-orange"></span> Lokasi terpilih</span>
+          <span><span className="legend-dot dot-grey"></span> Menunggu verifikasi</span>
         </div>
       </div>
 
@@ -192,58 +247,64 @@ export default function MapPage() {
               </p>
             </div>
 
-            <hr style={{ margin: '1.25rem 0', borderColor: 'var(--border)' }} />
+            {!isOrganization && (
+              <>
+                <hr style={{ margin: '1.25rem 0', borderColor: 'var(--border)' }} />
 
-            <div className="side-panel-groups">
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
-                <h4>Study Groups Here</h4>
-                <Link to="/groups/new" className="btn-secondary" style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>
-                  + New Group
-                </Link>
-              </div>
+                <div className="side-panel-groups">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.75rem' }}>
+                    <h4>Open Party di lokasi ini</h4>
+                    <Link to="/groups/new" className="btn-secondary" style={{ fontSize: '0.75rem', padding: '0.2rem 0.5rem' }}>
+                      + New Group
+                    </Link>
+                  </div>
 
-              {placeGroups.length === 0 ? (
-                <p className="empty-state">No upcoming study groups at this location. Be the first to start one!</p>
-              ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-                  {placeGroups.map(g => (
-                    <div key={g.id} className="group-mini-card">
-                      <span className="tag-subject">{g.subject}</span>
-                      <strong style={{ display: 'block', margin: '0.2rem 0' }}>{g.title}</strong>
-                      <span style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>
-                        🕒 {new Date(g.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {g.member_count}/{g.max_members} members
-                      </span>
-                      <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.4rem' }}>
-                        <Link to={`/groups/${g.id}`} className="btn-secondary" style={{ fontSize: '0.75rem', flex: 1, textAlign: 'center' }}>
-                          Open Space
-                        </Link>
-                        {g.is_member ? (
-                          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--ok)', padding: '0.3rem 0.5rem' }}>
-                            ✓ Joined
+                  {placeGroups.length === 0 ? (
+                    <p className="empty-state">No upcoming study groups at this location. Be the first to start one!</p>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                      {placeGroups.map(g => (
+                        <div key={g.id} className="group-mini-card">
+                          <span className="tag-subject">{g.subject}</span>
+                          <strong style={{ display: 'block', margin: '0.2rem 0' }}>{g.title}</strong>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>
+                            🕒 {new Date(g.scheduled_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} • {g.member_count}/{g.max_members} members
                           </span>
-                        ) : g.status === 'full' ? (
-                          <span style={{ fontSize: '0.75rem', color: 'var(--danger)', padding: '0.3rem 0.5rem' }}>
-                            Full
-                          </span>
-                        ) : (
-                          <button
-                            onClick={() => handleJoinGroup(g.id)}
-                            className="btn-primary"
-                            style={{ fontSize: '0.75rem', padding: '0.3rem 0.6rem' }}
-                          >
-                            Join (+5 pts)
-                          </button>
-                        )}
-                      </div>
+                          <div style={{ marginTop: '0.5rem', display: 'flex', gap: '0.4rem' }}>
+                            <Link to={`/groups/${g.id}`} className="btn-secondary" style={{ fontSize: '0.75rem', flex: 1, textAlign: 'center' }}>
+                              Open Space
+                            </Link>
+                            {g.is_member ? (
+                              <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--ok)', padding: '0.3rem 0.5rem' }}>
+                                ✓ Joined
+                              </span>
+                            ) : g.status === 'full' ? (
+                              <span style={{ fontSize: '0.75rem', color: 'var(--danger)', padding: '0.3rem 0.5rem' }}>
+                                Full
+                              </span>
+                            ) : (
+                              <button
+                                onClick={() => handleJoinGroup(g.id)}
+                                className="btn-primary"
+                                style={{ fontSize: '0.75rem', padding: '0.3rem 0.6rem' }}
+                              >
+                                Join (+5 pts)
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      ))}
                     </div>
-                  ))}
+                  )}
                 </div>
-              )}
-            </div>
+              </>
+            )}
           </div>
         ) : (
           <div className="empty-state" style={{ marginTop: '3rem' }}>
-            Select a location on the map to see details and study groups.
+            {isOrganization
+              ? 'Select a location on the map to see its details.'
+              : 'Select a location on the map to see details and study groups.'}
           </div>
         )}
       </div>

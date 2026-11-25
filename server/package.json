@@ -7,6 +7,7 @@
     "start": "node src/index.js",
     "dev": "node --watch src/index.js",
     "seed": "node db/seed.js",
+    "seed:live-spot": "node db/seedLiveSpotDemo.js",
     "test:chatbot": "node src/services/chatbot.test.js",
     "test:audit": "node src/services/audit.test.js"
   },

@@ -3,9 +3,9 @@ export const strings = {
   tagline: 'Lebih Banyak Koneksi, Lebih Berkolaborasi',
   nav: {
     home: 'Home',
-    map: 'Map',
+    map: 'Live Map',
     party: 'Open Party',
-    communities: 'Communities',
+    communities: 'Chat Hub',
     events: 'Events',
     leaderboard: 'Leaderboard',
     profile: 'Profile',

@@ -1,6 +1,7 @@
 require('dotenv').config();
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
+const seedLiveSpotDemo = require('./seedLiveSpotDemo');
 
 async function seed() {
   const pool = mysql.createPool({
@@ -21,7 +22,7 @@ async function seed() {
   await pool.query('SET FOREIGN_KEY_CHECKS = 0');
   const tables = [
     'user_badges', 'badges', 'point_transactions', 'point_rules',
-    'event_applications', 'events', 'community_messages', 'community_members',
+    'organization_meetings', 'event_applications', 'events', 'community_messages', 'community_members',
     'communities', 'group_posts', 'study_group_members', 'study_groups',
     'place_requests', 'locations', 'collaboration_requests', 'organizations',
     'users'
@@ -203,6 +204,8 @@ async function seed() {
     (4, 3, 'Intro to Flutter & Cross-Platform UI', 'Tutorial membangun antarmuka web dan mobile dalam satu codebase menggunakan Flutter.', 1, DATE_ADD(NOW(), INTERVAL 10 DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL 10 DAY), INTERVAL 3 HOUR), 40, 'published'),
     (5, 1, 'Career Prep: Software Engineering Mock Interview', 'Sesi latihan wawancara teknis dan review resume bersama para alumni industri teknologi.', 6, DATE_ADD(NOW(), INTERVAL 14 DAY), DATE_ADD(DATE_ADD(NOW(), INTERVAL 14 DAY), INTERVAL 4 HOUR), 25, 'published')
   `);
+
+  await seedLiveSpotDemo(pool);
 
   await pool.query(`
     INSERT INTO event_applications (event_id, user_id, message, status) VALUES

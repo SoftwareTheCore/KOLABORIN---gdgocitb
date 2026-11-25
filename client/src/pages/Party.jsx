@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import api from '../api';
 
 export default function Party() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { refreshProfile } = useAuth();
   const [groups, setGroups] = useState([]);
   const [subjectFilter, setSubjectFilter] = useState('');
+  const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
   const [loading, setLoading] = useState(true);
   const [toast, setToast] = useState('');
 
@@ -32,6 +34,10 @@ export default function Party() {
     fetchGroups();
   }, [subjectFilter]);
 
+  useEffect(() => {
+    setSearchTerm(searchParams.get('search') || '');
+  }, [searchParams]);
+
   const handleJoin = async (groupId) => {
     try {
       const res = await api.post(`/groups/${groupId}/join`);
@@ -45,25 +51,50 @@ export default function Party() {
 
   // Distinct subjects for filter
   const subjects = ['All', 'Database Systems', 'Calculus', 'Data Structures', 'Linear Algebra', 'Thermodynamics', 'Software Engineering'];
+  const normalizedSearch = searchTerm.trim().toLowerCase();
+  const filteredGroups = groups.filter((group) => {
+    if (!normalizedSearch) return true;
+    return [group.title, group.subject, group.description, group.creator_name, group.location_name]
+      .filter(Boolean)
+      .some((value) => value.toLowerCase().includes(normalizedSearch));
+  });
+  const availableSeats = groups.reduce(
+    (total, group) => total + Math.max(0, Number(group.max_members) - Number(group.member_count)),
+    0
+  );
 
   return (
-    <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1100px', margin: '0 auto' }}>
+    <div className="container open-party-page">
       {toast && <div className="toast-pill">{toast}</div>}
 
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem', marginBottom: '1.5rem' }}>
+      <section className="open-party-hero">
         <div>
-          <h2>Open Party 🎉</h2>
-          <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-            Find study partners, join active study sessions, and ask questions.
-          </p>
+          <span className="eyebrow">Kampus ITB · Open Party</span>
+          <h1>Temukan teman belajar sefrekuensi</h1>
+          <p>Cari sesi belajar, gabung meja yang tersedia, atau buka ruang belajarmu sendiri.</p>
         </div>
         <Link to="/groups/new" className="btn-primary">
-          ➕ Create Study Group
+          ＋ Buat Open Party
         </Link>
+      </section>
+
+      <div className="open-party-stats">
+        <div><span>Sesi tersedia</span><strong>{groups.length}</strong></div>
+        <div><span>Kursi kosong</span><strong>{availableSeats}</strong></div>
+        <div><span>Lokasi kampus</span><strong>{new Set(groups.map((group) => group.location_name).filter(Boolean)).size}</strong></div>
       </div>
 
-      {/* Filter Tabs */}
-      <div className="filter-scroll" style={{ display: 'flex', gap: '0.5rem', overflowX: 'auto', paddingBottom: '0.5rem', marginBottom: '1.5rem' }}>
+      <section className="open-party-filters">
+        <label className="open-party-search">
+          <span aria-hidden="true">⌕</span>
+          <input
+            type="search"
+            placeholder="Cari mata kuliah, topik, host, atau lokasi..."
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+          />
+        </label>
+        <div className="filter-scroll open-party-subjects">
         {subjects.map(s => {
           const isSelected = (s === 'All' && !subjectFilter) || subjectFilter === s;
           return (
@@ -71,30 +102,31 @@ export default function Party() {
               key={s}
               onClick={() => setSubjectFilter(s === 'All' ? '' : s)}
               className={isSelected ? 'btn-primary' : 'btn-secondary'}
-              style={{ fontSize: '0.85rem', padding: '0.35rem 0.85rem', borderRadius: '9999px', whiteSpace: 'nowrap' }}
+              style={{ fontSize: '0.8rem', padding: '0.4rem 0.85rem', borderRadius: '9999px', whiteSpace: 'nowrap' }}
             >
-              {s}
+              {s === 'All' ? 'Semua topik' : s}
             </button>
           );
         })}
-      </div>
+        </div>
+      </section>
 
       {loading ? (
-        <p style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading study groups...</p>
-      ) : groups.length === 0 ? (
-        <div className="empty-state" style={{ padding: '3rem 1rem', background: 'var(--card)', borderRadius: 'var(--radius-card)', border: '1px solid var(--border)' }}>
-          <h3>No study groups found</h3>
-          <p style={{ color: 'var(--muted)', marginTop: '0.5rem' }}>Be the first to create one for this subject!</p>
+        <p className="empty-state">Memuat sesi belajar...</p>
+      ) : filteredGroups.length === 0 ? (
+        <div className="empty-state open-party-empty">
+          <h3>{groups.length ? 'Tidak ada sesi yang cocok' : 'Belum ada sesi belajar'}</h3>
+          <p>{groups.length ? 'Coba kata kunci atau topik lain.' : 'Jadilah yang pertama membuka meja belajar di kampus.'}</p>
           <Link to="/groups/new" className="btn-primary" style={{ marginTop: '1rem' }}>
-            Create Study Group
+            Buat Open Party
           </Link>
         </div>
       ) : (
-        <div className="party-grid">
-          {groups.map(g => {
+        <div className="party-grid open-party-grid">
+          {filteredGroups.map(g => {
             const percent = Math.min(100, (g.member_count / g.max_members) * 100);
             return (
-              <div key={g.id} className="party-card">
+              <article key={g.id} className="party-card open-party-card">
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                   <span className="tag-subject">{g.subject}</span>
                   <span className={`status-badge status-${g.status === 'open' ? 'verified' : 'pending'}`}>
@@ -102,7 +134,7 @@ export default function Party() {
                   </span>
                 </div>
 
-                <h3 style={{ fontSize: '1.15rem', marginBottom: '0.4rem' }}>{g.title}</h3>
+                <h2 style={{ fontSize: '1.15rem', marginBottom: '0.4rem' }}>{g.title}</h2>
                 <p style={{ fontSize: '0.85rem', color: 'var(--muted)', marginBottom: '0.75rem', flex: 1 }}>
                   {g.description || 'No description provided.'}
                 </p>
@@ -146,7 +178,7 @@ export default function Party() {
                     </button>
                   )}
                 </div>
-              </div>
+              </article>
             );
           })}
         </div>

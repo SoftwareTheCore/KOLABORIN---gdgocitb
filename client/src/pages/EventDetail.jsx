@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { QRCodeSVG } from 'qrcode.react';
 import { useAuth } from '../auth/AuthContext';
 import api from '../api';
 import PlaceMap from '../components/PlaceMap';
@@ -13,6 +14,9 @@ export default function EventDetail() {
   const [applyMessage, setApplyMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [toast, setToast] = useState('');
+  const [ticketCode, setTicketCode] = useState('');
+  const [ticketLoading, setTicketLoading] = useState(false);
+  const [ticketError, setTicketError] = useState('');
 
   const showToast = (msg) => {
     setToast(msg);
@@ -35,6 +39,34 @@ export default function EventDetail() {
   useEffect(() => {
     loadEvent();
   }, [id]);
+
+  useEffect(() => {
+    if (!data || data.isOwner || data.myApplication?.status !== 'accepted') {
+      setTicketCode('');
+      setTicketError('');
+      setTicketLoading(false);
+      return undefined;
+    }
+
+    let active = true;
+    setTicketLoading(true);
+    setTicketError('');
+    api.get(`/events/${id}/ticket`)
+      .then((response) => {
+        if (active) setTicketCode(response.data.ticketCode);
+      })
+      .catch((err) => {
+        console.error('Failed to load event QR ticket:', err);
+        if (active) setTicketError(err.response?.data?.error || 'Tiket QR tidak dapat dimuat.');
+      })
+      .finally(() => {
+        if (active) setTicketLoading(false);
+      });
+
+    return () => {
+      active = false;
+    };
+  }, [id, data?.isOwner, data?.myApplication?.status]);
 
   const handleApply = async (e) => {
     e.preventDefault();
@@ -141,9 +173,44 @@ export default function EventDetail() {
               <p>Your current application status is: <strong>{myApplication.status.toUpperCase()}</strong></p>
               {myApplication.message && <p style={{ fontSize: '0.85rem', color: 'var(--muted)', marginTop: '0.3rem' }}>Note sent: "{myApplication.message}"</p>}
               {myApplication.status === 'accepted' && (
-                <p style={{ color: 'var(--ok)', fontWeight: 600, marginTop: '0.5rem' }}>
-                  🎉 You are accepted! You have earned +20 event attendance points.
-                </p>
+                <>
+                  <p style={{ color: 'var(--ok)', fontWeight: 600, marginTop: '0.5rem' }}>
+                    🎉 Pendaftaranmu diterima. Tunjukkan tiket QR ini saat check-in event.
+                  </p>
+                  <section className="event-ticket-card" aria-label="Tiket QR event">
+                    <div>
+                      <span className="eyebrow">Tiket peserta</span>
+                      <h4>{event.title}</h4>
+                      <p>Simpan QR ini dan tunjukkan ke panitia saat masuk. Tiket hanya dapat digunakan satu kali.</p>
+                      {ticketCode && (
+                        <button
+                          type="button"
+                          className="btn-secondary"
+                          onClick={async () => {
+                            try {
+                              await navigator.clipboard.writeText(ticketCode);
+                              showToast('Kode tiket berhasil disalin.');
+                            } catch (err) {
+                              console.error('Failed to copy event ticket code:', err);
+                              setTicketError('Kode tidak dapat disalin. Tampilkan QR tiket kepada panitia.');
+                            }
+                          }}
+                        >
+                          Salin kode manual
+                        </button>
+                      )}
+                    </div>
+                    <div className="event-ticket-qr">
+                      {ticketLoading ? (
+                        <span>Memuat tiket…</span>
+                      ) : ticketCode ? (
+                        <QRCodeSVG value={ticketCode} size={160} level="M" includeMargin />
+                      ) : (
+                        <span role={ticketError ? 'alert' : undefined}>{ticketError || 'Tiket QR belum tersedia.'}</span>
+                      )}
+                    </div>
+                  </section>
+                </>
               )}
             </div>
           ) : (
