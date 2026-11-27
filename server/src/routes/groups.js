@@ -85,6 +85,10 @@ router.post('/', authMiddleware, async (req, res, next) => {
       'INSERT INTO study_group_members (group_id, user_id) VALUES (?, ?)',
       [groupId, creatorId]
     );
+    await conn.query(
+      'INSERT INTO study_group_membership_history (group_id, user_id) VALUES (?, ?)',
+      [groupId, creatorId]
+    );
 
     await conn.commit();
     res.status(201).json({ id: groupId, message: 'Study group created successfully.' });
@@ -270,12 +274,11 @@ router.post('/:id/check-ins', authMiddleware, async (req, res, next) => {
 
 // POST /api/groups/:id/join (Transaction with row-level lock)
 router.post('/:id/join', authMiddleware, async (req, res, next) => {
+  if (req.user.role !== 'student') {
+    return res.status(403).json({ error: 'Only students can join study groups.' });
+  }
   const conn = await pool.getConnection();
   try {
-    if (req.user.role !== 'student') {
-      await conn.rollback();
-      return res.status(403).json({ error: 'Only students can join study groups.' });
-    }
     await conn.beginTransaction();
     const groupId = req.params.id;
     const userId = req.user.id;
@@ -323,6 +326,10 @@ router.post('/:id/join', authMiddleware, async (req, res, next) => {
     // 4. Insert membership
     await conn.query(
       'INSERT INTO study_group_members (group_id, user_id) VALUES (?, ?)',
+      [groupId, userId]
+    );
+    await conn.query(
+      'INSERT INTO study_group_membership_history (group_id, user_id) VALUES (?, ?)',
       [groupId, userId]
     );
 
@@ -377,6 +384,13 @@ router.delete('/:id/join', authMiddleware, async (req, res, next) => {
       await conn.rollback();
       return res.status(409).json({ error: 'You are not a member of this group.' });
     }
+    await conn.query(
+      `UPDATE study_group_membership_history
+       SET ended_at = NOW(), ended_by = ?, end_reason = 'left'
+       WHERE group_id = ? AND user_id = ? AND ended_at IS NULL
+       ORDER BY id DESC LIMIT 1`,
+      [userId, groupId, userId]
+    );
 
     // Revert status to open only when the remaining count is below the limit
     if (groupRows[0].status === 'full') {
@@ -395,6 +409,67 @@ router.delete('/:id/join', authMiddleware, async (req, res, next) => {
 
     await conn.commit();
     res.json({ message: 'Successfully left the group.' });
+  } catch (err) {
+    await conn.rollback();
+    next(err);
+  } finally {
+    conn.release();
+  }
+});
+
+// DELETE /api/groups/:id/members/:userId (Only the creator can remove another member)
+router.delete('/:id/members/:userId', authMiddleware, async (req, res, next) => {
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+    const groupId = req.params.id;
+    const targetUserId = Number(req.params.userId);
+
+    const [groupRows] = await conn.query(
+      'SELECT creator_id, max_members, status FROM study_groups WHERE id = ? FOR UPDATE',
+      [groupId]
+    );
+    if (groupRows.length === 0) {
+      await conn.rollback();
+      return res.status(404).json({ error: 'Group not found.' });
+    }
+    if (groupRows[0].creator_id !== req.user.id) {
+      await conn.rollback();
+      return res.status(403).json({ error: 'Hanya host yang dapat mengeluarkan anggota.' });
+    }
+    if (!Number.isInteger(targetUserId) || targetUserId === req.user.id) {
+      await conn.rollback();
+      return res.status(400).json({ error: 'Host tidak dapat mengeluarkan dirinya sendiri.' });
+    }
+
+    const [deleteResult] = await conn.query(
+      'DELETE FROM study_group_members WHERE group_id = ? AND user_id = ?',
+      [groupId, targetUserId]
+    );
+    if (deleteResult.affectedRows === 0) {
+      await conn.rollback();
+      return res.status(404).json({ error: 'Anggota tidak ditemukan di Open Party ini.' });
+    }
+    await conn.query(
+      `UPDATE study_group_membership_history
+       SET ended_at = NOW(), ended_by = ?, end_reason = 'kicked'
+       WHERE group_id = ? AND user_id = ? AND ended_at IS NULL
+       ORDER BY id DESC LIMIT 1`,
+      [req.user.id, groupId, targetUserId]
+    );
+
+    if (groupRows[0].status === 'full') {
+      const [[countRow]] = await conn.query(
+        'SELECT COUNT(*) AS count FROM study_group_members WHERE group_id = ?',
+        [groupId]
+      );
+      if (countRow.count < groupRows[0].max_members) {
+        await conn.query("UPDATE study_groups SET status = 'open' WHERE id = ?", [groupId]);
+      }
+    }
+
+    await conn.commit();
+    res.json({ message: 'Anggota berhasil dikeluarkan dari Open Party.' });
   } catch (err) {
     await conn.rollback();
     next(err);

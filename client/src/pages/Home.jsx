@@ -76,10 +76,7 @@ export default function Home() {
 
   useEffect(() => {
     fetchHomeData();
-    // Auto-refresh every 30 seconds as per Section 5.2 (FR-HOME-2)
-    const interval = setInterval(() => {
-      fetchHomeData();
-    }, 30000);
+    const interval = setInterval(fetchHomeData, 30000);
     return () => clearInterval(interval);
   }, [user?.role, rangeDays]);
 
@@ -183,7 +180,7 @@ export default function Home() {
             <>
               <NavLink to={`/orgs/${orgs[0].id}/events`}>Event &amp; Workshop</NavLink>
               <NavLink to={`/orgs/${orgs[0].id}/recruitment`}>Rekrutmen</NavLink>
-              <NavLink to={`/orgs/${orgs[0].id}/live-spot`}>Live Spot</NavLink>
+              <NavLink to={`/orgs/${orgs[0].id}/live-spot`}>Ruang &amp; Venue</NavLink>
               <NavLink to={`/orgs/${orgs[0].id}/settings`}>Pengaturan Organisasi</NavLink>
             </>
           )}
@@ -606,7 +603,7 @@ export default function Home() {
       </section>
       </div>
 
-      {/* 4. Card Grid: Busiest now, Groups, Events, Communities, Top 3 */}
+      {/* 4. Card Grid: busiest locations, groups, events, communities, top 3 */}
       <div className="dashboard-grid" style={{ marginTop: '1.5rem' }}>
         {/* Busiest places now */}
         <div className="dash-card">
@@ -628,9 +625,7 @@ export default function Home() {
                     <strong>{place.name}</strong>
                     <p style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>{place.short_description}</p>
                   </div>
-                  <span className="live-headcount-badge">
-                    🟢 {place.active_people}
-                  </span>
+                  <span className="live-headcount-badge">● {place.active_people}</span>
                 </div>
               ))}
             </div>

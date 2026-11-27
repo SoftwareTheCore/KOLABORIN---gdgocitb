@@ -7,7 +7,7 @@ CREATE TABLE users (
   password_hash VARCHAR(255) NOT NULL,
   name VARCHAR(100) NOT NULL,
   role ENUM('student','organization','admin') NOT NULL DEFAULT 'student',
-  faculty VARCHAR(100), major VARCHAR(100), bio TEXT,
+  faculty VARCHAR(100), major VARCHAR(100), bio TEXT, avatar_data MEDIUMTEXT,
   total_points INT NOT NULL DEFAULT 0,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -112,6 +112,21 @@ CREATE TABLE study_group_members (
   FOREIGN KEY (group_id) REFERENCES study_groups(id) ON DELETE CASCADE,
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
   FOREIGN KEY (checked_in_by) REFERENCES users(id) ON DELETE SET NULL
+);
+
+CREATE TABLE study_group_membership_history (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  group_id INT NOT NULL,
+  user_id INT NOT NULL,
+  joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  ended_at DATETIME NULL,
+  ended_by INT NULL,
+  end_reason ENUM('left', 'kicked') NULL,
+  INDEX idx_membership_history_user (user_id, joined_at),
+  INDEX idx_membership_history_group (group_id, user_id, ended_at),
+  FOREIGN KEY (group_id) REFERENCES study_groups(id) ON DELETE CASCADE,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (ended_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
 CREATE TABLE group_posts (

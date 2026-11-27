@@ -111,7 +111,7 @@ function PomodoroTimer() {
   );
 }
 
-export default function StudyRoomSidebar({ group, members }) {
+export default function StudyRoomSidebar({ group, members, isCreator = false, onKick, kickingUserId = null }) {
   const maxMembers = Number(group.max_members) || members.length;
   const emptySeats = Math.max(0, maxMembers - members.length);
 
@@ -143,6 +143,16 @@ export default function StudyRoomSidebar({ group, members }) {
                 <small className={`party-member-checkin ${member.checked_in_at ? 'is-checked-in' : ''}`}>
                   {member.checked_in_at ? 'Hadir terverifikasi' : 'Belum check-in'}
                 </small>
+                {isCreator && !isHost && (
+                  <button
+                    type="button"
+                    className="party-member-kick"
+                    onClick={() => onKick(member)}
+                    disabled={kickingUserId === member.user_id}
+                  >
+                    {kickingUserId === member.user_id ? 'Mengeluarkan…' : 'Keluarkan'}
+                  </button>
+                )}
               </div>
             );
           })}

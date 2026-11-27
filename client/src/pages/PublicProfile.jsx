@@ -32,7 +32,9 @@ export default function PublicProfile() {
     <div className="container" style={{ padding: '2rem 1rem', maxWidth: '800px', margin: '0 auto' }}>
       <div className="profile-card">
         <div className="profile-header">
-          <div className="avatar-circle">{user.name.charAt(0).toUpperCase()}</div>
+          <div className="avatar-circle">
+            {user.avatar_data ? <img src={user.avatar_data} alt="" /> : user.name.charAt(0).toUpperCase()}
+          </div>
           <div>
             <h2>{user.name}</h2>
             <p className="profile-meta">
@@ -53,6 +55,10 @@ export default function PublicProfile() {
           <div className="stat-card">
             <span className="stat-label">Verified Badges</span>
             <span className="stat-val">🏅 {badges.length}</span>
+          </div>
+          <div className="stat-card">
+            <span className="stat-label">Study Group Diikuti</span>
+            <span className="stat-val">{user.groups_joined_count ?? 0}</span>
           </div>
         </div>
 

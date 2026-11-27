@@ -193,7 +193,7 @@ export default function MapPage() {
                 </div>
               )}
               <div style={{ marginTop: '0.6rem' }} className="live-headcount-badge">
-                ● {selectedPlace.active_people} mahasiswa belajar · {selectedPlace.active_groups} Open Party aktif
+                ● {selectedPlace.active_people || 0} mahasiswa belajar · {selectedPlace.active_groups || 0} Open Party aktif
               </div>
               <p style={{ fontSize: '0.9rem', marginTop: '0.75rem', lineHeight: 1.5 }}>
                 {isOrganization

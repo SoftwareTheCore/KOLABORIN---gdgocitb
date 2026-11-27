@@ -15,8 +15,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl,
 });
 
-// Custom HTML DivIcon showing live headcount numbers
-function createPlaceIcon(count, isSelected = false) {
+function createPlaceIcon(count = 0, isSelected = false) {
   return L.divIcon({
     className: 'custom-map-marker',
     html: `
@@ -124,7 +123,7 @@ export default function PlaceMap({
                   <strong>{place.name}</strong>
                   {place.short_description && <p>{place.short_description}</p>}
                   <span className="tooltip-live-tag">
-                    🟢 {place.active_people || 0} people studying now
+                    ● {place.active_people || 0} mahasiswa sedang belajar
                   </span>
                 </div>
               </Tooltip>

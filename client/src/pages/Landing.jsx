@@ -24,58 +24,50 @@ export default function Landing() {
   const spots = [
     {
       id: 1,
-      name: 'Perpustakaan Pusat',
-      sub: 'Lantai 2 - Area Skripsi & Tesis',
-      occupancy: '74% Penuh',
-      occupancyColor: 'error',
-      tag: 'Silent Reading',
+      name: 'Central Library ITB',
+      sub: 'Gedung Perpustakaan Pusat',
+      tag: 'Area tenang',
       tagIcon: 'volume_off',
-      students: 42,
-      ports: '18 Colokan',
-      condition: 'Tenang · ber-AC',
-      wifi: '85 Mbps',
+      capacity: '40 kursi belajar',
+      facilities: 'Stopkontak di area meja',
+      condition: 'Suasana tenang',
+      wifi: 'Wi-Fi kampus',
       category: 'Silent Area',
     },
     {
       id: 2,
-      name: 'Labtek V Co-working',
-      sub: 'STEI / FTI Lantai Dasar',
-      occupancy: '28% Penuh',
-      occupancyColor: 'secondary',
-      tag: 'Lengang & Cepat',
+      name: 'Labtek V Discussion Room',
+      sub: 'Labtek V STEI Lt. 2',
+      tag: 'Diskusi kelompok',
       tagIcon: 'bolt',
-      students: 16,
-      ports: '34 Colokan',
-      condition: 'Area kolaborasi',
-      wifi: 'Super WiFi',
+      capacity: '12 kursi',
+      facilities: 'Whiteboard & stopkontak',
+      condition: 'Ruang diskusi',
+      wifi: 'Wi-Fi kampus',
       category: 'Co-Working',
     },
     {
       id: 3,
-      name: 'Kantin Selasar Barat',
-      sub: 'Outdoor Discussion & Kuliner',
-      occupancy: '88% Penuh',
-      occupancyColor: 'error',
-      tag: 'Ramai & Makan',
+      name: 'Kantin Borju (Boromeus)',
+      sub: 'Area Kantin Borju',
+      tag: 'Tempat santai',
       tagIcon: 'restaurant',
-      students: 64,
-      ports: '6 Colokan',
-      condition: 'Area ramai',
-      wifi: 'Makanan Dekat',
+      capacity: '24 kursi bersama',
+      facilities: 'Colokan terbatas',
+      condition: 'Makanan tersedia',
+      wifi: 'Wi-Fi publik',
       category: 'Outdoor Cafe',
     },
     {
       id: 4,
-      name: 'Selasar TVST Co-working',
-      sub: 'Outdoor Group Work Area',
-      occupancy: '45% Penuh',
-      occupancyColor: 'primary',
-      tag: 'Diskusi Santai',
+      name: 'Taman Cinta Labtek VIII',
+      sub: 'Taman Labtek VIII',
+      tag: 'Ruang terbuka',
       tagIcon: 'groups',
-      students: 24,
-      ports: '14 Colokan',
-      condition: 'Area terbuka',
-      wifi: '60 Mbps',
+      capacity: '20 tempat duduk',
+      facilities: 'Area hijau',
+      condition: 'Tempat duduk terbuka',
+      wifi: 'Wi-Fi tidak stabil',
       category: 'Co-Working',
     },
   ];
@@ -118,7 +110,7 @@ export default function Landing() {
                 className={navClass('campus-radar')}
                 aria-current={activeSection === 'campus-radar' ? 'location' : undefined}
               >
-                Live Map
+                Campus Radar
               </a>
               <a
                 href="#feature-open-party"
@@ -210,12 +202,12 @@ export default function Landing() {
                         <span className="st-ping-anim"></span>
                         <span className="st-ping-static"></span>
                       </span>
-                      <span className="st-preview-tag">PRATINJAU CAMPUS RADAR</span>
+                      <span className="st-preview-tag">INFO LOKASI · CONTOH</span>
                     </div>
 
                     <div className="st-active-students-pill">
                       <span className="material-symbols-outlined text-primary" style={{ fontSize: '16px', color: '#3525cd' }}>groups</span>
-                      <span>4 spot contoh</span>
+                      <span>Fasilitas &amp; deskripsi</span>
                     </div>
                   </div>
 
@@ -234,8 +226,8 @@ export default function Landing() {
                     <div className="st-floating-beacon beacon-1" onClick={() => navigate('/login')}>
                       <span className="st-beacon-dot st-bg-error"></span>
                       <div className="st-beacon-info">
-                        <span className="st-beacon-title">Perpus Pusat Lt. 2</span>
-                        <span className="st-beacon-sub text-error">74% Penuh (Silent)</span>
+                        <span className="st-beacon-title">Perpustakaan Pusat</span>
+                        <span className="st-beacon-sub">Area baca · 40 kursi</span>
                       </div>
                     </div>
 
@@ -243,8 +235,8 @@ export default function Landing() {
                     <div className="st-floating-beacon beacon-2" onClick={() => navigate('/login')}>
                       <span className="st-beacon-dot st-bg-secondary"></span>
                       <div className="st-beacon-info">
-                        <span className="st-beacon-title">Labtek V STEI</span>
-                        <span className="st-beacon-sub text-secondary">28% Penuh (Lengang)</span>
+                        <span className="st-beacon-title">Labtek V Discussion Room</span>
+                        <span className="st-beacon-sub">Ruang diskusi · 12 kursi</span>
                       </div>
                     </div>
                   </div>
@@ -257,17 +249,11 @@ export default function Landing() {
                       </div>
                       <div className="st-study-info">
                         <div className="st-study-heading">
-                          <span className="st-study-title">Tubes IF2211 Strategi Algoritma</span>
-                          <span className="st-study-badge">Tersisa 1 Slot</span>
+                          <span className="st-study-title">Open Party Study Group</span>
+                          <span className="st-study-badge">Contoh informasi</span>
                         </div>
                         <div className="st-study-meta">
-                          <span>Meja 4, Gedung Labtek V</span>
-                          <span>•</span>
-                          <div className="st-study-avatars">
-                            <span className="st-avatar-mini" style={{ backgroundColor: '#c3c0ff', color: '#0f0069' }}>FA</span>
-                            <span className="st-avatar-mini" style={{ backgroundColor: '#6ffbbe', color: '#002113' }}>MI</span>
-                            <span className="st-avatar-mini" style={{ backgroundColor: '#eaedff', color: '#131b2e' }}>+2</span>
-                          </div>
+                          <span>Topik, jadwal, kapasitas, dan check-in QR</span>
                         </div>
                       </div>
                     </div>
@@ -331,9 +317,9 @@ export default function Landing() {
                     <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>radar</span>
                   </div>
                   <span className="st-pillar-tag">Info Lokasi &amp; Fasilitas</span>
-                  <h3 className="st-pillar-title">Live Map &amp; Radar Spot</h3>
+                  <h3 className="st-pillar-title">Campus Radar &amp; Info Lokasi</h3>
                   <p className="st-pillar-desc">
-                    Gunakan filter jenis spot, lalu bandingkan okupansi, perkiraan pengunjung, sisa colokan, dan fasilitas Wi-Fi untuk memilih tempat belajar.
+                    Gunakan filter jenis spot, lalu baca deskripsi, kapasitas tempat duduk, fasilitas Wi-Fi dan colokan, serta rating lokasi.
                   </p>
                 </div>
                 <div className="st-pillar-link text-primary">
@@ -399,7 +385,7 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* LIVE CAMPUS GRID SHOWCASE */}
+        {/* CAMPUS RADAR LOCATION INFORMATION */}
         <section className="st-spots-section" id="campus-radar">
           <div className="st-container">
             <div className="st-spots-header">
@@ -409,11 +395,11 @@ export default function Landing() {
                     <span className="st-ping-anim"></span>
                     <span className="st-ping-static"></span>
                   </span>
-                  <span className="st-feed-text">PRATINJAU CAMPUS RADAR</span>
+                  <span className="st-feed-text">CONTOH INFORMASI CAMPUS RADAR</span>
                 </div>
                 <h2 className="st-spots-heading">Pilih Spot Belajar yang Sesuai</h2>
                 <p className="st-spots-subtitle">
-                  Contoh ringkasan spot: tingkat keramaian, perkiraan pengunjung, sisa colokan, kondisi ruang, dan Wi-Fi.
+                  Contoh informasi fasilitas yang membantu mahasiswa memilih tempat tanpa menampilkan perkiraan keramaian realtime.
                 </p>
               </div>
 
@@ -435,9 +421,7 @@ export default function Landing() {
                 <div key={spot.id} className="st-spot-card">
                   <div className="st-spot-body">
                     <div className="st-spot-top">
-                      <span className={`st-occ-pill st-occ-${spot.occupancyColor}`}>
-                        {spot.occupancy}
-                      </span>
+                      <span className="st-occ-pill st-occ-primary">{spot.category}</span>
                       <div className="st-spot-tag">
                         <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>{spot.tagIcon}</span>
                         <span>{spot.tag}</span>
@@ -449,12 +433,12 @@ export default function Landing() {
 
                     <div className="st-spot-matrix">
                       <div>
-                        <b>{spot.students}</b>
-                        <span>Mahasiswa</span>
+                        <b>{spot.capacity}</b>
+                        <span>Kapasitas</span>
                       </div>
                       <div>
-                        <b>{spot.ports}</b>
-                        <span>Sisa Port</span>
+                        <b>{spot.facilities}</b>
+                        <span>Fasilitas</span>
                       </div>
                       <div>
                         <b>{spot.condition}</b>

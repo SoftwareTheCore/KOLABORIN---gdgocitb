@@ -11,7 +11,8 @@ router.get('/me', authMiddleware, async (req, res, next) => {
 
     // 1. User info & rank
     const [userRows] = await pool.query(
-      `SELECT u.id, u.name, u.email, u.role, u.faculty, u.major, u.bio, u.total_points, u.created_at,
+      `SELECT u.id, u.name, u.email, u.role, u.faculty, u.major, u.bio, u.avatar_data, u.total_points, u.created_at,
+              (SELECT COUNT(*) FROM study_group_membership_history mh WHERE mh.user_id = u.id) AS groups_joined_count,
               COALESCE(l.rank_no, 0) AS \`rank\`
        FROM users u
        LEFT JOIN leaderboard l ON l.user_id = u.id
@@ -79,12 +80,60 @@ router.get('/me', authMiddleware, async (req, res, next) => {
   }
 });
 
+// PATCH /api/me (Update the current user's name and profile photo)
+router.patch('/me', authMiddleware, async (req, res, next) => {
+  try {
+    const updates = [];
+    const values = [];
+
+    if (Object.prototype.hasOwnProperty.call(req.body, 'name')) {
+      if (typeof req.body.name !== 'string' || !req.body.name.trim() || req.body.name.trim().length > 100) {
+        return res.status(400).json({ error: 'Nama wajib diisi dan maksimal 100 karakter.' });
+      }
+      updates.push('name = ?');
+      values.push(req.body.name.trim());
+    }
+
+    if (Object.prototype.hasOwnProperty.call(req.body, 'avatar_data')) {
+      const avatarData = req.body.avatar_data;
+      if (avatarData !== null && (
+        typeof avatarData !== 'string'
+        || avatarData.length > 700000
+        || !/^data:image\/(?:jpeg|png|webp);base64,[A-Za-z0-9+/]+={0,2}$/.test(avatarData)
+      )) {
+        return res.status(400).json({ error: 'Foto profil tidak valid atau ukurannya terlalu besar.' });
+      }
+      updates.push('avatar_data = ?');
+      values.push(avatarData);
+    }
+
+    if (updates.length === 0) {
+      return res.status(400).json({ error: 'Tidak ada perubahan profil yang dikirim.' });
+    }
+
+    values.push(req.user.id);
+    await pool.query(`UPDATE users SET ${updates.join(', ')} WHERE id = ?`, values);
+    const [rows] = await pool.query(
+      'SELECT id, name, email, role, faculty, major, avatar_data FROM users WHERE id = ?',
+      [req.user.id]
+    );
+    if (rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ user: rows[0], message: 'Profil berhasil diperbarui.' });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // GET /api/users/:id (Public profile)
 router.get('/users/:id', authMiddleware, async (req, res, next) => {
   try {
     const targetId = req.params.id;
     const [rows] = await pool.query(
-      `SELECT u.id, u.name, u.role, u.faculty, u.major, u.bio, u.total_points, u.created_at,
+      `SELECT u.id, u.name, u.role, u.faculty, u.major, u.bio, u.avatar_data, u.total_points, u.created_at,
+              (SELECT COUNT(*) FROM study_group_membership_history mh WHERE mh.user_id = u.id) AS groups_joined_count,
               COALESCE(l.rank_no, 0) AS \`rank\`
        FROM users u
        LEFT JOIN leaderboard l ON l.user_id = u.id

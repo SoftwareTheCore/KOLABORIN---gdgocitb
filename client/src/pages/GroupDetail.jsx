@@ -18,6 +18,15 @@ function OpenPartyAttendance({ groupId, isMember, isCreator, onCheckedIn }) {
   const [checking, setChecking] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [scannerError, setScannerError] = useState('');
+  const [qrExpanded, setQrExpanded] = useState(false);
+  const qrDialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = qrDialogRef.current;
+    if (!dialog) return;
+    if (qrExpanded && !dialog.open) dialog.showModal();
+    if (!qrExpanded && dialog.open) dialog.close();
+  }, [qrExpanded]);
 
   useEffect(() => {
     if (!isMember) return;
@@ -103,9 +112,41 @@ function OpenPartyAttendance({ groupId, isMember, isCreator, onCheckedIn }) {
           </div>
           <div className="party-attendance-qr" aria-label="QR check-in Open Party">
             {ticketCode ? <QRCodeSVG value={ticketCode} size={132} level="M" includeMargin /> : <span className="skeleton-block" />}
+            {ticketCode && (
+              <button type="button" className="btn-secondary party-qr-expand" onClick={() => setQrExpanded(true)}>
+                Perbesar QR
+              </button>
+            )}
           </div>
         </div>
       )}
+      <dialog
+        ref={qrDialogRef}
+        className="party-qr-dialog"
+        aria-labelledby="party-qr-dialog-title"
+        onCancel={() => setQrExpanded(false)}
+        onClose={() => setQrExpanded(false)}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') setQrExpanded(false);
+        }}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) setQrExpanded(false);
+        }}
+      >
+        <div className="party-qr-dialog-content">
+          <div className="party-qr-dialog-heading">
+            <div>
+              <span className="eyebrow">Kehadiran Open Party</span>
+              <h3 id="party-qr-dialog-title">QR check-in Anda</h3>
+            </div>
+            <button type="button" className="btn-secondary" autoFocus onClick={() => setQrExpanded(false)}>
+              Tutup
+            </button>
+          </div>
+          {ticketCode && <QRCodeSVG value={ticketCode} size={320} level="M" includeMargin />}
+          <p>Tampilkan QR ini kepada host untuk diverifikasi.</p>
+        </div>
+      </dialog>
       {isCreator && (
         <div className="party-attendance-scanner">
           <div className="party-attendance-heading">
@@ -166,6 +207,7 @@ export default function GroupDetail() {
   const [replyToParentId, setReplyToParentId] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [toast, setToast] = useState('');
+  const [kickingUserId, setKickingUserId] = useState(null);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -211,6 +253,20 @@ export default function GroupDetail() {
       loadGroupAndPosts();
     } catch (err) {
       showToast(err.response?.data?.error || 'Could not leave group');
+    }
+  };
+
+  const handleKick = async (member) => {
+    if (!window.confirm(`Keluarkan ${member.name} dari Open Party?`)) return;
+    setKickingUserId(member.user_id);
+    try {
+      await api.delete(`/groups/${id}/members/${member.user_id}`);
+      showToast(`${member.name} telah dikeluarkan dari Open Party.`);
+      await loadGroupAndPosts();
+    } catch (err) {
+      showToast(err.response?.data?.error || 'Anggota tidak dapat dikeluarkan.');
+    } finally {
+      setKickingUserId(null);
     }
   };
 
@@ -491,7 +547,13 @@ export default function GroupDetail() {
         </div>
 
         <StudyRoomWorkspace />
-        <StudyRoomSidebar group={group} members={members} />
+        <StudyRoomSidebar
+          group={group}
+          members={members}
+          isCreator={isCreator}
+          onKick={handleKick}
+          kickingUserId={kickingUserId}
+        />
       </div>
     </div>
   );

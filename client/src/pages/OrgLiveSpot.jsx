@@ -65,7 +65,7 @@ export default function OrgLiveSpot() {
         if (active) setData(response.data);
       } catch (err) {
         console.error('Failed to load organization live spaces:', err);
-        if (active) setError(err.response?.data?.error || 'Live Spot organisasi tidak dapat dimuat.');
+        if (active) setError(err.response?.data?.error || 'Informasi ruang organisasi tidak dapat dimuat.');
       } finally {
         requestInFlight = false;
         if (active) setLoading(false);
@@ -146,10 +146,10 @@ export default function OrgLiveSpot() {
       <header className="org-live-spot-hero">
         <div>
           <div className="org-live-spot-breadcrumb">
-            <Link to="/">Home</Link><span>›</span><span>{data?.organization?.name || 'Organisasi'}</span><span>›</span><strong>Live Spot &amp; Lab</strong>
+            <Link to="/">Home</Link><span>›</span><span>{data?.organization?.name || 'Organisasi'}</span><span>›</span><strong>Ruang &amp; Venue</strong>
           </div>
           <span className="eyebrow">Event &amp; meeting organisasi</span>
-          <h1>Live Spot &amp; Venue</h1>
+          <h1>Ruang &amp; Venue Organisasi</h1>
           <p>Kelola ruang meeting dan venue event organisasi, lalu pantau agenda yang terhubung ke lokasi tersebut.</p>
         </div>
         <div className="org-live-spot-actions">
@@ -253,7 +253,7 @@ export default function OrgLiveSpot() {
           <div className="org-live-spot-section-heading">
             <div>
               <span className="eyebrow">Ruang organisasi</span>
-              <h2>Live Spot &amp; venue terhubung</h2>
+              <h2>Ruang &amp; venue terhubung</h2>
             </div>
             <Link to={`/orgs/${id}/events`}>Kelola event →</Link>
           </div>

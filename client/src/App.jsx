@@ -1,5 +1,5 @@
-import React, { lazy, Suspense } from 'react';
-import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import React, { lazy, Suspense, useState } from 'react';
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute, { StudentRoute, VerifiedOrgRoute } from './auth/ProtectedRoute';
 import Navbar from './components/Navbar';
@@ -36,11 +36,19 @@ function LandingOrHome() {
   return <Home />;
 }
 
-export default function App() {
+function AppContent() {
+  const { user } = useAuth();
+  const location = useLocation();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const hasSidebar = Boolean(user) && !['/login', '/register'].includes(location.pathname);
+
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <Navbar />
+    <div className={`app-layout${hasSidebar ? ' has-sidebar' : ''}${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
+      <Navbar
+        sidebarCollapsed={sidebarCollapsed}
+        onToggleSidebar={() => setSidebarCollapsed((collapsed) => !collapsed)}
+      />
+      <div className="app-content">
         <Suspense fallback={<PageSkeleton />}>
         <Routes>
           {/* Public routes */}
@@ -228,6 +236,16 @@ export default function App() {
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
         </Suspense>
+      </div>
+    </div>
+  );
+}
+
+export default function App() {
+  return (
+    <AuthProvider>
+      <BrowserRouter>
+        <AppContent />
       </BrowserRouter>
     </AuthProvider>
   );

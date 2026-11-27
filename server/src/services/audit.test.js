@@ -37,6 +37,20 @@ assert.ok(
   'Only the Open Party creator may check in participants'
 );
 assert.ok(
+  read('src/routes/groups.js').includes("DELETE /api/groups/:id/members/:userId")
+    && read('src/routes/groups.js').includes("groupRows[0].creator_id !== req.user.id"),
+  'Only the Open Party creator may remove members'
+);
+assert.ok(
+  read('src/routes/me.js').includes('avatar_data')
+    && read('src/routes/me.js').includes('groups_joined_count'),
+  'Profiles must support photos and show participation history'
+);
+assert.ok(
+  read('db/migrations/004_profile_and_group_history.sql').includes('SELECT group_id, user_id, joined_at'),
+  'The group history migration must retain existing memberships'
+);
+assert.ok(
   read('src/routes/admin.js').includes("WHERE id = ? AND status = 'pending'"),
   'Badge approvals must require pending status'
 );

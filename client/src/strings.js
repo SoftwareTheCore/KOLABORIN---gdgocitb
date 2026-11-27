@@ -3,7 +3,7 @@ export const strings = {
   tagline: 'Lebih Banyak Koneksi, Lebih Berkolaborasi',
   nav: {
     home: 'Home',
-    map: 'Live Map',
+    map: 'Campus Radar',
     party: 'Open Party',
     communities: 'Chat Hub',
     events: 'Events',

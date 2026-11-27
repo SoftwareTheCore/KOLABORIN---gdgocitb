@@ -57,12 +57,24 @@ router.post('/:id/rating', authMiddleware, async (req, res, next) => {
 router.get('/', authMiddleware, async (req, res, next) => {
   try {
     const [rows] = await pool.query(
-      `SELECT id, name, type, address, latitude, longitude, short_description
-       FROM locations
-       WHERE is_active = TRUE
-       ORDER BY name ASC`
+      `SELECT l.id, l.name, l.type, l.address, l.latitude, l.longitude,
+              l.description, l.short_description,
+              COALESCE(ROUND(AVG(r.rating), 1), 0) AS rating,
+              COUNT(r.user_id) AS rating_count,
+              MAX(CASE WHEN r.user_id = ? THEN r.rating END) AS user_rating
+       FROM locations l
+       LEFT JOIN location_ratings r ON r.location_id = l.id
+       WHERE l.is_active = TRUE
+       GROUP BY l.id
+       ORDER BY l.name ASC`,
+      [req.user.id]
     );
-    res.json(rows);
+    res.json(rows.map((row) => ({
+      ...row,
+      rating: Number(row.rating),
+      rating_count: Number(row.rating_count),
+      user_rating: row.user_rating === null ? null : Number(row.user_rating)
+    })));
   } catch (err) {
     next(err);
   }
