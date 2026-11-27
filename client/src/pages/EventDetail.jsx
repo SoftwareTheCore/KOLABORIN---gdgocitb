@@ -155,8 +155,7 @@ export default function EventDetail() {
                 name: event.location_name,
                 short_description: event.location_address || 'Event location',
                 latitude: event.latitude,
-                longitude: event.longitude,
-                active_people: 0
+                longitude: event.longitude
               }]}
               selectedId={event.location_id}
             />

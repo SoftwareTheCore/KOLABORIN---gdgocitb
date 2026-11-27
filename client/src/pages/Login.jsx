@@ -101,8 +101,8 @@ export default function Login() {
                 {/* Field 1: Identifier */}
                 <div className="lc-form-field">
                   <label className="lc-label" htmlFor="campus-identity">
-                    <span>Email Kampus atau NIM</span>
-                    <span className="lc-label-hint">Format: @students.itb.ac.id</span>
+                    <span>Email Kampus</span>
+                    <span className="lc-label-hint">Gunakan email yang terdaftar</span>
                   </label>
                   <div className="lc-input-wrapper">
                     <span className="material-symbols-outlined lc-input-icon">badge</span>
@@ -111,7 +111,7 @@ export default function Login() {
                       className={`lc-input ${highlightInputs ? 'lc-input-highlight' : ''}`}
                       type="text"
                       required
-                      placeholder="nama@students.itb.ac.id atau NIM 13521xxx"
+                      placeholder="nama@kampus.ac.id"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                     />

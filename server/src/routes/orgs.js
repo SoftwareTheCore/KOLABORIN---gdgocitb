@@ -227,15 +227,6 @@ router.get('/:id/live-spots', authMiddleware, async (req, res, next) => {
       [orgId]
     );
 
-    const [placeRequests] = await pool.query(
-      `SELECT id, name, type, address, status, created_at
-       FROM place_requests
-       WHERE organization_id = ? AND requester_id = ?
-       ORDER BY created_at DESC
-       LIMIT 10`,
-      [orgId, req.user.id]
-    );
-
     res.json({
       organization: orgRows[0],
       locations: locations.map((location) => ({
@@ -248,7 +239,6 @@ router.get('/:id/live-spots', authMiddleware, async (req, res, next) => {
         application_count: Number(event.application_count)
       })),
       meetings,
-      placeRequests,
       updatedAt: new Date().toISOString()
     });
   } catch (err) {

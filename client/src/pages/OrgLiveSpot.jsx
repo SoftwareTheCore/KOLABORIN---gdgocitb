@@ -1,16 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../api';
+import { CardSkeletonList } from '../components/LoadingSkeleton';
 
 const SPACE_LABELS = {
   meeting_room: 'Ruang meeting',
   event_venue: 'Venue event'
-};
-
-const REQUEST_LABELS = {
-  pending: 'Menunggu verifikasi',
-  approved: 'Disetujui',
-  rejected: 'Ditolak'
 };
 
 function formatDate(value) {
@@ -70,7 +65,7 @@ export default function OrgLiveSpot() {
         if (active) setData(response.data);
       } catch (err) {
         console.error('Failed to load organization live spaces:', err);
-        if (active) setError(err.response?.data?.error || 'Live Spot organisasi tidak dapat dimuat.');
+        if (active) setError(err.response?.data?.error || 'Informasi ruang organisasi tidak dapat dimuat.');
       } finally {
         requestInFlight = false;
         if (active) setLoading(false);
@@ -89,7 +84,6 @@ export default function OrgLiveSpot() {
   const locations = data?.locations || [];
   const upcomingEvents = data?.upcomingEvents || [];
   const meetings = data?.meetings || [];
-  const placeRequests = data?.placeRequests || [];
   const normalizedSearch = search.trim().toLowerCase();
   const visibleLocations = useMemo(() => locations.filter((location) => {
     const matchesType = filter === 'all' || location.type === filter;
@@ -104,7 +98,6 @@ export default function OrgLiveSpot() {
   const eventVenues = locations.filter((location) => location.type === 'event_venue').length;
   const ownedLocationIds = new Set(locations.map((location) => String(location.id)));
   const eventsAtSpaces = upcomingEvents.filter((event) => ownedLocationIds.has(String(event.location_id))).length;
-  const pendingRequests = placeRequests.filter((request) => request.status === 'pending').length;
 
   useEffect(() => {
     const firstMeetingRoom = locations.find((location) => location.type === 'meeting_room');
@@ -153,10 +146,10 @@ export default function OrgLiveSpot() {
       <header className="org-live-spot-hero">
         <div>
           <div className="org-live-spot-breadcrumb">
-            <Link to="/">Home</Link><span>›</span><span>{data?.organization?.name || 'Organisasi'}</span><span>›</span><strong>Live Spot &amp; Lab</strong>
+            <Link to="/">Home</Link><span>›</span><span>{data?.organization?.name || 'Organisasi'}</span><span>›</span><strong>Ruang &amp; Venue</strong>
           </div>
           <span className="eyebrow">Event &amp; meeting organisasi</span>
-          <h1>Live Spot &amp; Venue</h1>
+          <h1>Ruang &amp; Venue Organisasi</h1>
           <p>Kelola ruang meeting dan venue event organisasi, lalu pantau agenda yang terhubung ke lokasi tersebut.</p>
         </div>
         <div className="org-live-spot-actions">
@@ -172,7 +165,6 @@ export default function OrgLiveSpot() {
           >
             ＋ Jadwalkan meeting
           </button>
-          <Link to={`/map?request=1&organization=${id}`} className="btn-primary">＋ Ajukan ruang / venue</Link>
         </div>
       </header>
 
@@ -184,18 +176,11 @@ export default function OrgLiveSpot() {
         <span>Agenda memakai data tersimpan. Meeting dapat dijadwalkan di ruang organisasi; sensor okupansi dan kontrol IoT belum terhubung.</span>
       </div>
 
-      {data?.organization?.status === 'pending' && (
-        <div className="org-pending-banner">
-          <span aria-hidden="true">!</span>
-          <div><strong>Menunggu verifikasi</strong><p>Ajukan ruang atau venue ke admin; fasilitas akan muncul setelah disetujui.</p></div>
-        </div>
-      )}
-
       <section className="org-live-spot-metrics" aria-label="Ringkasan fasilitas organisasi">
         <article><span>Fasilitas terhubung</span><strong>{loading ? '—' : locations.length}</strong><small>Ruang dan venue organisasi</small></article>
         <article><span>Ruang meeting</span><strong>{loading ? '—' : meetingRooms}</strong><small>Tipe meeting room</small></article>
         <article><span>Venue event</span><strong>{loading ? '—' : eventVenues}</strong><small>Tipe event venue</small></article>
-        <article><span>Agenda terjadwal</span><strong>{loading ? '—' : eventsAtSpaces + meetings.length}</strong><small>{pendingRequests} pengajuan ruang menunggu</small></article>
+        <article><span>Agenda terjadwal</span><strong>{loading ? '—' : eventsAtSpaces + meetings.length}</strong><small>Event dan meeting organisasi</small></article>
       </section>
 
       {showMeetingForm && (
@@ -268,7 +253,7 @@ export default function OrgLiveSpot() {
           <div className="org-live-spot-section-heading">
             <div>
               <span className="eyebrow">Ruang organisasi</span>
-              <h2>Live Spot &amp; venue terhubung</h2>
+              <h2>Ruang &amp; venue terhubung</h2>
             </div>
             <Link to={`/orgs/${id}/events`}>Kelola event →</Link>
           </div>
@@ -290,16 +275,15 @@ export default function OrgLiveSpot() {
           </div>
 
           {loading && !data ? (
-            <p className="empty-state">Memuat fasilitas organisasi...</p>
+            <CardSkeletonList count={2} />
           ) : !visibleLocations.length ? (
             <div className="org-live-spot-empty">
               <strong>{locations.length ? 'Fasilitas tidak ditemukan' : 'Belum ada ruang atau venue terhubung'}</strong>
               <p>
                 {locations.length
                   ? 'Coba ubah kata kunci atau filter fasilitas.'
-                  : 'Ajukan ruang meeting atau venue event. Fasilitas akan tampil di sini setelah disetujui admin.'}
+                  : 'Fasilitas yang telah diverifikasi akan tampil di Campus Radar dan dapat digunakan untuk agenda organisasi.'}
               </p>
-              {!locations.length && <Link to={`/map?request=1&organization=${id}`} className="btn-primary">Ajukan ruang / venue</Link>}
             </div>
           ) : (
             <div className="org-live-spot-cards">
@@ -413,26 +397,6 @@ export default function OrgLiveSpot() {
             )}
           </section>
 
-          <section className="org-live-spot-panel" id="org-space-requests">
-            <div className="org-live-spot-section-heading">
-              <div><span className="eyebrow">Status fasilitas</span><h2>Pengajuan ruang</h2></div>
-              <span className="org-live-count">{pendingRequests} menunggu</span>
-            </div>
-            {placeRequests.length ? (
-              <div className="org-live-request-list">
-                {placeRequests.map((request) => (
-                  <article className="org-live-request-row" key={request.id}>
-                    <span className="org-live-request-icon" aria-hidden="true">⌂</span>
-                    <span><strong>{request.name}</strong><small>{SPACE_LABELS[request.type] || request.type} · {request.address || 'Alamat belum dicantumkan'}</small></span>
-                    <span className={`org-live-request-status ${request.status}`}>{REQUEST_LABELS[request.status] || request.status}</span>
-                  </article>
-                ))}
-              </div>
-            ) : (
-              <p className="empty-state">Belum ada pengajuan ruang atau venue dari organisasi ini.</p>
-            )}
-            <Link to={`/map?request=1&organization=${id}`} className="org-live-request-link">+ Ajukan ruang / venue</Link>
-          </section>
         </aside>
       </div>
 

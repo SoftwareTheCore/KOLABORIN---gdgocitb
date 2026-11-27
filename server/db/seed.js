@@ -2,6 +2,7 @@ require('dotenv').config();
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
 const seedLiveSpotDemo = require('./seedLiveSpotDemo');
+const { locations, demoRatings } = require('./campusRadarData');
 
 async function seed() {
   const pool = mysql.createPool({
@@ -24,7 +25,7 @@ async function seed() {
     'user_badges', 'badges', 'point_transactions', 'point_rules',
     'organization_meetings', 'event_applications', 'events', 'community_messages', 'community_members',
     'communities', 'group_posts', 'study_group_members', 'study_groups',
-    'place_requests', 'locations', 'collaboration_requests', 'organizations',
+    'place_requests', 'location_ratings', 'locations', 'collaboration_requests', 'organizations',
     'users'
   ];
 
@@ -74,29 +75,22 @@ async function seed() {
     VALUES (1, 'Database Systems Expert', 'Database Systems', 'Demonstrated exceptional knowledge by answering at least 5 questions in Database Systems study groups.', 5)
   `);
 
-  // 4. Locations (6 active near ITB Bandung: -6.8893, 107.6104)
-  const locations = [
-    { id: 1, name: 'Central Library ITB', type: 'study_spot', lat: -6.8893, lng: 107.6104, desc: 'Perpustakaan pusat ITB dengan area belajar tenang dan Wi-Fi cepat.', short: 'Quiet library area with fast Wi-Fi' },
-    { id: 2, name: 'Labtek V Discussion Room', type: 'meeting_room', lat: -6.8887, lng: 107.6101, desc: 'Ruang diskusi lantai 2 Labtek V STEI dengan whiteboard.', short: 'STEI discussion space with whiteboards' },
-    { id: 3, name: 'Kantin Borju (Boromeus)', type: 'study_spot', lat: -6.8905, lng: 107.6112, desc: 'Kantin santai dengan banyak colokan untuk diskusi santai.', short: 'Casual spot with snacks and plugs' },
-    { id: 4, name: 'West Hall (Aula Barat)', type: 'event_venue', lat: -6.8912, lng: 107.6098, desc: 'Gedung bersejarah ITB untuk seminar dan pameran teknologi.', short: 'Historic grand hall for campus events' },
-    { id: 5, name: 'Taman Cinta Labtek VIII', type: 'study_spot', lat: -6.8881, lng: 107.6110, desc: 'Area terbuka hijau sejuk untuk belajar kelompok santai.', short: 'Outdoor breezy park for group prep' },
-    { id: 6, name: 'Ganesha Tech Cafe', type: 'study_spot', lat: -6.8918, lng: 107.6120, desc: 'Cafe modern dekat gerbang depan ITB ramah laptop.', short: 'Cozy modern coffee spot near campus' }
-  ];
-
   for (const l of locations) {
     await pool.query(
-      `INSERT INTO locations (id, name, type, latitude, longitude, description, short_description, is_active)
-       VALUES (?, ?, ?, ?, ?, ?, ?, TRUE)`,
-      [l.id, l.name, l.type, l.lat, l.lng, l.desc, l.short]
+      `INSERT INTO locations (id, name, type, address, latitude, longitude, description, short_description, is_active)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, TRUE)`,
+      [l.id, l.name, l.type, l.address, l.lat, l.lng, l.desc, l.short]
     );
   }
 
-  // 5. 1 Pending place request (for Admin queue)
-  await pool.query(`
-    INSERT INTO place_requests (requester_id, name, type, address, latitude, longitude, short_description, status)
-    VALUES (2, 'Co-Working Space Perpustakaan Lantai 4', 'study_spot', 'Gedung Perpustakaan Pusat Lt 4', -6.8891, 107.6106, 'Area baru nyaman ber-AC untuk kolaborasi kelompok', 'pending')
-  `);
+  for (const [index, ratings] of demoRatings.entries()) {
+    for (const [ratingIndex, rating] of ratings.entries()) {
+      await pool.query(
+        'INSERT INTO location_ratings (location_id, user_id, rating) VALUES (?, ?, ?)',
+        [index + 1, [2, 3, 7][ratingIndex], rating]
+      );
+    }
+  }
 
   // 6. Organizations (HMIF verified, Robotics pending, GDSC verified)
   await pool.query(`

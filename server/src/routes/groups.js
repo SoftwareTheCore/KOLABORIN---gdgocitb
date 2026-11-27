@@ -1,4 +1,5 @@
 const express = require('express');
+const crypto = require('crypto');
 const pool = require('../db');
 const authMiddleware = require('../middleware/auth');
 const { awardPoints } = require('../services/points');
@@ -84,6 +85,10 @@ router.post('/', authMiddleware, async (req, res, next) => {
       'INSERT INTO study_group_members (group_id, user_id) VALUES (?, ?)',
       [groupId, creatorId]
     );
+    await conn.query(
+      'INSERT INTO study_group_membership_history (group_id, user_id) VALUES (?, ?)',
+      [groupId, creatorId]
+    );
 
     await conn.commit();
     res.status(201).json({ id: groupId, message: 'Study group created successfully.' });
@@ -123,7 +128,7 @@ router.get('/:id', authMiddleware, async (req, res, next) => {
 
     // Fetch members + badge icons
     const [memberRows] = await pool.query(
-      `SELECT m.user_id, m.joined_at, u.name, u.faculty, u.major,
+      `SELECT m.user_id, m.joined_at, m.checked_in_at, u.name, u.faculty, u.major,
               GROUP_CONCAT(b.name SEPARATOR ', ') AS badges
        FROM study_group_members m
        JOIN users u ON u.id = m.user_id
@@ -147,14 +152,133 @@ router.get('/:id', authMiddleware, async (req, res, next) => {
   }
 });
 
-// POST /api/groups/:id/join (Transaction with row-level lock)
-router.post('/:id/join', authMiddleware, async (req, res, next) => {
-  const conn = await pool.getConnection();
+// GET /api/groups/:id/ticket (A member retrieves their Open Party attendance QR)
+router.get('/:id/ticket', authMiddleware, async (req, res, next) => {
+  let conn;
+  let transactionStarted = false;
   try {
     if (req.user.role !== 'student') {
-      await conn.rollback();
-      return res.status(403).json({ error: 'Only students can join study groups.' });
+      return res.status(403).json({ error: 'Hanya mahasiswa yang dapat mengambil QR kehadiran.' });
     }
+
+    conn = await pool.getConnection();
+    await conn.beginTransaction();
+    transactionStarted = true;
+    const [members] = await conn.query(
+      `SELECT ticket_code FROM study_group_members
+       WHERE group_id = ? AND user_id = ? FOR UPDATE`,
+      [req.params.id, req.user.id]
+    );
+    if (members.length === 0) {
+      await conn.rollback();
+      transactionStarted = false;
+      return res.status(403).json({ error: 'Gabung ke Open Party sebelum mengambil QR kehadiran.' });
+    }
+
+    const ticketCode = members[0].ticket_code || crypto.randomBytes(32).toString('hex');
+    if (!members[0].ticket_code) {
+      await conn.query(
+        'UPDATE study_group_members SET ticket_code = ? WHERE group_id = ? AND user_id = ?',
+        [ticketCode, req.params.id, req.user.id]
+      );
+    }
+    await conn.commit();
+    transactionStarted = false;
+    res.json({ ticketCode });
+  } catch (err) {
+    if (conn && transactionStarted) await conn.rollback();
+    next(err);
+  } finally {
+    if (conn) conn.release();
+  }
+});
+
+// POST /api/groups/:id/check-ins (Only the group creator can verify member QR tickets)
+router.post('/:id/check-ins', authMiddleware, async (req, res, next) => {
+  let conn;
+  let transactionStarted = false;
+  try {
+    if (req.user.role !== 'student') {
+      return res.status(403).json({ error: 'Hanya penyelenggara Open Party yang dapat memvalidasi QR.' });
+    }
+    const ticketCode = typeof req.body.ticket_code === 'string'
+      ? req.body.ticket_code.trim()
+      : '';
+    if (!/^[a-f0-9]{64}$/i.test(ticketCode)) {
+      return res.status(400).json({ error: 'Kode QR kehadiran tidak valid.' });
+    }
+
+    conn = await pool.getConnection();
+    await conn.beginTransaction();
+    transactionStarted = true;
+    const [members] = await conn.query(
+      `SELECT gm.user_id, gm.checked_in_at, u.name, u.faculty, u.major,
+              g.creator_id, g.title AS group_title
+       FROM study_group_members gm
+       JOIN users u ON u.id = gm.user_id
+       JOIN study_groups g ON g.id = gm.group_id
+       WHERE gm.group_id = ? AND gm.ticket_code = ?
+       FOR UPDATE`,
+      [req.params.id, ticketCode]
+    );
+    if (members.length === 0) {
+      await conn.rollback();
+      transactionStarted = false;
+      return res.status(404).json({ error: 'QR tidak ditemukan untuk Open Party ini.' });
+    }
+
+    const member = members[0];
+    if (member.creator_id !== req.user.id) {
+      await conn.rollback();
+      transactionStarted = false;
+      return res.status(403).json({ error: 'Hanya penyelenggara Open Party yang dapat melakukan verifikasi.' });
+    }
+    if (member.checked_in_at) {
+      await conn.rollback();
+      transactionStarted = false;
+      return res.status(409).json({
+        error: 'Mahasiswa ini sudah tercatat hadir.',
+        attendee: { name: member.name, checked_in_at: member.checked_in_at }
+      });
+    }
+
+    await conn.query(
+      `UPDATE study_group_members
+       SET checked_in_at = NOW(), checked_in_by = ?
+       WHERE group_id = ? AND user_id = ?`,
+      [req.user.id, req.params.id, member.user_id]
+    );
+    const [[checkedIn]] = await conn.query(
+      'SELECT checked_in_at FROM study_group_members WHERE group_id = ? AND user_id = ?',
+      [req.params.id, member.user_id]
+    );
+    await conn.commit();
+    transactionStarted = false;
+    res.json({
+      message: 'Kehadiran berhasil diverifikasi.',
+      attendee: {
+        name: member.name,
+        faculty: member.faculty,
+        major: member.major,
+        group_title: member.group_title,
+        checked_in_at: checkedIn.checked_in_at
+      }
+    });
+  } catch (err) {
+    if (conn && transactionStarted) await conn.rollback();
+    next(err);
+  } finally {
+    if (conn) conn.release();
+  }
+});
+
+// POST /api/groups/:id/join (Transaction with row-level lock)
+router.post('/:id/join', authMiddleware, async (req, res, next) => {
+  if (req.user.role !== 'student') {
+    return res.status(403).json({ error: 'Only students can join study groups.' });
+  }
+  const conn = await pool.getConnection();
+  try {
     await conn.beginTransaction();
     const groupId = req.params.id;
     const userId = req.user.id;
@@ -202,6 +326,10 @@ router.post('/:id/join', authMiddleware, async (req, res, next) => {
     // 4. Insert membership
     await conn.query(
       'INSERT INTO study_group_members (group_id, user_id) VALUES (?, ?)',
+      [groupId, userId]
+    );
+    await conn.query(
+      'INSERT INTO study_group_membership_history (group_id, user_id) VALUES (?, ?)',
       [groupId, userId]
     );
 
@@ -256,6 +384,13 @@ router.delete('/:id/join', authMiddleware, async (req, res, next) => {
       await conn.rollback();
       return res.status(409).json({ error: 'You are not a member of this group.' });
     }
+    await conn.query(
+      `UPDATE study_group_membership_history
+       SET ended_at = NOW(), ended_by = ?, end_reason = 'left'
+       WHERE group_id = ? AND user_id = ? AND ended_at IS NULL
+       ORDER BY id DESC LIMIT 1`,
+      [userId, groupId, userId]
+    );
 
     // Revert status to open only when the remaining count is below the limit
     if (groupRows[0].status === 'full') {
@@ -274,6 +409,67 @@ router.delete('/:id/join', authMiddleware, async (req, res, next) => {
 
     await conn.commit();
     res.json({ message: 'Successfully left the group.' });
+  } catch (err) {
+    await conn.rollback();
+    next(err);
+  } finally {
+    conn.release();
+  }
+});
+
+// DELETE /api/groups/:id/members/:userId (Only the creator can remove another member)
+router.delete('/:id/members/:userId', authMiddleware, async (req, res, next) => {
+  const conn = await pool.getConnection();
+  try {
+    await conn.beginTransaction();
+    const groupId = req.params.id;
+    const targetUserId = Number(req.params.userId);
+
+    const [groupRows] = await conn.query(
+      'SELECT creator_id, max_members, status FROM study_groups WHERE id = ? FOR UPDATE',
+      [groupId]
+    );
+    if (groupRows.length === 0) {
+      await conn.rollback();
+      return res.status(404).json({ error: 'Group not found.' });
+    }
+    if (groupRows[0].creator_id !== req.user.id) {
+      await conn.rollback();
+      return res.status(403).json({ error: 'Hanya host yang dapat mengeluarkan anggota.' });
+    }
+    if (!Number.isInteger(targetUserId) || targetUserId === req.user.id) {
+      await conn.rollback();
+      return res.status(400).json({ error: 'Host tidak dapat mengeluarkan dirinya sendiri.' });
+    }
+
+    const [deleteResult] = await conn.query(
+      'DELETE FROM study_group_members WHERE group_id = ? AND user_id = ?',
+      [groupId, targetUserId]
+    );
+    if (deleteResult.affectedRows === 0) {
+      await conn.rollback();
+      return res.status(404).json({ error: 'Anggota tidak ditemukan di Open Party ini.' });
+    }
+    await conn.query(
+      `UPDATE study_group_membership_history
+       SET ended_at = NOW(), ended_by = ?, end_reason = 'kicked'
+       WHERE group_id = ? AND user_id = ? AND ended_at IS NULL
+       ORDER BY id DESC LIMIT 1`,
+      [req.user.id, groupId, targetUserId]
+    );
+
+    if (groupRows[0].status === 'full') {
+      const [[countRow]] = await conn.query(
+        'SELECT COUNT(*) AS count FROM study_group_members WHERE group_id = ?',
+        [groupId]
+      );
+      if (countRow.count < groupRows[0].max_members) {
+        await conn.query("UPDATE study_groups SET status = 'open' WHERE id = ?", [groupId]);
+      }
+    }
+
+    await conn.commit();
+    res.json({ message: 'Anggota berhasil dikeluarkan dari Open Party.' });
   } catch (err) {
     await conn.rollback();
     next(err);

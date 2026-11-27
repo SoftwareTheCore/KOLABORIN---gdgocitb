@@ -1,66 +1,73 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 export default function Landing() {
   const navigate = useNavigate();
   const [filterSpot, setFilterSpot] = useState('Semua Spot');
   const [emailInput, setEmailInput] = useState('');
+  const [activeSection, setActiveSection] = useState(
+    () => window.location.hash.slice(1) || 'landing-home'
+  );
+
+  useEffect(() => {
+    const updateActiveSection = () => {
+      setActiveSection(window.location.hash.slice(1) || 'landing-home');
+    };
+    window.addEventListener('hashchange', updateActiveSection);
+    return () => window.removeEventListener('hashchange', updateActiveSection);
+  }, []);
+
+  const navClass = (section) => (
+    `st-nav-item${activeSection === section ? ' st-nav-active' : ''}`
+  );
 
   const spots = [
     {
       id: 1,
-      name: 'Perpustakaan Pusat',
-      sub: 'Lantai 2 - Area Skripsi & Tesis',
-      occupancy: '74% Penuh',
-      occupancyColor: 'error',
-      tag: 'Silent Reading',
+      name: 'Central Library ITB',
+      sub: 'Gedung Perpustakaan Pusat',
+      tag: 'Area tenang',
       tagIcon: 'volume_off',
-      students: 42,
-      ports: '18 Colokan',
-      temp: '21°C',
-      wifi: '85 Mbps',
+      capacity: '40 kursi belajar',
+      facilities: 'Stopkontak di area meja',
+      condition: 'Suasana tenang',
+      wifi: 'Wi-Fi kampus',
       category: 'Silent Area',
     },
     {
       id: 2,
-      name: 'Labtek V Co-working',
-      sub: 'STEI / FTI Lantai Dasar',
-      occupancy: '28% Penuh',
-      occupancyColor: 'secondary',
-      tag: 'Lengang & Cepat',
+      name: 'Labtek V Discussion Room',
+      sub: 'Labtek V STEI Lt. 2',
+      tag: 'Diskusi kelompok',
       tagIcon: 'bolt',
-      students: 16,
-      ports: '34 Colokan',
-      temp: '120 Mbps',
-      wifi: 'Super WiFi',
+      capacity: '12 kursi',
+      facilities: 'Whiteboard & stopkontak',
+      condition: 'Ruang diskusi',
+      wifi: 'Wi-Fi kampus',
       category: 'Co-Working',
     },
     {
       id: 3,
-      name: 'Kantin Selasar Barat',
-      sub: 'Outdoor Discussion & Kuliner',
-      occupancy: '88% Penuh',
-      occupancyColor: 'error',
-      tag: 'Ramai & Makan',
+      name: 'Kantin Borju (Boromeus)',
+      sub: 'Area Kantin Borju',
+      tag: 'Tempat santai',
       tagIcon: 'restaurant',
-      students: 64,
-      ports: '6 Colokan',
-      temp: '68 dB',
-      wifi: 'Makanan Dekat',
+      capacity: '24 kursi bersama',
+      facilities: 'Colokan terbatas',
+      condition: 'Makanan tersedia',
+      wifi: 'Wi-Fi publik',
       category: 'Outdoor Cafe',
     },
     {
       id: 4,
-      name: 'Selasar TVST Co-working',
-      sub: 'Outdoor Group Work Area',
-      occupancy: '45% Penuh',
-      occupancyColor: 'primary',
-      tag: 'Diskusi Santai',
+      name: 'Taman Cinta Labtek VIII',
+      sub: 'Taman Labtek VIII',
+      tag: 'Ruang terbuka',
       tagIcon: 'groups',
-      students: 24,
-      ports: '14 Colokan',
-      temp: 'Alami',
-      wifi: '60 Mbps',
+      capacity: '20 tempat duduk',
+      facilities: 'Area hijau',
+      condition: 'Tempat duduk terbuka',
+      wifi: 'Wi-Fi tidak stabil',
       category: 'Co-Working',
     },
   ];
@@ -90,12 +97,42 @@ export default function Landing() {
               <span className="st-brand-name">KOLABORIN</span>
             </Link>
 
-            <nav className="st-nav">
-              <Link to="/" className="st-nav-item st-nav-active">Home</Link>
-              <Link to="/map" className="st-nav-item">Live Map</Link>
-              <Link to="/party" className="st-nav-item">Open Party</Link>
-              <Link to="/communities" className="st-nav-item">Chat Hub</Link>
-              <Link to="/events" className="st-nav-item">Events</Link>
+            <nav className="st-nav" aria-label="Navigasi profil KOLABORIN">
+              <a
+                href="#landing-home"
+                className={navClass('landing-home')}
+                aria-current={activeSection === 'landing-home' ? 'location' : undefined}
+              >
+                Home
+              </a>
+              <a
+                href="#campus-radar"
+                className={navClass('campus-radar')}
+                aria-current={activeSection === 'campus-radar' ? 'location' : undefined}
+              >
+                Campus Radar
+              </a>
+              <a
+                href="#feature-open-party"
+                className={navClass('feature-open-party')}
+                aria-current={activeSection === 'feature-open-party' ? 'location' : undefined}
+              >
+                Open Party
+              </a>
+              <a
+                href="#feature-chat-hub"
+                className={navClass('feature-chat-hub')}
+                aria-current={activeSection === 'feature-chat-hub' ? 'location' : undefined}
+              >
+                Chat Hub
+              </a>
+              <a
+                href="#feature-events"
+                className={navClass('feature-events')}
+                aria-current={activeSection === 'feature-events' ? 'location' : undefined}
+              >
+                Events
+              </a>
             </nav>
           </div>
 
@@ -111,7 +148,7 @@ export default function Landing() {
       {/* Main Viewport */}
       <main className="st-main">
         {/* HERO SECTION */}
-        <section className="st-hero-section">
+        <section className="st-hero-section" id="landing-home">
           {/* Ambient Glow */}
           <div className="st-glow st-glow-1"></div>
           <div className="st-glow st-glow-2"></div>
@@ -125,7 +162,7 @@ export default function Landing() {
                     <span className="st-ping-anim"></span>
                     <span className="st-ping-static"></span>
                   </span>
-                  <span className="st-eyebrow-text">Platform Kolaborasi Kampus No. 1 di Indonesia</span>
+                  <span className="st-eyebrow-text">Platform Kolaborasi Kampus</span>
                 </div>
 
                 <h1 className="st-hero-title">
@@ -134,7 +171,7 @@ export default function Landing() {
                 </h1>
 
                 <p className="st-hero-subtitle">
-                  Temukan teman belajar satu jurusan, pantau kepadatan spot belajar secara live, dan ikuti komunitas serta event kampus terverifikasi dalam satu ekosistem terpadu.
+                  Temukan teman belajar lintas fakultas, cek informasi tempat di Campus Radar, bergabung ke komunitas, dan ikuti event kampus dalam satu platform.
                 </p>
 
                 <div className="st-hero-actions">
@@ -148,10 +185,10 @@ export default function Landing() {
                   </button>
                 </div>
 
-                <div className="st-sso-endorse">
-                  <span className="material-symbols-outlined text-secondary" style={{ fontSize: '20px', color: '#006c49' }}>verified_user</span>
-                  <p className="st-sso-text">
-                    Mendukung login SSO resmi kampus: <strong>ITB, UI, UGM, ITS, UNAIR</strong> &amp; 140+ kampus lainnya
+                <div className="st-campus-email-note">
+                  <span className="material-symbols-outlined text-secondary" style={{ fontSize: '20px', color: '#006c49' }}>school</span>
+                  <p className="st-campus-email-note-text">
+                    Daftar dengan email kampus Anda, lalu pilih fakultas dan program studi atau isi informasi kampus secara manual.
                   </p>
                 </div>
               </div>
@@ -165,12 +202,12 @@ export default function Landing() {
                         <span className="st-ping-anim"></span>
                         <span className="st-ping-static"></span>
                       </span>
-                      <span className="st-preview-tag">KOLABORIN LIVE SENSOR</span>
+                      <span className="st-preview-tag">INFO LOKASI · CONTOH</span>
                     </div>
 
                     <div className="st-active-students-pill">
                       <span className="material-symbols-outlined text-primary" style={{ fontSize: '16px', color: '#3525cd' }}>groups</span>
-                      <span>1,420 Mahasiswa Aktif</span>
+                      <span>Fasilitas &amp; deskripsi</span>
                     </div>
                   </div>
 
@@ -189,8 +226,8 @@ export default function Landing() {
                     <div className="st-floating-beacon beacon-1" onClick={() => navigate('/login')}>
                       <span className="st-beacon-dot st-bg-error"></span>
                       <div className="st-beacon-info">
-                        <span className="st-beacon-title">Perpus Pusat Lt. 2</span>
-                        <span className="st-beacon-sub text-error">74% Penuh (Silent)</span>
+                        <span className="st-beacon-title">Perpustakaan Pusat</span>
+                        <span className="st-beacon-sub">Area baca · 40 kursi</span>
                       </div>
                     </div>
 
@@ -198,8 +235,8 @@ export default function Landing() {
                     <div className="st-floating-beacon beacon-2" onClick={() => navigate('/login')}>
                       <span className="st-beacon-dot st-bg-secondary"></span>
                       <div className="st-beacon-info">
-                        <span className="st-beacon-title">Labtek V STEI</span>
-                        <span className="st-beacon-sub text-secondary">28% Penuh (Lengang)</span>
+                        <span className="st-beacon-title">Labtek V Discussion Room</span>
+                        <span className="st-beacon-sub">Ruang diskusi · 12 kursi</span>
                       </div>
                     </div>
                   </div>
@@ -212,17 +249,11 @@ export default function Landing() {
                       </div>
                       <div className="st-study-info">
                         <div className="st-study-heading">
-                          <span className="st-study-title">Tubes IF2211 Strategi Algoritma</span>
-                          <span className="st-study-badge">Tersisa 1 Slot</span>
+                          <span className="st-study-title">Open Party Study Group</span>
+                          <span className="st-study-badge">Contoh informasi</span>
                         </div>
                         <div className="st-study-meta">
-                          <span>Meja 4, Gedung Labtek V</span>
-                          <span>•</span>
-                          <div className="st-study-avatars">
-                            <span className="st-avatar-mini" style={{ backgroundColor: '#c3c0ff', color: '#0f0069' }}>FA</span>
-                            <span className="st-avatar-mini" style={{ backgroundColor: '#6ffbbe', color: '#002113' }}>MI</span>
-                            <span className="st-avatar-mini" style={{ backgroundColor: '#eaedff', color: '#131b2e' }}>+2</span>
-                          </div>
+                          <span>Topik, jadwal, kapasitas, dan check-in QR</span>
                         </div>
                       </div>
                     </div>
@@ -242,24 +273,24 @@ export default function Landing() {
           <div className="st-container">
             <div className="st-metrics-grid">
               <div className="st-metric-item">
-                <span className="st-metric-num text-primary">24,500+</span>
-                <span className="st-metric-title">Mahasiswa Terdaftar</span>
-                <span className="st-metric-sub">Dari 140+ Perguruan Tinggi</span>
+                <span className="st-metric-num text-primary">1 akun</span>
+                <span className="st-metric-title">Untuk semua fitur</span>
+                <span className="st-metric-sub">Study group, komunitas, dan event</span>
               </div>
               <div className="st-metric-item">
-                <span className="st-metric-num text-dark">85+</span>
-                <span className="st-metric-title">Himpunan &amp; UKM Resmi</span>
-                <span className="st-metric-sub">Terverifikasi administrasi kampus</span>
+                <span className="st-metric-num text-dark">12</span>
+                <span className="st-metric-title">Fakultas / sekolah ITB</span>
+                <span className="st-metric-sub">Prodi menyesuaikan fakultas yang dipilih</span>
               </div>
               <div className="st-metric-item">
-                <span className="st-metric-num text-secondary">350+</span>
-                <span className="st-metric-title">Spot Belajar &amp; Co-working</span>
-                <span className="st-metric-sub">Dengan telemetri sensor live</span>
+                <span className="st-metric-num text-secondary">1–5</span>
+                <span className="st-metric-title">Rating Campus Radar</span>
+                <span className="st-metric-sub">Bintang per tempat belajar</span>
               </div>
               <div className="st-metric-item">
-                <span className="st-metric-num text-amber">100%</span>
-                <span className="st-metric-title">SSO Kampus Terintegrasi</span>
-                <span className="st-metric-sub">Aman, tersentralisasi &amp; bebas bot</span>
+                <span className="st-metric-num text-amber">QR</span>
+                <span className="st-metric-title">Check-in kehadiran</span>
+                <span className="st-metric-sub">Open Party dan tiket event</span>
               </div>
             </div>
           </div>
@@ -285,10 +316,10 @@ export default function Landing() {
                   <div className="st-pillar-icon-box text-primary">
                     <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>radar</span>
                   </div>
-                  <span className="st-pillar-tag">Sensor Real-Time</span>
-                  <h3 className="st-pillar-title">Live Map &amp; Radar Spot</h3>
+                  <span className="st-pillar-tag">Info Lokasi &amp; Fasilitas</span>
+                  <h3 className="st-pillar-title">Campus Radar &amp; Info Lokasi</h3>
                   <p className="st-pillar-desc">
-                    Pantau okupansi kursi, ketersediaan colokan listrik, tingkat kebisingan dB, dan kecepatan WiFi real-time sebelum jalan ke lokasi.
+                    Gunakan filter jenis spot, lalu baca deskripsi, kapasitas tempat duduk, fasilitas Wi-Fi dan colokan, serta rating lokasi.
                   </p>
                 </div>
                 <div className="st-pillar-link text-primary">
@@ -298,7 +329,7 @@ export default function Landing() {
               </div>
 
               {/* Pillar 2 */}
-              <div className="st-pillar-card" onClick={() => navigate('/login')}>
+              <div className="st-pillar-card" id="feature-open-party" onClick={() => navigate('/login')}>
                 <div>
                   <div className="st-pillar-icon-box text-secondary">
                     <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>group_add</span>
@@ -306,7 +337,7 @@ export default function Landing() {
                   <span className="st-pillar-tag st-tag-green">Matchmaking 1-Klik</span>
                   <h3 className="st-pillar-title">Open Party Study Groups</h3>
                   <p className="st-pillar-desc">
-                    Bikin atau gabung kelompok belajar dadakan berbasis mata kuliah, tugas besar, atau persiapan kuis semester dalam 1 klik.
+                    Temukan sesi belajar berdasarkan mata kuliah dan waktu, lihat kapasitas sebelum bergabung, lalu gunakan QR untuk check-in kehadiran.
                   </p>
                 </div>
                 <div className="st-pillar-link text-secondary">
@@ -316,15 +347,15 @@ export default function Landing() {
               </div>
 
               {/* Pillar 3 */}
-              <div className="st-pillar-card" onClick={() => navigate('/login')}>
+              <div className="st-pillar-card" id="feature-chat-hub" onClick={() => navigate('/login')}>
                 <div>
                   <div className="st-pillar-icon-box text-primary">
                     <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>forum</span>
                   </div>
-                  <span className="st-pillar-tag st-tag-purple">Anti-Spam &amp; SSO</span>
+                  <span className="st-pillar-tag st-tag-purple">Komunitas Terarah</span>
                   <h3 className="st-pillar-title">Hub Komunitas &amp; Chat</h3>
                   <p className="st-pillar-desc">
-                    Saluran diskusi terstruktur #tugas-kuliah, pengumuman resmi organisasi, dan voice study rooms terverifikasi mahasiswa.
+                    Bergabung ke komunitas kampus, diskusikan tugas di ruang obrolan, dan ikuti pengumuman dari pengelola komunitas.
                   </p>
                 </div>
                 <div className="st-pillar-link text-primary">
@@ -334,7 +365,7 @@ export default function Landing() {
               </div>
 
               {/* Pillar 4 */}
-              <div className="st-pillar-card" onClick={() => navigate('/login')}>
+              <div className="st-pillar-card" id="feature-events" onClick={() => navigate('/login')}>
                 <div>
                   <div className="st-pillar-icon-box text-amber">
                     <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>confirmation_number</span>
@@ -342,7 +373,7 @@ export default function Landing() {
                   <span className="st-pillar-tag">Paperless Check-in</span>
                   <h3 className="st-pillar-title">Event Kampus &amp; Tiket</h3>
                   <p className="st-pillar-desc">
-                    Pendaftaran seminar, workshop, dan kompetisi dengan tiket QR paperless dan antrean otomatis tanpa form berulang.
+                    Temukan seminar, workshop, atau kompetisi; daftar, pantau status pengajuan, lalu gunakan tiket QR saat check-in.
                   </p>
                 </div>
                 <div className="st-pillar-link text-amber">
@@ -354,8 +385,8 @@ export default function Landing() {
           </div>
         </section>
 
-        {/* LIVE CAMPUS GRID SHOWCASE */}
-        <section className="st-spots-section">
+        {/* CAMPUS RADAR LOCATION INFORMATION */}
+        <section className="st-spots-section" id="campus-radar">
           <div className="st-container">
             <div className="st-spots-header">
               <div>
@@ -364,9 +395,12 @@ export default function Landing() {
                     <span className="st-ping-anim"></span>
                     <span className="st-ping-static"></span>
                   </span>
-                  <span className="st-feed-text">LIVE TELEMETRY FEED</span>
+                  <span className="st-feed-text">CONTOH INFORMASI CAMPUS RADAR</span>
                 </div>
-                <h2 className="st-spots-heading">Radar Kepadatan Spot Belajar Kampus</h2>
+                <h2 className="st-spots-heading">Pilih Spot Belajar yang Sesuai</h2>
+                <p className="st-spots-subtitle">
+                  Contoh informasi fasilitas yang membantu mahasiswa memilih tempat tanpa menampilkan perkiraan keramaian realtime.
+                </p>
               </div>
 
               <div className="st-filter-group">
@@ -387,9 +421,7 @@ export default function Landing() {
                 <div key={spot.id} className="st-spot-card">
                   <div className="st-spot-body">
                     <div className="st-spot-top">
-                      <span className={`st-occ-pill st-occ-${spot.occupancyColor}`}>
-                        {spot.occupancy}
-                      </span>
+                      <span className="st-occ-pill st-occ-primary">{spot.category}</span>
                       <div className="st-spot-tag">
                         <span className="material-symbols-outlined" style={{ fontSize: '14px' }}>{spot.tagIcon}</span>
                         <span>{spot.tag}</span>
@@ -401,16 +433,16 @@ export default function Landing() {
 
                     <div className="st-spot-matrix">
                       <div>
-                        <b>{spot.students}</b>
-                        <span>Mahasiswa</span>
+                        <b>{spot.capacity}</b>
+                        <span>Kapasitas</span>
                       </div>
                       <div>
-                        <b>{spot.ports}</b>
-                        <span>Sisa Port</span>
+                        <b>{spot.facilities}</b>
+                        <span>Fasilitas</span>
                       </div>
                       <div>
-                        <b>{spot.temp}</b>
-                        <span>Status</span>
+                        <b>{spot.condition}</b>
+                        <span>Kondisi area</span>
                       </div>
                     </div>
 
@@ -441,7 +473,7 @@ export default function Landing() {
                 <span className="st-cta-kicker">MULAI GRATIS DENGAN EMAIL KAMPUS</span>
                 <h2 className="st-cta-heading">Mulai Pengalaman Kolaborasi Kampus Generasi Baru</h2>
                 <p className="st-cta-desc">
-                  Dapatkan akses penuh ke peta sensor live, forum eksklusif himpunan, dan tiket kegiatan kampus hanya dengan login menggunakan email .ac.id Anda.
+                  Jelajahi tempat belajar, komunitas kampus, dan tiket kegiatan dengan email dari kampus Anda.
                 </p>
 
                 <form onSubmit={handleStartEmail} className="st-cta-form">
@@ -450,7 +482,7 @@ export default function Landing() {
                     <input
                       type="email"
                       required
-                      placeholder="Masukkan email kampus (contoh: nim@students.itb.ac.id)"
+                      placeholder="Masukkan email kampus Anda"
                       value={emailInput}
                       onChange={(e) => setEmailInput(e.target.value)}
                       className="st-cta-input"
@@ -463,7 +495,7 @@ export default function Landing() {
                 </form>
 
                 <p className="st-cta-legal">
-                  Tanpa kartu kredit • Otentikasi instan melalui akun SSO Kampus resmi
+                  Daftar dengan email kampus dan kata sandi • Fakultas lain dapat diisi manual
                 </p>
               </div>
             </div>
@@ -477,7 +509,7 @@ export default function Landing() {
           <div className="st-footer-left">
             <span className="st-footer-brand">KOLABORIN</span>
             <span className="st-footer-sep">•</span>
-            <span>Platform Kolaborasi Kampus ITB</span>
+            <span>Platform Kolaborasi Kampus</span>
           </div>
 
           <div className="st-footer-links">
@@ -578,6 +610,13 @@ const css = `
   color: #3525cd;
   font-weight: 700;
   border-bottom: 2px solid #3525cd;
+}
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
 }
 
 .st-header-auth-buttons {
@@ -760,7 +799,7 @@ const css = `
   border-color: #3525cd;
 }
 
-.st-sso-endorse {
+.st-campus-email-note {
   margin-top: 1.75rem;
   display: flex;
   align-items: center;
@@ -771,7 +810,7 @@ const css = `
   box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
   border: 1px solid #e2e7ff;
 }
-.st-sso-text {
+.st-campus-email-note-text {
   margin: 0;
   font-size: 11px;
   color: #464555;
@@ -1152,6 +1191,13 @@ const css = `
   font-weight: 700;
   color: #131b2e;
   letter-spacing: -0.02em;
+}
+.st-spots-subtitle {
+  max-width: 680px;
+  margin: 8px 0 0;
+  color: #464555;
+  font-size: 14px;
+  line-height: 1.6;
 }
 
 .st-filter-group {

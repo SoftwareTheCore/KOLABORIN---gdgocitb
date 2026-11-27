@@ -9,6 +9,46 @@ const router = express.Router();
 router.use(authMiddleware);
 router.use(requireRole('admin'));
 
+// GET /api/admin/locations (Active places available in Campus Radar)
+router.get('/locations', async (req, res, next) => {
+  try {
+    const [rows] = await pool.query(
+      `SELECT l.id, l.name, l.type, l.address, l.short_description,
+              COALESCE(r.rating, 0) AS rating, COALESCE(r.rating_count, 0) AS rating_count
+       FROM locations l
+       LEFT JOIN (
+         SELECT location_id, ROUND(AVG(rating), 1) AS rating, COUNT(*) AS rating_count
+         FROM location_ratings GROUP BY location_id
+       ) r ON r.location_id = l.id
+       WHERE l.is_active = TRUE
+       ORDER BY l.name`
+    );
+    res.json(rows.map(row => ({
+      ...row,
+      rating: Number(row.rating),
+      rating_count: Number(row.rating_count)
+    })));
+  } catch (err) {
+    next(err);
+  }
+});
+
+// DELETE /api/admin/locations/:id (Hide a place without breaking existing events/groups)
+router.delete('/locations/:id', async (req, res, next) => {
+  try {
+    const [result] = await pool.query(
+      'UPDATE locations SET is_active = FALSE WHERE id = ? AND is_active = TRUE',
+      [req.params.id]
+    );
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: 'Active location not found.' });
+    }
+    res.json({ message: 'Lokasi dihapus dari Campus Radar.' });
+  } catch (err) {
+    next(err);
+  }
+});
+
 // --- 1. ORGANIZATIONS QUEUE ---
 
 // GET /api/admin/orgs/pending
@@ -57,109 +97,7 @@ router.patch('/orgs/:id', async (req, res, next) => {
   }
 });
 
-// --- 2. PLACES QUEUE ---
-
-// GET /api/admin/place-requests/pending
-router.get('/place-requests/pending', async (req, res, next) => {
-  try {
-    const [rows] = await pool.query(
-      `SELECT pr.id, pr.requester_id, pr.name, pr.type, pr.address,
-              CAST(pr.latitude AS DOUBLE) AS latitude,
-              CAST(pr.longitude AS DOUBLE) AS longitude,
-              pr.short_description, pr.status, pr.created_at,
-              u.name AS requester_name, u.faculty, u.major
-       FROM place_requests pr
-       JOIN users u ON u.id = pr.requester_id
-       WHERE pr.status = 'pending'
-       ORDER BY pr.created_at ASC`
-    );
-    res.json(rows.map(r => ({
-      ...r,
-      latitude: Number(r.latitude),
-      longitude: Number(r.longitude)
-    })));
-  } catch (err) {
-    next(err);
-  }
-});
-
-// PATCH /api/admin/place-requests/:id (Approve inserts into locations in same transaction)
-router.patch('/place-requests/:id', async (req, res, next) => {
-  const conn = await pool.getConnection();
-  try {
-    await conn.beginTransaction();
-    const requestId = req.params.id;
-    const adminId = req.user.id;
-    const { action } = req.body; // 'approve' or 'reject'
-
-    if (action !== 'approve' && action !== 'reject') {
-      await conn.rollback();
-      return res.status(400).json({ error: "Action must be 'approve' or 'reject'." });
-    }
-
-    const [rows] = await conn.query(
-      'SELECT * FROM place_requests WHERE id = ? FOR UPDATE',
-      [requestId]
-    );
-
-    if (rows.length === 0) {
-      await conn.rollback();
-      return res.status(404).json({ error: 'Place request not found.' });
-    }
-
-    const pr = rows[0];
-
-    if (pr.status !== 'pending') {
-      await conn.rollback();
-      return res.status(409).json({ error: 'Only pending place requests can be reviewed.' });
-    }
-
-    if (action === 'approve') {
-      // 1. Update place_requests
-      await conn.query(
-        `UPDATE place_requests
-         SET status = 'approved', reviewed_by = ?, reviewed_at = NOW()
-         WHERE id = ?`,
-        [adminId, requestId]
-      );
-
-      // 2. Insert into locations
-      await conn.query(
-        `INSERT INTO locations
-         (name, type, address, latitude, longitude, description, short_description, owner_id, organization_id, is_active)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE)`,
-        [
-          pr.name,
-          pr.type,
-          pr.address,
-          pr.latitude,
-          pr.longitude,
-          pr.short_description,
-          pr.short_description,
-          pr.requester_id,
-          pr.organization_id
-        ]
-      );
-    } else {
-      await conn.query(
-        `UPDATE place_requests
-         SET status = 'rejected', reviewed_by = ?, reviewed_at = NOW()
-         WHERE id = ?`,
-        [adminId, requestId]
-      );
-    }
-
-    await conn.commit();
-    res.json({ message: `Place request ${action}d successfully.` });
-  } catch (err) {
-    await conn.rollback();
-    next(err);
-  } finally {
-    conn.release();
-  }
-});
-
-// --- 3. BADGES QUEUE ---
+// --- 2. BADGES QUEUE ---
 
 // GET /api/admin/badges/pending
 router.get('/badges/pending', async (req, res, next) => {

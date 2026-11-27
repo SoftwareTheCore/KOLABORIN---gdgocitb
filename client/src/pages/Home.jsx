@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import api from '../api';
 import PlaceMap from '../components/PlaceMap';
+import { PageSkeleton } from '../components/LoadingSkeleton';
 
 const OrganizationTrendChart = lazy(() => import('../components/OrganizationTrendChart'));
 const OrganizationEventChart = lazy(() => import('../components/OrganizationEventChart'));
@@ -75,19 +76,12 @@ export default function Home() {
 
   useEffect(() => {
     fetchHomeData();
-    // Auto-refresh every 30 seconds as per Section 5.2 (FR-HOME-2)
-    const interval = setInterval(() => {
-      fetchHomeData();
-    }, 30000);
+    const interval = setInterval(fetchHomeData, 30000);
     return () => clearInterval(interval);
   }, [user?.role, rangeDays]);
 
   if (loading) {
-    return (
-      <div className="container" style={{ padding: '3rem 1rem', textAlign: 'center' }}>
-        <p style={{ color: 'var(--muted)' }}>Loading live campus dashboard...</p>
-      </div>
-    );
+    return <PageSkeleton />;
   }
 
   if (error) {
@@ -186,7 +180,7 @@ export default function Home() {
             <>
               <NavLink to={`/orgs/${orgs[0].id}/events`}>Event &amp; Workshop</NavLink>
               <NavLink to={`/orgs/${orgs[0].id}/recruitment`}>Rekrutmen</NavLink>
-              <NavLink to={`/orgs/${orgs[0].id}/live-spot`}>Live Spot</NavLink>
+              <NavLink to={`/orgs/${orgs[0].id}/live-spot`}>Ruang &amp; Venue</NavLink>
               <NavLink to={`/orgs/${orgs[0].id}/settings`}>Pengaturan Organisasi</NavLink>
             </>
           )}
@@ -377,47 +371,59 @@ export default function Home() {
   // --- ADMIN VIEW ---
   if (user?.role === 'admin' && homeData?.pending) {
     return (
-      <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1000px', margin: '0 auto' }}>
-        <div className="hero-banner">
-          <h1>Admin Workspace 🛡️</h1>
-          <p>KOLABORIN Moderation & Verification Overview</p>
-          <div style={{ marginTop: '1.25rem' }}>
-            <Link to="/admin" className="btn-hero">Open Admin Panel</Link>
+      <main className="container admin-home-page">
+        <section className="admin-home-hero">
+          <div>
+            <span className="eyebrow">Ringkasan platform KOLABORIN</span>
+            <h1>Selamat datang, Admin</h1>
+            <p>Pantau aktivitas kampus dan tindak lanjuti moderasi yang masih menunggu.</p>
           </div>
-        </div>
+          <Link to="/admin" className="btn-primary">Buka panel admin</Link>
+        </section>
 
-        <h3 style={{ marginTop: '2rem', marginBottom: '1rem' }}>Pending Review Queue</h3>
-        <div className="stats-grid">
-          <div className="stat-card">
-            <span className="stat-label">Pending Organizations</span>
-            <span className="stat-val">🏛️ {homeData.pending.orgs}</span>
+        <section className="admin-home-section" aria-labelledby="admin-pending-title">
+          <div className="admin-home-section-heading">
+            <div>
+              <span className="eyebrow">Perlu perhatian</span>
+              <h2 id="admin-pending-title">Antrean moderasi</h2>
+            </div>
+            <Link to="/admin">Tinjau antrean →</Link>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">Pending Place Requests</span>
-            <span className="stat-val">📍 {homeData.pending.places}</span>
+          <div className="admin-home-kpis">
+            <article className="admin-home-kpi is-pending">
+              <span>Organisasi menunggu verifikasi</span>
+              <strong>{homeData.pending.orgs}</strong>
+              <small>Periksa kelengkapan profil dan pemilik</small>
+            </article>
+            <article className="admin-home-kpi is-pending">
+              <span>Badge menunggu tinjauan</span>
+              <strong>{homeData.pending.badges}</strong>
+              <small>Validasi kontribusi akademik mahasiswa</small>
+            </article>
+            <article className="admin-home-kpi is-ready">
+              <span>Lokasi Campus Radar</span>
+              <strong>{homeData.totals.places}</strong>
+              <small>Lokasi aktif yang tampil pada peta kampus</small>
+            </article>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">Pending Badges</span>
-            <span className="stat-val">🏅 {homeData.pending.badges}</span>
-          </div>
-        </div>
+        </section>
 
-        <h3 style={{ marginTop: '2rem', marginBottom: '1rem' }}>Platform Totals</h3>
-        <div className="stats-grid">
-          <div className="stat-card">
-            <span className="stat-label">Registered Students</span>
-            <span className="stat-val">👥 {homeData.totals.users}</span>
+        <section className="admin-home-section" aria-labelledby="admin-activity-title">
+          <div className="admin-home-section-heading">
+            <div>
+              <span className="eyebrow">Aktivitas kampus</span>
+              <h2 id="admin-activity-title">Ikhtisar platform</h2>
+            </div>
+            <Link to="/map">Lihat Campus Radar →</Link>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">Active Study Groups</span>
-            <span className="stat-val">📚 {homeData.totals.groups}</span>
+          <div className="admin-home-kpis">
+            <article className="admin-home-kpi"><span>Mahasiswa terdaftar</span><strong>{homeData.totals.users}</strong><small>Pengguna student</small></article>
+            <article className="admin-home-kpi"><span>Organisasi</span><strong>{homeData.totals.organizations}</strong><small>Seluruh status verifikasi</small></article>
+            <article className="admin-home-kpi"><span>Open Party aktif</span><strong>{homeData.totals.groups}</strong><small>Ruang belajar yang belum ditutup</small></article>
+            <article className="admin-home-kpi"><span>Event dipublikasikan</span><strong>{homeData.totals.events}</strong><small>Agenda kampus yang tersedia</small></article>
           </div>
-          <div className="stat-card">
-            <span className="stat-label">Published Events</span>
-            <span className="stat-val">📅 {homeData.totals.events}</span>
-          </div>
-        </div>
-      </div>
+        </section>
+      </main>
     );
   }
 
@@ -442,7 +448,6 @@ export default function Home() {
         <div className="home-quick-actions">
           <Link to="/groups/new" className="btn-primary">＋ Buka study group</Link>
           <Link to="/map" className="btn-secondary">Cari spot belajar</Link>
-          <Link to="/map?request=1" className="home-request-link">Ajukan lokasi →</Link>
         </div>
       </section>
 
@@ -598,7 +603,7 @@ export default function Home() {
       </section>
       </div>
 
-      {/* 4. Card Grid: Busiest now, Groups, Events, Communities, Top 3 */}
+      {/* 4. Card Grid: busiest locations, groups, events, communities, top 3 */}
       <div className="dashboard-grid" style={{ marginTop: '1.5rem' }}>
         {/* Busiest places now */}
         <div className="dash-card">
@@ -620,9 +625,7 @@ export default function Home() {
                     <strong>{place.name}</strong>
                     <p style={{ fontSize: '0.8rem', color: 'var(--muted)' }}>{place.short_description}</p>
                   </div>
-                  <span className="live-headcount-badge">
-                    🟢 {place.active_people}
-                  </span>
+                  <span className="live-headcount-badge">● {place.active_people}</span>
                 </div>
               ))}
             </div>

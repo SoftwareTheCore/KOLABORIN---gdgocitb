@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import api from '../api';
+import { CardSkeletonList } from '../components/LoadingSkeleton';
 
 export default function Party() {
   const navigate = useNavigate();
@@ -112,7 +113,7 @@ export default function Party() {
       </section>
 
       {loading ? (
-        <p className="empty-state">Memuat sesi belajar...</p>
+        <CardSkeletonList count={6} />
       ) : filteredGroups.length === 0 ? (
         <div className="empty-state open-party-empty">
           <h3>{groups.length ? 'Tidak ada sesi yang cocok' : 'Belum ada sesi belajar'}</h3>

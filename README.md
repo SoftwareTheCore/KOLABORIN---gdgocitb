@@ -13,7 +13,7 @@ Created for **GDG on Campus ITB - STACK 2026**, Case 1: Smarter Campus and Learn
 ## Fitur Utama
 
 - Grup belajar: buat, cari, bergabung, berdiskusi, dan tutup grup.
-- Peta kampus: tampilkan lokasi belajar aktif dan tempat populer.
+- Campus Radar: tampilkan lokasi belajar aktif, fasilitas, rating bintang, dan informasi sesuai kebutuhan mahasiswa atau organisasi.
 - Organisasi: registrasi, verifikasi admin, pengelolaan profil, dan kolaborasi.
 - Event: publikasi, lamaran mahasiswa, persetujuan, dan pengecekan kapasitas.
 - Komunitas: chat anggota, broadcast, dan aturan balasan otomatis.
@@ -74,6 +74,30 @@ Windows PowerShell:
 cmd /c "mysql -u root -p kolaborin < server\db\migrations\002_event_check_ins.sql"
 ```
 
+Jika database sudah dibuat sebelum rating Campus Radar dan QR kehadiran Open Party ditambahkan, jalankan migrasi berikut satu kali:
+
+```bash
+mysql -u root -p kolaborin < server/db/migrations/003_campus_radar_and_party_check_ins.sql
+```
+
+Windows PowerShell:
+
+```powershell
+cmd /c "mysql -u root -p kolaborin < server\db\migrations\003_campus_radar_and_party_check_ins.sql"
+```
+
+Jika database sudah dibuat sebelum foto profil dan riwayat Open Party ditambahkan, jalankan migrasi berikut satu kali:
+
+```bash
+mysql -u root -p kolaborin < server/db/migrations/004_profile_and_group_history.sql
+```
+
+Windows PowerShell:
+
+```powershell
+cmd /c "mysql -u root -p kolaborin < server\\db\\migrations\\004_profile_and_group_history.sql"
+```
+
 Kemudian isi data demo:
 
 ```bash
@@ -84,6 +108,15 @@ npm run seed
 
 PERINGATAN: `npm run seed` mengosongkan tabel database sebelum mengisi data demo. Jalankan hanya pada database lokal/dev yang boleh di-reset, bukan database berisi data penting atau production.
 
+Untuk menambahkan 20 lokasi Campus Radar dan rating demo tanpa menghapus data database:
+
+```bash
+cd server
+npm run seed:campus-radar
+```
+
+Perintah ini hanya menambahkan lokasi yang belum ada dan rating demo yang belum tercatat. Lokasi atau rating yang sudah ada tidak ditimpa.
+
 Untuk menambahkan atau memperbarui data demo Live Spot organisasi tanpa menghapus data lain:
 
 ```bash
@@ -91,7 +124,7 @@ cd server
 npm run seed:live-spot
 ```
 
-Perintah ini idempotent dan menyiapkan ruang meeting, venue event, satu meeting, satu event, satu pendaftar demo dengan tiket QR, serta satu pengajuan fasilitas contoh untuk HMIF.
+Perintah ini idempotent dan menghubungkan dua lokasi Campus Radar ke HMIF, lalu menyiapkan satu meeting, satu event, dan satu pendaftar demo dengan tiket QR. Perintah ini tidak membuat request tempat.
 
 ### 2. Jalankan backend
 

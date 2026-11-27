@@ -3,6 +3,121 @@ import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import api from '../api';
 
+const FACULTY_PROGRAMS = {
+  STEI: {
+    label: 'STEI (Sekolah Teknik Elektro dan Informatika)',
+    programs: [
+      { value: 'IF', label: 'Informatika (IF)' },
+      { value: 'STI', label: 'Sistem dan Teknologi Informasi (STI)' },
+      { value: 'EL', label: 'Teknik Elektro (EL)' },
+      { value: 'EP', label: 'Teknik Tenaga Listrik (EP)' },
+      { value: 'ET', label: 'Teknik Telekomunikasi (ET)' },
+      { value: 'EB', label: 'Teknik Biomedis (EB)' },
+    ],
+  },
+  FTI: {
+    label: 'FTI (Fakultas Teknologi Industri)',
+    programs: [
+      { value: 'TK', label: 'Teknik Kimia (TK)' },
+      { value: 'TF', label: 'Teknik Fisika (TF)' },
+      { value: 'TI', label: 'Teknik Industri (TI)' },
+      { value: 'MR', label: 'Manajemen Rekayasa (MR)' },
+      { value: 'TBK', label: 'Teknik Bioenergi dan Kemurgi (TBK)' },
+    ],
+  },
+  SBM: {
+    label: 'SBM (Sekolah Bisnis dan Manajemen)',
+    programs: [
+      { value: 'MB', label: 'Manajemen (MB)' },
+      { value: 'MK', label: 'Kewirausahaan (MK)' },
+    ],
+  },
+  FSRD: {
+    label: 'FSRD (Fakultas Seni Rupa dan Desain)',
+    programs: [
+      { value: 'SR', label: 'Seni Rupa (SR)' },
+      { value: 'KR', label: 'Kriya (KR)' },
+      { value: 'DI', label: 'Desain Interior (DI)' },
+      { value: 'DKV', label: 'Desain Komunikasi Visual (DKV)' },
+      { value: 'DP', label: 'Desain Produk (DP)' },
+    ],
+  },
+  FITB: {
+    label: 'FITB (Fakultas Ilmu dan Teknologi Kebumian)',
+    programs: [
+      { value: 'MG', label: 'Meteorologi (MG)' },
+      { value: 'OS', label: 'Oseanografi (OS)' },
+      { value: 'GL', label: 'Teknik Geologi (GL)' },
+      { value: 'GD', label: 'Teknik Geodesi dan Geomatika (GD)' },
+    ],
+  },
+  FMIPA: {
+    label: 'FMIPA (Fakultas Matematika dan Ilmu Pengetahuan Alam)',
+    programs: [
+      { value: 'MA', label: 'Matematika (MA)' },
+      { value: 'FI', label: 'Fisika (FI)' },
+      { value: 'KI', label: 'Kimia (KI)' },
+      { value: 'AS', label: 'Astronomi (AS)' },
+    ],
+  },
+  FTMD: {
+    label: 'FTMD (Fakultas Teknik Mesin dan Dirgantara)',
+    programs: [
+      { value: 'MS', label: 'Teknik Mesin (MS)' },
+      { value: 'AE', label: 'Teknik Dirgantara (AE)' },
+      { value: 'MT', label: 'Teknik Material (MT)' },
+    ],
+  },
+  FTSL: {
+    label: 'FTSL (Fakultas Teknik Sipil dan Lingkungan)',
+    programs: [
+      { value: 'SI', label: 'Teknik Sipil (SI)' },
+      { value: 'TL', label: 'Teknik Lingkungan (TL)' },
+      { value: 'KL', label: 'Teknik Kelautan (KL)' },
+      { value: 'RIL', label: 'Rekayasa Infrastruktur Lingkungan (RIL)' },
+      { value: 'TPSDA', label: 'Teknik dan Pengelolaan Sumber Daya Air (TPSDA)' },
+    ],
+  },
+  SAPPK: {
+    label: 'SAPPK (Sekolah Arsitektur, Perencanaan, dan Pengembangan Kebijakan)',
+    programs: [
+      { value: 'AR', label: 'Arsitektur (AR)' },
+      { value: 'PWK', label: 'Perencanaan Wilayah dan Kota (PWK)' },
+    ],
+  },
+  SITH: {
+    label: 'SITH (Sekolah Ilmu dan Teknologi Hayati)',
+    programs: [
+      { value: 'BI', label: 'Biologi (BI)' },
+      { value: 'MI', label: 'Mikrobiologi (MI)' },
+      { value: 'RB', label: 'Rekayasa Hayati (RB)' },
+      { value: 'RP', label: 'Rekayasa Pertanian (RP)' },
+      { value: 'RH', label: 'Rekayasa Kehutanan (RH)' },
+    ],
+  },
+  SF: {
+    label: 'SF (Sekolah Farmasi)',
+    programs: [
+      { value: 'STF', label: 'Sains dan Teknologi Farmasi (STF)' },
+      { value: 'FKK', label: 'Farmasi Klinik dan Komunitas (FKK)' },
+    ],
+  },
+  FTTM: {
+    label: 'FTTM (Fakultas Teknik Pertambangan dan Perminyakan)',
+    programs: [
+      { value: 'TA', label: 'Teknik Pertambangan (TA)' },
+      { value: 'TM', label: 'Teknik Perminyakan (TM)' },
+      { value: 'TG', label: 'Teknik Geofisika (TG)' },
+      { value: 'MG', label: 'Teknik Metalurgi (MG)' },
+      { value: 'GT', label: 'Teknik Geotermal (GT)' },
+    ],
+  },
+  OTHER: {
+    label: 'Kampus / fakultas lain (isi manual)',
+    programs: [],
+  },
+};
+
 export default function Register() {
   const [searchParams] = useSearchParams();
   const initialEmail = searchParams.get('email') || '';
@@ -12,24 +127,19 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [faculty, setFaculty] = useState('STEI');
-  const [major, setMajor] = useState('IF');
+  const [major, setMajor] = useState(FACULTY_PROGRAMS.STEI.programs[0].value);
+  const [otherFaculty, setOtherFaculty] = useState('');
+  const [otherMajor, setOtherMajor] = useState('');
   const [role, setRole] = useState('student');
   const [organizationName, setOrganizationName] = useState('');
-  const [selectedInterests, setSelectedInterests] = useState(['#TugasBesar', '#ArtificialIntelligence']);
   const [agreeTerms, setAgreeTerms] = useState(true);
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const { login } = useAuth();
   const navigate = useNavigate();
-
-  const toggleInterest = (tag) => {
-    if (selectedInterests.includes(tag)) {
-      setSelectedInterests(selectedInterests.filter((t) => t !== tag));
-    } else {
-      setSelectedInterests([...selectedInterests, tag]);
-    }
-  };
+  const isOtherFaculty = faculty === 'OTHER';
+  const facultyPrograms = FACULTY_PROGRAMS[faculty].programs;
 
   const getPasswordStrength = () => {
     if (!password) return 0;
@@ -68,8 +178,8 @@ export default function Register() {
         name,
         email,
         password,
-        faculty,
-        major,
+        faculty: isOtherFaculty ? otherFaculty.trim() : faculty,
+        major: isOtherFaculty ? otherMajor.trim() : major,
         role,
         organizationName,
       });
@@ -81,15 +191,6 @@ export default function Register() {
       setSubmitting(false);
     }
   };
-
-  const interestsList = [
-    { tag: '#TugasBesar', icon: 'code' },
-    { tag: '#ArtificialIntelligence', icon: 'smart_toy' },
-    { tag: '#CompetitiveProgramming', icon: 'terminal' },
-    { tag: '#UIUXDesign', icon: 'design_services' },
-    { tag: '#Hackathon', icon: 'trophy' },
-    { tag: '#StudiKelompok', icon: 'groups' },
-  ];
 
   return (
     <div className="register-custom-container">
@@ -162,7 +263,7 @@ export default function Register() {
                 <div className="rc-form-field">
                   <label className="rc-label" htmlFor="email">
                     <span>Email Kampus Resmi</span>
-                    <span className="rc-label-hint">Format: @students.itb.ac.id</span>
+                    <span className="rc-label-hint">Gunakan email dari kampus Anda</span>
                   </label>
                   <div className="rc-input-wrapper">
                     <span className="material-symbols-outlined rc-input-icon">badge</span>
@@ -170,7 +271,7 @@ export default function Register() {
                       id="email"
                       type="email"
                       required
-                      placeholder="e.g. farrel@students.itb.ac.id"
+                      placeholder="nama@kampus.ac.id"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       className="rc-input"
@@ -186,18 +287,16 @@ export default function Register() {
                       <select
                         id="faculty"
                         value={faculty}
-                        onChange={(e) => setFaculty(e.target.value)}
+                        onChange={(e) => {
+                          const nextFaculty = e.target.value;
+                          setFaculty(nextFaculty);
+                          setMajor(FACULTY_PROGRAMS[nextFaculty].programs[0]?.value || '');
+                        }}
                         className="rc-select"
                       >
-                        <option value="STEI">STEI (Teknik Elektro &amp; Informatika)</option>
-                        <option value="FTI">FTI (Teknologi Industri)</option>
-                        <option value="SBM">SBM (Bisnis &amp; Manajemen)</option>
-                        <option value="FSRD">FSRD (Seni Rupa &amp; Desain)</option>
-                        <option value="FITB">FITB (Ilmu &amp; Kebumian)</option>
-                        <option value="FMIPA">FMIPA (Matematika &amp; IPA)</option>
-                        <option value="FTMD">FTMD (Mesin &amp; Dirgantara)</option>
-                        <option value="FTSL">FTSL (Sipil &amp; Lingkungan)</option>
-                        <option value="SAPPK">SAPPK (Arsitektur &amp; Perencanaan)</option>
+                        {Object.entries(FACULTY_PROGRAMS).map(([code, details]) => (
+                          <option key={code} value={code}>{details.label}</option>
+                        ))}
                       </select>
                       <span className="material-symbols-outlined rc-select-arrow">expand_more</span>
                     </div>
@@ -205,24 +304,48 @@ export default function Register() {
 
                   <div className="rc-form-field">
                     <label className="rc-label" htmlFor="major">Program Studi</label>
-                    <div className="rc-select-wrapper">
-                      <select
+                    {isOtherFaculty ? (
+                      <input
                         id="major"
-                        value={major}
-                        onChange={(e) => setMajor(e.target.value)}
-                        className="rc-select"
-                      >
-                        <option value="IF">Teknik Informatika (IF)</option>
-                        <option value="STI">Sistem &amp; Tek. Informasi (STI)</option>
-                        <option value="EL">Teknik Elektro (EL)</option>
-                        <option value="EP">Teknik Tenaga Listrik (EP)</option>
-                        <option value="ET">Teknik Telekomunikasi (ET)</option>
-                        <option value="BM">Teknik Biomedis (EB)</option>
-                      </select>
-                      <span className="material-symbols-outlined rc-select-arrow">expand_more</span>
-                    </div>
+                        type="text"
+                        required
+                        placeholder="Nama program studi"
+                        value={otherMajor}
+                        onChange={(e) => setOtherMajor(e.target.value)}
+                        className="rc-input rc-input-plain"
+                      />
+                    ) : (
+                      <div className="rc-select-wrapper">
+                        <select
+                          id="major"
+                          value={major}
+                          onChange={(e) => setMajor(e.target.value)}
+                          className="rc-select"
+                        >
+                          {facultyPrograms.map((program) => (
+                            <option key={program.value} value={program.value}>{program.label}</option>
+                          ))}
+                        </select>
+                        <span className="material-symbols-outlined rc-select-arrow">expand_more</span>
+                      </div>
+                    )}
                   </div>
                 </div>
+
+                {isOtherFaculty && (
+                  <div className="rc-form-field">
+                    <label className="rc-label" htmlFor="otherFaculty">Kampus / Fakultas</label>
+                    <input
+                      id="otherFaculty"
+                      type="text"
+                      required
+                      placeholder="Nama kampus dan fakultas"
+                      value={otherFaculty}
+                      onChange={(e) => setOtherFaculty(e.target.value)}
+                      className="rc-input rc-input-plain"
+                    />
+                  </div>
+                )}
 
                 {/* Account Type */}
                 <div className="rc-form-field">
@@ -301,33 +424,6 @@ export default function Register() {
                       <span>Kekuatan: {strength >= 3 ? 'Kuat & Aman' : strength >= 2 ? 'Sedang' : 'Lemah'}</span>
                       <span>Kombinasi huruf besar, angka, &amp; simbol</span>
                     </div>
-                  </div>
-                </div>
-
-                {/* Minat & Fokus Kolaborasi */}
-                <div className="rc-form-field">
-                  <div className="rc-label-row">
-                    <label className="rc-label">Minat &amp; Fokus Kolaborasi</label>
-                    <span className="rc-label-hint">Pilih topik yang diminati</span>
-                  </div>
-                  <p className="rc-field-note">
-                    Membantu algoritma mencocokkan Anda dengan tim tubes dan study room yang relevan.
-                  </p>
-                  <div className="rc-tags-list">
-                    {interestsList.map((item) => {
-                      const isSelected = selectedInterests.includes(item.tag);
-                      return (
-                        <button
-                          key={item.tag}
-                          type="button"
-                          onClick={() => toggleInterest(item.tag)}
-                          className={`rc-interest-tag ${isSelected ? 'tag-selected' : ''}`}
-                        >
-                          <span className="material-symbols-outlined" style={{ fontSize: '15px' }}>{item.icon}</span>
-                          <span>{item.tag}</span>
-                        </button>
-                      );
-                    })}
                   </div>
                 </div>
 
@@ -591,12 +687,6 @@ const css = `
   justify-content: space-between;
   align-items: center;
 }
-.rc-field-note {
-  margin: 0 0 4px;
-  font-size: 12px;
-  color: #777587;
-}
-
 .rc-input-wrapper {
   position: relative;
   display: flex;
@@ -620,6 +710,9 @@ const css = `
   font-size: 14px;
   font-family: inherit;
   transition: all 0.2s;
+}
+.rc-input-plain {
+  padding-left: 12px;
 }
 .rc-input:focus {
   outline: none;
@@ -703,37 +796,6 @@ const css = `
   justify-content: space-between;
   font-size: 11px;
   color: #464555;
-}
-
-/* Tags */
-.rc-tags-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 4px;
-}
-.rc-interest-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  padding: 6px 14px;
-  border-radius: 9999px;
-  font-size: 12px;
-  font-weight: 600;
-  border: 1px solid #dae2fd;
-  background-color: #f2f3ff;
-  color: #131b2e;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-.rc-interest-tag:hover {
-  background-color: #e2e7ff;
-}
-.tag-selected {
-  background-color: #3525cd !important;
-  color: #ffffff !important;
-  border-color: #3525cd !important;
-  box-shadow: 0 2px 8px rgba(53, 37, 205, 0.25);
 }
 
 /* Terms */

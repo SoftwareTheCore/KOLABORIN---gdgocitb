@@ -1,9 +1,195 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../auth/AuthContext';
 import api from '../api';
+import { QRCodeSVG } from 'qrcode.react';
 import StudyRoomSidebar from '../components/StudyRoomSidebar';
 import StudyRoomWorkspace from '../components/StudyRoomWorkspace';
+import { PageSkeleton } from '../components/LoadingSkeleton';
+
+function OpenPartyAttendance({ groupId, isMember, isCreator, onCheckedIn }) {
+  const videoRef = useRef(null);
+  const checkTicketRef = useRef(null);
+  const checkingRef = useRef(false);
+  const lastScanRef = useRef({ code: '', at: 0 });
+  const [ticketCode, setTicketCode] = useState('');
+  const [cameraActive, setCameraActive] = useState(false);
+  const [manualCode, setManualCode] = useState('');
+  const [checking, setChecking] = useState(false);
+  const [feedback, setFeedback] = useState(null);
+  const [scannerError, setScannerError] = useState('');
+  const [qrExpanded, setQrExpanded] = useState(false);
+  const qrDialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = qrDialogRef.current;
+    if (!dialog) return;
+    if (qrExpanded && !dialog.open) dialog.showModal();
+    if (!qrExpanded && dialog.open) dialog.close();
+  }, [qrExpanded]);
+
+  useEffect(() => {
+    if (!isMember) return;
+    let active = true;
+    api.get(`/groups/${groupId}/ticket`)
+      .then((response) => {
+        if (active) setTicketCode(response.data.ticketCode);
+      })
+      .catch((err) => {
+        if (active) setFeedback({
+          type: 'error',
+          message: err.response?.data?.error || 'QR kehadiran tidak dapat dimuat.'
+        });
+      });
+    return () => { active = false; };
+  }, [groupId, isMember]);
+
+  const checkTicket = async (value) => {
+    const code = typeof value === 'string' ? value.trim() : '';
+    if (!code || !groupId || checkingRef.current) return;
+    checkingRef.current = true;
+    setChecking(true);
+    setFeedback(null);
+    try {
+      const response = await api.post(`/groups/${groupId}/check-ins`, { ticket_code: code });
+      setManualCode('');
+      setFeedback({ type: 'success', ...response.data });
+      onCheckedIn();
+    } catch (err) {
+      setFeedback({
+        type: 'error',
+        message: err.response?.data?.error || 'QR kehadiran tidak dapat diverifikasi.'
+      });
+    } finally {
+      checkingRef.current = false;
+      setChecking(false);
+    }
+  };
+  checkTicketRef.current = checkTicket;
+
+  useEffect(() => {
+    if (!cameraActive || !isCreator) return undefined;
+    let active = true;
+    let controls;
+    const startScanner = async () => {
+      try {
+        const { BrowserMultiFormatReader } = await import('@zxing/browser');
+        if (!active) return;
+        const reader = new BrowserMultiFormatReader();
+        controls = await reader.decodeFromVideoDevice(undefined, videoRef.current, (result) => {
+          if (!active || !result) return;
+          const code = result.getText().trim();
+          const now = Date.now();
+          if (!code || (lastScanRef.current.code === code && now - lastScanRef.current.at < 4000)) return;
+          lastScanRef.current = { code, at: now };
+          checkTicketRef.current?.(code);
+        });
+        if (!active) controls.stop();
+      } catch (err) {
+        if (!active) return;
+        console.error('Unable to start Open Party QR scanner:', err);
+        setScannerError('Kamera tidak dapat dibuka. Periksa izin browser atau masukkan kode secara manual.');
+        setCameraActive(false);
+      }
+    };
+    startScanner();
+    return () => {
+      active = false;
+      controls?.stop();
+    };
+  }, [cameraActive, isCreator]);
+
+  if (!isMember && !isCreator) return null;
+
+  return (
+    <section className="party-attendance">
+      {isMember && (
+        <div className="party-attendance-ticket">
+          <div>
+            <span className="eyebrow">Kehadiran Open Party</span>
+            <h3>QR check-in Anda</h3>
+            <p>Tunjukkan kode ini kepada penyelenggara saat tiba di lokasi.</p>
+          </div>
+          <div className="party-attendance-qr" aria-label="QR check-in Open Party">
+            {ticketCode ? <QRCodeSVG value={ticketCode} size={132} level="M" includeMargin /> : <span className="skeleton-block" />}
+            {ticketCode && (
+              <button type="button" className="btn-secondary party-qr-expand" onClick={() => setQrExpanded(true)}>
+                Perbesar QR
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+      <dialog
+        ref={qrDialogRef}
+        className="party-qr-dialog"
+        aria-labelledby="party-qr-dialog-title"
+        onCancel={() => setQrExpanded(false)}
+        onClose={() => setQrExpanded(false)}
+        onKeyDown={(event) => {
+          if (event.key === 'Escape') setQrExpanded(false);
+        }}
+        onClick={(event) => {
+          if (event.target === event.currentTarget) setQrExpanded(false);
+        }}
+      >
+        <div className="party-qr-dialog-content">
+          <div className="party-qr-dialog-heading">
+            <div>
+              <span className="eyebrow">Kehadiran Open Party</span>
+              <h3 id="party-qr-dialog-title">QR check-in Anda</h3>
+            </div>
+            <button type="button" className="btn-secondary" autoFocus onClick={() => setQrExpanded(false)}>
+              Tutup
+            </button>
+          </div>
+          {ticketCode && <QRCodeSVG value={ticketCode} size={320} level="M" includeMargin />}
+          <p>Tampilkan QR ini kepada host untuk diverifikasi.</p>
+        </div>
+      </dialog>
+      {isCreator && (
+        <div className="party-attendance-scanner">
+          <div className="party-attendance-heading">
+            <div><span className="eyebrow">Khusus penyelenggara</span><h3>Verifikasi kehadiran</h3></div>
+            <button type="button" className={cameraActive ? 'btn-secondary' : 'btn-primary'} onClick={() => {
+              setScannerError('');
+              setCameraActive((active) => !active);
+            }}>
+              {cameraActive ? 'Matikan kamera' : 'Scan QR'}
+            </button>
+          </div>
+          {cameraActive && <video ref={videoRef} className="party-attendance-video" autoPlay muted playsInline />}
+          {scannerError && <p className="org-qr-feedback is-error" role="alert">{scannerError}</p>}
+          {feedback && (
+            <div className={`org-qr-feedback ${feedback.type === 'success' ? 'is-success' : 'is-error'}`} role={feedback.type === 'success' ? 'status' : 'alert'}>
+              <strong>{feedback.type === 'success' ? 'Kehadiran terverifikasi' : 'Verifikasi gagal'}</strong>
+              <span>{feedback.type === 'success' ? feedback.attendee?.name : feedback.message}</span>
+            </div>
+          )}
+          <form className="org-qr-manual-form" onSubmit={(event) => {
+            event.preventDefault();
+            checkTicket(manualCode);
+          }}>
+            <label htmlFor="party-ticket-code">Atau masukkan kode QR</label>
+            <div>
+              <input
+                id="party-ticket-code"
+                autoComplete="off"
+                value={manualCode}
+                onChange={(event) => setManualCode(event.target.value)}
+                placeholder="Tempel kode tiket peserta"
+                disabled={checking}
+              />
+              <button type="submit" className="btn-primary" disabled={!manualCode.trim() || checking}>
+                {checking ? 'Memeriksa…' : 'Verifikasi'}
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+    </section>
+  );
+}
 
 export default function GroupDetail() {
   const { id } = useParams();
@@ -21,6 +207,7 @@ export default function GroupDetail() {
   const [replyToParentId, setReplyToParentId] = useState(null);
   const [submitting, setSubmitting] = useState(false);
   const [toast, setToast] = useState('');
+  const [kickingUserId, setKickingUserId] = useState(null);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -66,6 +253,20 @@ export default function GroupDetail() {
       loadGroupAndPosts();
     } catch (err) {
       showToast(err.response?.data?.error || 'Could not leave group');
+    }
+  };
+
+  const handleKick = async (member) => {
+    if (!window.confirm(`Keluarkan ${member.name} dari Open Party?`)) return;
+    setKickingUserId(member.user_id);
+    try {
+      await api.delete(`/groups/${id}/members/${member.user_id}`);
+      showToast(`${member.name} telah dikeluarkan dari Open Party.`);
+      await loadGroupAndPosts();
+    } catch (err) {
+      showToast(err.response?.data?.error || 'Anggota tidak dapat dikeluarkan.');
+    } finally {
+      setKickingUserId(null);
     }
   };
 
@@ -119,7 +320,7 @@ export default function GroupDetail() {
   };
 
   if (loading) {
-    return <div className="container" style={{ padding: '3rem 1rem', textAlign: 'center' }}>Loading study space...</div>;
+    return <PageSkeleton />;
   }
 
   if (error || !data) {
@@ -184,6 +385,13 @@ export default function GroupDetail() {
           </p>
         )}
       </div>
+
+      <OpenPartyAttendance
+        groupId={id}
+        isMember={isMember}
+        isCreator={isCreator}
+        onCheckedIn={loadGroupAndPosts}
+      />
 
       {/* Study room: discussions and the group desk */}
       <div className="group-detail-grid" style={{ marginTop: '1.5rem' }}>
@@ -339,7 +547,13 @@ export default function GroupDetail() {
         </div>
 
         <StudyRoomWorkspace />
-        <StudyRoomSidebar group={group} members={members} />
+        <StudyRoomSidebar
+          group={group}
+          members={members}
+          isCreator={isCreator}
+          onKick={handleKick}
+          kickingUserId={kickingUserId}
+        />
       </div>
     </div>
   );

@@ -6,7 +6,6 @@ const authRoutes = require('./routes/auth');
 const meRoutes = require('./routes/me');
 const homeRoutes = require('./routes/home');
 const locationsRoutes = require('./routes/locations');
-const placeRequestsRoutes = require('./routes/placeRequests');
 const groupsRoutes = require('./routes/groups');
 const orgsRoutes = require('./routes/orgs');
 const eventsRoutes = require('./routes/events');
@@ -35,7 +34,7 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(express.json());
+app.use(express.json({ limit: '1mb' }));
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {
@@ -46,7 +45,6 @@ app.get('/api/health', (req, res) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/home', homeRoutes);
 app.use('/api/locations', locationsRoutes);
-app.use('/api/place-requests', placeRequestsRoutes);
 app.use('/api/groups', groupsRoutes);
 app.use('/api/orgs', orgsRoutes);
 app.use('/api/events', eventsRoutes);

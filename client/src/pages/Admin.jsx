@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import api from '../api';
+import { CardSkeletonList } from '../components/LoadingSkeleton';
 
 export default function Admin() {
-  const [activeTab, setActiveTab] = useState('orgs'); // orgs, places, badges
+  const [activeTab, setActiveTab] = useState('orgs');
   const [pendingOrgs, setPendingOrgs] = useState([]);
-  const [pendingPlaces, setPendingPlaces] = useState([]);
+  const [locations, setLocations] = useState([]);
   const [pendingBadges, setPendingBadges] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [toast, setToast] = useState('');
 
   const showToast = (msg) => {
@@ -15,17 +17,19 @@ export default function Admin() {
   };
 
   const loadAllQueues = async () => {
+    setError('');
     try {
-      const [resOrgs, resPlaces, resBadges] = await Promise.all([
+      const [resOrgs, resLocations, resBadges] = await Promise.all([
         api.get('/admin/orgs/pending'),
-        api.get('/admin/place-requests/pending'),
+        api.get('/admin/locations'),
         api.get('/admin/badges/pending')
       ]);
       setPendingOrgs(resOrgs.data);
-      setPendingPlaces(resPlaces.data);
+      setLocations(resLocations.data);
       setPendingBadges(resBadges.data);
     } catch (err) {
       console.error(err);
+      setError(err.response?.data?.error || 'Data panel admin gagal dimuat.');
     } finally {
       setLoading(false);
     }
@@ -45,13 +49,14 @@ export default function Admin() {
     }
   };
 
-  const handlePlaceAction = async (id, action) => {
+  const handleRemoveLocation = async (location) => {
+    if (!window.confirm(`Hapus ${location.name} dari Campus Radar?`)) return;
     try {
-      const res = await api.patch(`/admin/place-requests/${id}`, { action });
+      const res = await api.delete(`/admin/locations/${location.id}`);
+      setLocations((current) => current.filter((item) => item.id !== location.id));
       showToast(res.data.message);
-      loadAllQueues();
     } catch (err) {
-      showToast(err.response?.data?.error || `Failed to ${action} place`);
+      showToast(err.response?.data?.error || 'Lokasi gagal dihapus.');
     }
   };
 
@@ -70,11 +75,12 @@ export default function Admin() {
       {toast && <div className="toast-pill">{toast}</div>}
 
       <div style={{ marginBottom: '1.5rem' }}>
-        <h2>Admin Moderation Panel 🛡️</h2>
+        <h2>Admin Moderation Panel</h2>
         <p style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
-          Verify student organizations, approve campus study spots, and confirm academic expertise badges.
+          Verifikasi organisasi, kelola lokasi Campus Radar, dan tinjau badge mahasiswa.
         </p>
       </div>
+      {error && <div className="alert-error" role="alert">{error}</div>}
 
       {/* Tabs */}
       <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '1.5rem', borderBottom: '1px solid var(--border)', paddingBottom: '0.5rem' }}>
@@ -90,7 +96,7 @@ export default function Admin() {
           className={activeTab === 'places' ? 'btn-primary' : 'btn-secondary'}
           style={{ fontSize: '0.85rem' }}
         >
-          Places ({pendingPlaces.length})
+          Campus Radar ({locations.length})
         </button>
         <button
           onClick={() => setActiveTab('badges')}
@@ -101,8 +107,8 @@ export default function Admin() {
         </button>
       </div>
 
-      {loading ? (
-        <p style={{ textAlign: 'center', color: 'var(--muted)' }}>Loading queue...</p>
+      {error ? null : loading ? (
+        <CardSkeletonList count={3} />
       ) : (
         <div>
           {/* TAB 1: ORGANIZATIONS */}
@@ -151,47 +157,41 @@ export default function Admin() {
             </div>
           )}
 
-          {/* TAB 2: PLACES */}
+          {/* TAB 2: CAMPUS RADAR */}
           {activeTab === 'places' && (
             <div>
-              {pendingPlaces.length === 0 ? (
+              {locations.length === 0 ? (
                 <div className="empty-state" style={{ padding: '3rem 1rem', background: 'var(--card)', borderRadius: 'var(--radius-card)', border: '1px solid var(--border)' }}>
-                  ✅ No pending place requests.
+                  Semua lokasi Campus Radar sudah dihapus.
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                  {pendingPlaces.map((pl) => (
-                    <div key={pl.id} className="dash-card">
+                <div className="admin-location-list">
+                  {locations.map((location) => (
+                    <div key={location.id} className="dash-card">
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '0.75rem' }}>
                         <div>
                           <span className="tag-subject" style={{ textTransform: 'capitalize' }}>
-                            {pl.type.replace('_', ' ')}
+                            {location.type.replace(/_/g, ' ')}
                           </span>
-                          <h3 style={{ marginTop: '0.3rem' }}>{pl.name}</h3>
+                          <h3 style={{ marginTop: '0.3rem' }}>{location.name}</h3>
                           <p style={{ fontSize: '0.85rem', color: 'var(--muted)', marginTop: '0.2rem' }}>
-                            Requested by: <strong>{pl.requester_name}</strong> ({pl.faculty}) • Coordinates: [{pl.latitude}, {pl.longitude}]
+                            {location.address || 'Lokasi kampus'} · {location.rating_count} penilaian
                           </p>
-                          {pl.address && <p style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>Address: {pl.address}</p>}
+                          <p className="admin-location-rating" aria-label={`Rating ${location.rating} dari 5`}>
+                            <span aria-hidden="true">{'★'.repeat(Math.round(location.rating))}{'☆'.repeat(5 - Math.round(location.rating))}</span>
+                            <strong>{location.rating.toFixed(1)}</strong>
+                          </p>
                         </div>
-                        <div style={{ display: 'flex', gap: '0.5rem' }}>
-                          <button
-                            onClick={() => handlePlaceAction(pl.id, 'reject')}
-                            className="btn-secondary"
-                            style={{ color: 'var(--danger)', borderColor: 'var(--danger)', fontSize: '0.85rem' }}
-                          >
-                            Reject
-                          </button>
-                          <button
-                            onClick={() => handlePlaceAction(pl.id, 'approve')}
-                            className="btn-primary"
-                            style={{ fontSize: '0.85rem' }}
-                          >
-                            Approve to Live Map
-                          </button>
-                        </div>
+                        <button
+                          onClick={() => handleRemoveLocation(location)}
+                          className="btn-secondary"
+                          style={{ color: 'var(--danger)', borderColor: 'var(--danger)', fontSize: '0.85rem' }}
+                        >
+                          Hapus lokasi
+                        </button>
                       </div>
                       <p style={{ marginTop: '0.75rem', fontSize: '0.9rem', color: 'var(--text)' }}>
-                        {pl.short_description || 'No description provided.'}
+                        {location.short_description || 'Belum ada deskripsi fasilitas.'}
                       </p>
                     </div>
                   ))}
