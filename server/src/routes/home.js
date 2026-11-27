@@ -14,23 +14,25 @@ router.get('/', authMiddleware, async (req, res, next) => {
     // Admin Home payload
     if (userRole === 'admin') {
       const [[orgPending]] = await pool.query("SELECT COUNT(*) as count FROM organizations WHERE status = 'pending'");
-      const [[placePending]] = await pool.query("SELECT COUNT(*) as count FROM place_requests WHERE status = 'pending'");
       const [[badgePending]] = await pool.query("SELECT COUNT(*) as count FROM user_badges WHERE status = 'pending'");
 
       const [[totalUsers]] = await pool.query("SELECT COUNT(*) as count FROM users WHERE role = 'student'");
       const [[totalGroups]] = await pool.query("SELECT COUNT(*) as count FROM study_groups WHERE status != 'closed'");
       const [[totalEvents]] = await pool.query("SELECT COUNT(*) as count FROM events WHERE status = 'published'");
+      const [[totalPlaces]] = await pool.query("SELECT COUNT(*) as count FROM locations WHERE is_active = TRUE");
+      const [[totalOrgs]] = await pool.query("SELECT COUNT(*) as count FROM organizations");
 
       return res.json({
         pending: {
           orgs: orgPending.count,
-          places: placePending.count,
           badges: badgePending.count
         },
         totals: {
           users: totalUsers.count,
           groups: totalGroups.count,
-          events: totalEvents.count
+          events: totalEvents.count,
+          places: totalPlaces.count,
+          organizations: totalOrgs.count
         }
       });
     }
@@ -61,7 +63,7 @@ router.get('/', authMiddleware, async (req, res, next) => {
     };
 
     // 2. Summary stats & Busiest places
-    const liveLocations = await getLiveLocations();
+    const liveLocations = await getLiveLocations(userId);
     const totalPeople = liveLocations.reduce((sum, loc) => sum + loc.active_people, 0);
     const activePlacesCount = liveLocations.filter(loc => loc.active_people > 0).length;
 

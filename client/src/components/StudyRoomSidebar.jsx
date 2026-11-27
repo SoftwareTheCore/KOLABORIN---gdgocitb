@@ -140,6 +140,9 @@ export default function StudyRoomSidebar({ group, members }) {
                   {member.name} {member.badges && <span title={`Badge: ${member.badges}`}>🏅</span>}
                 </strong>
                 <span>{isHost ? 'Host' : [member.faculty, member.major].filter(Boolean).join(' • ') || 'Anggota'}</span>
+                <small className={`party-member-checkin ${member.checked_in_at ? 'is-checked-in' : ''}`}>
+                  {member.checked_in_at ? 'Hadir terverifikasi' : 'Belum check-in'}
+                </small>
               </div>
             );
           })}

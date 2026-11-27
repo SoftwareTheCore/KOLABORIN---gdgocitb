@@ -12,73 +12,24 @@ async function seedLiveSpotDemo(pool) {
   }
 
   const organization = organizations[0];
-  const facilities = [
-    {
-      name: '[DEMO] HMIF Collaboration Room',
-      type: 'meeting_room',
-      address: 'Labtek V STEI Lt. 3',
-      latitude: -6.8887,
-      longitude: 107.6101,
-      description: 'Ruang meeting organisasi dengan layar presentasi dan whiteboard.',
-      shortDescription: 'Meeting room · 12 kursi · layar presentasi'
-    },
-    {
-      name: '[DEMO] HMIF Event Studio',
-      type: 'event_venue',
-      address: 'Labtek VIII Lt. 1',
-      latitude: -6.8881,
-      longitude: 107.611,
-      description: 'Venue kecil untuk workshop, diskusi, dan acara internal HMIF.',
-      shortDescription: 'Event venue · kapasitas 40 orang'
-    }
-  ];
-
   const locationIds = {};
-  for (const facility of facilities) {
-    const [existing] = await pool.query(
-      'SELECT id FROM locations WHERE organization_id = ? AND name = ? LIMIT 1',
-      [organization.id, facility.name]
-    );
-
-    if (existing.length > 0) {
-      locationIds[facility.type] = existing[0].id;
-      await pool.query(
-        `UPDATE locations
-         SET type = ?, address = ?, latitude = ?, longitude = ?, description = ?,
-             short_description = ?, owner_id = ?, is_active = TRUE
-         WHERE id = ?`,
-        [
-          facility.type,
-          facility.address,
-          facility.latitude,
-          facility.longitude,
-          facility.description,
-          facility.shortDescription,
-          organization.owner_id,
-          existing[0].id
-        ]
-      );
-      continue;
-    }
-
-    const [result] = await pool.query(
-      `INSERT INTO locations
-       (name, type, address, latitude, longitude, description, short_description, owner_id, organization_id, is_active)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE)`,
-      [
-        facility.name,
-        facility.type,
-        facility.address,
-        facility.latitude,
-        facility.longitude,
-        facility.description,
-        facility.shortDescription,
-        organization.owner_id,
-        organization.id
-      ]
-    );
-    locationIds[facility.type] = result.insertId;
+  const [meetingRooms] = await pool.query(
+    "SELECT id FROM locations WHERE name = 'Labtek V Discussion Room' LIMIT 1"
+  );
+  const [eventVenues] = await pool.query(
+    "SELECT id FROM locations WHERE name = 'West Hall (Aula Barat)' LIMIT 1"
+  );
+  if (!meetingRooms.length || !eventVenues.length) {
+    throw new Error('Campus Radar demo locations were not found.');
   }
+  locationIds.meeting_room = meetingRooms[0].id;
+  locationIds.event_venue = eventVenues[0].id;
+  await pool.query(
+    `UPDATE locations
+     SET owner_id = ?, organization_id = ?
+     WHERE id IN (?, ?)`,
+    [organization.owner_id, organization.id, locationIds.meeting_room, locationIds.event_venue]
+  );
 
   const [meetingRows] = await pool.query(
     'SELECT id FROM organization_meetings WHERE organization_id = ? AND title = ? LIMIT 1',
@@ -180,27 +131,6 @@ async function seedLiveSpotDemo(pool) {
         students[0].id,
         'Pendaftaran demo untuk menguji kartu peserta dan check-in QR.',
         crypto.randomBytes(32).toString('hex')
-      ]
-    );
-  }
-
-  const [requestRows] = await pool.query(
-    'SELECT id FROM place_requests WHERE organization_id = ? AND requester_id = ? AND name = ? LIMIT 1',
-    [organization.id, organization.owner_id, '[DEMO] Ruang Meeting Tambahan']
-  );
-  if (requestRows.length === 0) {
-    await pool.query(
-      `INSERT INTO place_requests
-       (requester_id, organization_id, name, type, address, latitude, longitude, short_description, status)
-       VALUES (?, ?, ?, 'meeting_room', ?, ?, ?, ?, 'pending')`,
-      [
-        organization.owner_id,
-        organization.id,
-        '[DEMO] Ruang Meeting Tambahan',
-        'Labtek V STEI Lt. 2',
-        -6.8889,
-        107.6102,
-        'Permintaan contoh untuk menampilkan status review fasilitas.'
       ]
     );
   }

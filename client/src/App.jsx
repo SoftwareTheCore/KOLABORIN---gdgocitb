@@ -5,27 +5,28 @@ import ProtectedRoute, { StudentRoute, VerifiedOrgRoute } from './auth/Protected
 import Navbar from './components/Navbar';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import Home from './pages/Home';
-import Profile from './pages/Profile';
-import PublicProfile from './pages/PublicProfile';
-import MapPage from './pages/MapPage';
-import Party from './pages/Party';
-import NewGroup from './pages/NewGroup';
-import GroupDetail from './pages/GroupDetail';
-import Events from './pages/Events';
-import EventDetail from './pages/EventDetail';
-import OrgNew from './pages/OrgNew';
-import OrgDetail from './pages/OrgDetail';
-import OrgManage from './pages/OrgManage';
-import OrgEventWorkspace from './pages/OrgEventWorkspace';
-import Communities from './pages/Communities';
-import CommunityRoom from './pages/CommunityRoom';
-import Leaderboard from './pages/Leaderboard';
-import Collab from './pages/Collab';
-import Admin from './pages/Admin';
 import Landing from './pages/Landing';
 import { useAuth } from './auth/AuthContext';
+import { PageSkeleton } from './components/LoadingSkeleton';
 
+const Home = lazy(() => import('./pages/Home'));
+const Profile = lazy(() => import('./pages/Profile'));
+const PublicProfile = lazy(() => import('./pages/PublicProfile'));
+const MapPage = lazy(() => import('./pages/MapPage'));
+const Party = lazy(() => import('./pages/Party'));
+const NewGroup = lazy(() => import('./pages/NewGroup'));
+const GroupDetail = lazy(() => import('./pages/GroupDetail'));
+const Events = lazy(() => import('./pages/Events'));
+const EventDetail = lazy(() => import('./pages/EventDetail'));
+const OrgNew = lazy(() => import('./pages/OrgNew'));
+const OrgDetail = lazy(() => import('./pages/OrgDetail'));
+const OrgManage = lazy(() => import('./pages/OrgManage'));
+const OrgEventWorkspace = lazy(() => import('./pages/OrgEventWorkspace'));
+const Communities = lazy(() => import('./pages/Communities'));
+const CommunityRoom = lazy(() => import('./pages/CommunityRoom'));
+const Leaderboard = lazy(() => import('./pages/Leaderboard'));
+const Collab = lazy(() => import('./pages/Collab'));
+const Admin = lazy(() => import('./pages/Admin'));
 const OrgLiveSpot = lazy(() => import('./pages/OrgLiveSpot'));
 
 function LandingOrHome() {
@@ -40,6 +41,7 @@ export default function App() {
     <AuthProvider>
       <BrowserRouter>
         <Navbar />
+        <Suspense fallback={<PageSkeleton />}>
         <Routes>
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
@@ -225,6 +227,7 @@ export default function App() {
           {/* Catch-all redirect */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
+        </Suspense>
       </BrowserRouter>
     </AuthProvider>
   );

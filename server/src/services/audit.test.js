@@ -25,8 +25,16 @@ assert.ok(
   'Admin organization updates must require pending status'
 );
 assert.ok(
-  read('src/routes/admin.js').includes("pr.status !== 'pending'"),
-  'Place approvals must require pending status'
+  read('src/routes/admin.js').includes('UPDATE locations SET is_active = FALSE'),
+  'Admin place removal must preserve referenced data'
+);
+assert.ok(
+  !read('src/app.js').includes('/api/place-requests'),
+  'Place requests must no longer be exposed by the API'
+);
+assert.ok(
+  read('src/routes/groups.js').includes('member.creator_id !== req.user.id'),
+  'Only the Open Party creator may check in participants'
 );
 assert.ok(
   read('src/routes/admin.js').includes("WHERE id = ? AND status = 'pending'"),

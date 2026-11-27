@@ -24,7 +24,7 @@ async function seed() {
     'user_badges', 'badges', 'point_transactions', 'point_rules',
     'organization_meetings', 'event_applications', 'events', 'community_messages', 'community_members',
     'communities', 'group_posts', 'study_group_members', 'study_groups',
-    'place_requests', 'locations', 'collaboration_requests', 'organizations',
+    'place_requests', 'location_ratings', 'locations', 'collaboration_requests', 'organizations',
     'users'
   ];
 
@@ -74,29 +74,52 @@ async function seed() {
     VALUES (1, 'Database Systems Expert', 'Database Systems', 'Demonstrated exceptional knowledge by answering at least 5 questions in Database Systems study groups.', 5)
   `);
 
-  // 4. Locations (6 active near ITB Bandung: -6.8893, 107.6104)
+  // 4. Campus Radar places around ITB Ganesha.
   const locations = [
-    { id: 1, name: 'Central Library ITB', type: 'study_spot', lat: -6.8893, lng: 107.6104, desc: 'Perpustakaan pusat ITB dengan area belajar tenang dan Wi-Fi cepat.', short: 'Quiet library area with fast Wi-Fi' },
-    { id: 2, name: 'Labtek V Discussion Room', type: 'meeting_room', lat: -6.8887, lng: 107.6101, desc: 'Ruang diskusi lantai 2 Labtek V STEI dengan whiteboard.', short: 'STEI discussion space with whiteboards' },
-    { id: 3, name: 'Kantin Borju (Boromeus)', type: 'study_spot', lat: -6.8905, lng: 107.6112, desc: 'Kantin santai dengan banyak colokan untuk diskusi santai.', short: 'Casual spot with snacks and plugs' },
-    { id: 4, name: 'West Hall (Aula Barat)', type: 'event_venue', lat: -6.8912, lng: 107.6098, desc: 'Gedung bersejarah ITB untuk seminar dan pameran teknologi.', short: 'Historic grand hall for campus events' },
-    { id: 5, name: 'Taman Cinta Labtek VIII', type: 'study_spot', lat: -6.8881, lng: 107.6110, desc: 'Area terbuka hijau sejuk untuk belajar kelompok santai.', short: 'Outdoor breezy park for group prep' },
-    { id: 6, name: 'Ganesha Tech Cafe', type: 'study_spot', lat: -6.8918, lng: 107.6120, desc: 'Cafe modern dekat gerbang depan ITB ramah laptop.', short: 'Cozy modern coffee spot near campus' }
+    { id: 1, name: 'Central Library ITB', type: 'study_spot', address: 'Gedung Perpustakaan Pusat', lat: -6.8893, lng: 107.6104, desc: 'Perpustakaan pusat untuk seminar kecil dan koordinasi komunitas. Area tenang dengan meja diskusi dan akses listrik.', short: '40 kursi belajar, Wi-Fi kampus, stopkontak di area meja, suasana tenang.' },
+    { id: 2, name: 'Labtek V Discussion Room', type: 'meeting_room', address: 'Labtek V STEI Lt. 2', lat: -6.8887, lng: 107.6101, desc: 'Ruang rapat berkapasitas 12 orang dengan whiteboard dan layar presentasi untuk koordinasi panitia.', short: '12 kursi, Wi-Fi kampus, whiteboard, stopkontak, cocok untuk diskusi kelompok.' },
+    { id: 3, name: 'Kantin Borju (Boromeus)', type: 'study_spot', address: 'Area Kantin Borju', lat: -6.8905, lng: 107.6112, desc: 'Area informal untuk rapat santai, networking, dan koordinasi kelompok kecil.', short: '24 kursi bersama, Wi-Fi publik, colokan terbatas, tersedia makanan dan minuman.' },
+    { id: 4, name: 'West Hall (Aula Barat)', type: 'event_venue', address: 'Aula Barat ITB', lat: -6.8912, lng: 107.6098, desc: 'Aula berkapasitas besar untuk seminar, pameran, konferensi, dan acara organisasi.', short: 'Kapasitas belajar 60 orang, Wi-Fi kampus, meja panjang, stopkontak di sisi ruangan.' },
+    { id: 5, name: 'Taman Cinta Labtek VIII', type: 'study_spot', address: 'Taman Labtek VIII', lat: -6.8881, lng: 107.6110, desc: 'Ruang terbuka untuk kegiatan komunitas, kumpul anggota, dan acara santai skala kecil.', short: '20 tempat duduk terbuka, Wi-Fi tidak stabil, tanpa stopkontak, area hijau.' },
+    { id: 6, name: 'Ganesha Tech Cafe', type: 'study_spot', address: 'Dekat Gerbang Utama ITB', lat: -6.8918, lng: 107.6120, desc: 'Kafe ramah laptop untuk diskusi, sesi mentoring, dan pertemuan informal organisasi.', short: '30 kursi, Wi-Fi tersedia, banyak stopkontak, tersedia makanan dan minuman.' },
+    { id: 7, name: 'Labtek VI Study Lounge', type: 'study_spot', address: 'Labtek VI Lt. 1', lat: -6.8890, lng: 107.6094, desc: 'Lounge mahasiswa untuk sesi belajar bersama dan diskusi akademik lintas jurusan.', short: '18 kursi, Wi-Fi kampus, stopkontak dekat dinding, suasana cukup tenang.' },
+    { id: 8, name: 'Labtek VII Meeting Room', type: 'meeting_room', address: 'Labtek VII Lt. 2', lat: -6.8877, lng: 107.6105, desc: 'Ruang pertemuan untuk rapat divisi, perencanaan program kerja, dan evaluasi internal.', short: '10 kursi, Wi-Fi kampus, whiteboard, layar presentasi, stopkontak.' },
+    { id: 9, name: 'Aula Timur', type: 'event_venue', address: 'Kompleks Aula Timur', lat: -6.8900, lng: 107.6087, desc: 'Venue untuk kuliah umum, workshop, pelatihan, dan acara organisasi kampus.', short: 'Kapasitas 80 orang, Wi-Fi kampus, meja fleksibel, stopkontak di beberapa sisi.' },
+    { id: 10, name: 'Plaza Widya Nusantara', type: 'study_spot', address: 'Plaza Widya Nusantara', lat: -6.8910, lng: 107.6107, desc: 'Plaza terbuka untuk kegiatan komunitas, pameran ringan, dan temu anggota.', short: '32 kursi area terbuka, Wi-Fi publik, tanpa stopkontak, area teduh.' },
+    { id: 11, name: 'Labtek VIII Collaborative Space', type: 'meeting_room', address: 'Labtek VIII Lt. 2', lat: -6.8884, lng: 107.6114, desc: 'Ruang kolaborasi untuk rapat proyek, pembagian tugas, dan diskusi lintas divisi.', short: '14 kursi, Wi-Fi kampus, whiteboard, stopkontak di setiap meja.' },
+    { id: 12, name: 'Selasar GKU Timur', type: 'study_spot', address: 'Gedung Kuliah Umum Timur', lat: -6.8898, lng: 107.6124, desc: 'Selasar nyaman untuk belajar mandiri, konsultasi, dan pertemuan singkat.', short: '16 kursi, Wi-Fi kampus, stopkontak terbatas, cocok untuk belajar singkat.' },
+    { id: 13, name: 'Ruang Seminar Labtek IX', type: 'event_venue', address: 'Labtek IX Lt. 3', lat: -6.8873, lng: 107.6091, desc: 'Ruang seminar untuk presentasi program, diskusi panel, dan pelatihan organisasi.', short: 'Kapasitas 45 orang, Wi-Fi kampus, proyektor, meja dan kursi rapat.' },
+    { id: 14, name: 'Taman Sipil', type: 'study_spot', address: 'Area Teknik Sipil', lat: -6.8920, lng: 107.6089, desc: 'Taman kampus untuk acara komunitas, diskusi terbuka, dan aktivitas anggota.', short: '24 kursi taman, Wi-Fi terbatas, tanpa stopkontak, area luar ruangan.' },
+    { id: 15, name: 'Labtek X Project Room', type: 'meeting_room', address: 'Labtek X Lt. 1', lat: -6.8867, lng: 107.6102, desc: 'Ruang proyek untuk rapat teknis, pengerjaan tim, dan koordinasi kegiatan organisasi.', short: '8 kursi, Wi-Fi kampus, whiteboard, stopkontak dan meja kerja.' },
+    { id: 16, name: 'Aula Timur FTSL', type: 'event_venue', address: 'Gedung FTSL', lat: -6.8909, lng: 107.6078, desc: 'Aula kegiatan mahasiswa untuk pelatihan, diskusi publik, dan gathering komunitas.', short: 'Kapasitas 55 orang, Wi-Fi kampus, proyektor, meja presentasi.' },
+    { id: 17, name: 'Student Center Lounge', type: 'study_spot', address: 'Student Center ITB Lt. 1', lat: -6.8922, lng: 107.6117, desc: 'Lounge mahasiswa untuk temu anggota, mentoring, dan persiapan acara kecil.', short: '22 kursi, Wi-Fi kampus, stopkontak tersedia, area semi-terbuka.' },
+    { id: 18, name: 'Labtek XI Discussion Room', type: 'meeting_room', address: 'Labtek XI Lt. 2', lat: -6.8871, lng: 107.6120, desc: 'Ruang diskusi untuk rapat koordinasi, diskusi program kerja, dan pertemuan pengurus.', short: '12 kursi, Wi-Fi kampus, whiteboard, stopkontak, ruangan ber-AC.' },
+    { id: 19, name: 'Taman TVST', type: 'study_spot', address: 'Taman TVST', lat: -6.8902, lng: 107.6130, desc: 'Area hijau untuk kegiatan komunitas informal, networking, dan temu anggota.', short: '18 tempat duduk terbuka, Wi-Fi publik, tanpa stopkontak, suasana rindang.' },
+    { id: 20, name: 'Auditorium Campus Center', type: 'event_venue', address: 'Campus Center ITB', lat: -6.8915, lng: 107.6082, desc: 'Auditorium untuk konferensi, talkshow, seminar, dan acara skala besar.', short: 'Kapasitas 100 orang, Wi-Fi kampus, proyektor, meja registrasi, stopkontak.' }
   ];
 
   for (const l of locations) {
     await pool.query(
-      `INSERT INTO locations (id, name, type, latitude, longitude, description, short_description, is_active)
-       VALUES (?, ?, ?, ?, ?, ?, ?, TRUE)`,
-      [l.id, l.name, l.type, l.lat, l.lng, l.desc, l.short]
+      `INSERT INTO locations (id, name, type, address, latitude, longitude, description, short_description, is_active)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, TRUE)`,
+      [l.id, l.name, l.type, l.address, l.lat, l.lng, l.desc, l.short]
     );
   }
 
-  // 5. 1 Pending place request (for Admin queue)
-  await pool.query(`
-    INSERT INTO place_requests (requester_id, name, type, address, latitude, longitude, short_description, status)
-    VALUES (2, 'Co-Working Space Perpustakaan Lantai 4', 'study_spot', 'Gedung Perpustakaan Pusat Lt 4', -6.8891, 107.6106, 'Area baru nyaman ber-AC untuk kolaborasi kelompok', 'pending')
-  `);
+  const demoRatings = [
+    [5, 5, 4], [5, 4, 4], [4, 4, 5], [5, 5, 5], [4, 3, 4],
+    [5, 4, 5], [4, 4, 4], [5, 4, 5], [5, 5, 4], [4, 3, 5],
+    [5, 4, 4], [4, 4, 5], [5, 5, 4], [4, 3, 4], [5, 4, 5],
+    [5, 5, 4], [4, 4, 5], [5, 4, 4], [4, 3, 5], [5, 5, 4]
+  ];
+  for (const [index, ratings] of demoRatings.entries()) {
+    for (const [ratingIndex, rating] of ratings.entries()) {
+      await pool.query(
+        'INSERT INTO location_ratings (location_id, user_id, rating) VALUES (?, ?, ?)',
+        [index + 1, [2, 3, 7][ratingIndex], rating]
+      );
+    }
+  }
 
   // 6. Organizations (HMIF verified, Robotics pending, GDSC verified)
   await pool.query(`

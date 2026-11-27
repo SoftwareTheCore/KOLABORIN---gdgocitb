@@ -74,6 +74,18 @@ Windows PowerShell:
 cmd /c "mysql -u root -p kolaborin < server\db\migrations\002_event_check_ins.sql"
 ```
 
+Jika database sudah dibuat sebelum rating Campus Radar dan QR kehadiran Open Party ditambahkan, jalankan migrasi berikut satu kali:
+
+```bash
+mysql -u root -p kolaborin < server/db/migrations/003_campus_radar_and_party_check_ins.sql
+```
+
+Windows PowerShell:
+
+```powershell
+cmd /c "mysql -u root -p kolaborin < server\db\migrations\003_campus_radar_and_party_check_ins.sql"
+```
+
 Kemudian isi data demo:
 
 ```bash
