@@ -63,7 +63,7 @@ router.get('/:id', authMiddleware, async (req, res, next) => {
     const event = eventRows[0];
 
     const [appRows] = await pool.query(
-      'SELECT id, message, status, applied_at FROM event_applications WHERE event_id = ? AND user_id = ?',
+      'SELECT id, message, status, applied_at, checked_in_at FROM event_applications WHERE event_id = ? AND user_id = ?',
       [eventId, userId]
     );
 

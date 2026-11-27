@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { QRCodeSVG } from 'qrcode.react';
 import { useAuth } from '../auth/AuthContext';
@@ -17,6 +17,15 @@ export default function EventDetail() {
   const [ticketCode, setTicketCode] = useState('');
   const [ticketLoading, setTicketLoading] = useState(false);
   const [ticketError, setTicketError] = useState('');
+  const [qrExpanded, setQrExpanded] = useState(false);
+  const qrDialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = qrDialogRef.current;
+    if (!dialog) return;
+    if (qrExpanded && !dialog.open) dialog.showModal();
+    if (!qrExpanded && dialog.open) dialog.close();
+  }, [qrExpanded]);
 
   const showToast = (msg) => {
     setToast(msg);
@@ -41,7 +50,7 @@ export default function EventDetail() {
   }, [id]);
 
   useEffect(() => {
-    if (!data || data.isOwner || data.myApplication?.status !== 'accepted') {
+    if (!data || data.isOwner || data.myApplication?.status !== 'accepted' || data.myApplication?.checked_in_at) {
       setTicketCode('');
       setTicketError('');
       setTicketLoading(false);
@@ -66,7 +75,7 @@ export default function EventDetail() {
     return () => {
       active = false;
     };
-  }, [id, data?.isOwner, data?.myApplication?.status]);
+  }, [id, data?.isOwner, data?.myApplication?.status, data?.myApplication?.checked_in_at]);
 
   const handleApply = async (e) => {
     e.preventDefault();
@@ -176,39 +185,85 @@ export default function EventDetail() {
                   <p style={{ color: 'var(--ok)', fontWeight: 600, marginTop: '0.5rem' }}>
                     🎉 Pendaftaranmu diterima. Tunjukkan tiket QR ini saat check-in event.
                   </p>
-                  <section className="event-ticket-card" aria-label="Tiket QR event">
-                    <div>
-                      <span className="eyebrow">Tiket peserta</span>
-                      <h4>{event.title}</h4>
-                      <p>Simpan QR ini dan tunjukkan ke panitia saat masuk. Tiket hanya dapat digunakan satu kali.</p>
-                      {ticketCode && (
-                        <button
-                          type="button"
-                          className="btn-secondary"
-                          onClick={async () => {
-                            try {
-                              await navigator.clipboard.writeText(ticketCode);
-                              showToast('Kode tiket berhasil disalin.');
-                            } catch (err) {
-                              console.error('Failed to copy event ticket code:', err);
-                              setTicketError('Kode tidak dapat disalin. Tampilkan QR tiket kepada panitia.');
-                            }
-                          }}
-                        >
-                          Salin kode manual
-                        </button>
-                      )}
+                  {myApplication.checked_in_at ? (
+                    <div className="org-qr-feedback is-success event-ticket-checkin-success" role="status">
+                      <strong><span className="material-symbols-outlined" aria-hidden="true">check_circle</span> Check-in berhasil</strong>
+                      <span>Kehadiranmu untuk {event.title} sudah tercatat.</span>
+                      <small>{new Date(myApplication.checked_in_at).toLocaleString('id-ID')}</small>
                     </div>
-                    <div className="event-ticket-qr">
-                      {ticketLoading ? (
-                        <span>Memuat tiket…</span>
-                      ) : ticketCode ? (
-                        <QRCodeSVG value={ticketCode} size={160} level="M" includeMargin />
-                      ) : (
-                        <span role={ticketError ? 'alert' : undefined}>{ticketError || 'Tiket QR belum tersedia.'}</span>
-                      )}
-                    </div>
-                  </section>
+                  ) : (
+                    <>
+                      <section className="event-ticket-card" aria-label="Tiket QR event">
+                        <div>
+                          <span className="eyebrow">Tiket peserta</span>
+                          <h4>{event.title}</h4>
+                          <p>Simpan QR ini dan tunjukkan ke panitia saat masuk. Tiket hanya dapat digunakan satu kali.</p>
+                          {ticketCode && (
+                            <button
+                              type="button"
+                              className="btn-secondary"
+                              onClick={async () => {
+                                try {
+                                  await navigator.clipboard.writeText(ticketCode);
+                                  showToast('Kode tiket berhasil disalin.');
+                                } catch (err) {
+                                  console.error('Failed to copy event ticket code:', err);
+                                  setTicketError('Kode tidak dapat disalin. Tampilkan QR tiket kepada panitia.');
+                                }
+                              }}
+                            >
+                              Salin kode manual
+                            </button>
+                          )}
+                        </div>
+                        <div className="event-ticket-qr">
+                          {ticketLoading ? (
+                            <span>Memuat tiket…</span>
+                          ) : ticketCode ? (
+                            <>
+                              <QRCodeSVG value={ticketCode} size={160} level="M" includeMargin />
+                              <button
+                                type="button"
+                                className="btn-secondary party-qr-expand"
+                                onClick={() => setQrExpanded(true)}
+                              >
+                                Perbesar QR
+                              </button>
+                            </>
+                          ) : (
+                            <span role={ticketError ? 'alert' : undefined}>{ticketError || 'Tiket QR belum tersedia.'}</span>
+                          )}
+                        </div>
+                      </section>
+                      <dialog
+                        ref={qrDialogRef}
+                        className="party-qr-dialog event-ticket-qr-dialog"
+                        aria-labelledby="event-ticket-qr-dialog-title"
+                        onCancel={() => setQrExpanded(false)}
+                        onClose={() => setQrExpanded(false)}
+                        onKeyDown={(event) => {
+                          if (event.key === 'Escape') setQrExpanded(false);
+                        }}
+                        onClick={(event) => {
+                          if (event.target === event.currentTarget) setQrExpanded(false);
+                        }}
+                      >
+                        <div className="party-qr-dialog-content">
+                          <div className="party-qr-dialog-heading">
+                            <div>
+                              <span className="eyebrow">Tiket peserta</span>
+                              <h3 id="event-ticket-qr-dialog-title">QR check-in event</h3>
+                            </div>
+                            <button type="button" className="btn-secondary" autoFocus onClick={() => setQrExpanded(false)}>
+                              Tutup
+                            </button>
+                          </div>
+                          {ticketCode && <QRCodeSVG value={ticketCode} size={360} level="M" includeMargin />}
+                          <p>Tunjukkan QR ini kepada panitia saat check-in event.</p>
+                        </div>
+                      </dialog>
+                    </>
+                  )}
                 </>
               )}
             </div>
