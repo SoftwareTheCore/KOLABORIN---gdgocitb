@@ -142,7 +142,7 @@ The full schema is in **Appendix A**. Summary (17 tables + 1 view):
 | Events | `events`, `event_applications` |
 | Gamification | `point_rules`, `point_transactions`, `badges`, `user_badges`, view `leaderboard` |
 
-Constraints to enforce in code: unique `(event_id, user_id)` on applications; unique `(user_id, badge_id)` on user badges; composite primary keys on membership tables (joining twice returns 409).
+Constraints to enforce in code: unique `(event_id, user_id)` on applications; unique ticket codes for events and study groups; one-time check-in recorded by `checked_in_at` and `checked_in_by`; unique `(user_id, badge_id)` on user badges; composite primary keys on membership tables (joining twice returns 409).
 
 ---
 
@@ -215,6 +215,8 @@ AC: from Home, one click on the preview opens the Map page; a click on a marker 
 
 **FR-PARTY-6 (P1) Close group** (creator): status `closed`, disappears from map and lists.
 
+**FR-PARTY-7 (P1) Open Party check-in.** A group member can retrieve and display a single-use QR ticket. The group creator validates it with the live camera scanner, a QR image, or a manual ticket code. Only a member's valid ticket for that group can be checked in; successful and rejected scans show clear feedback, and a ticket cannot be used twice.
+
 ### 5.5 Organizations and verification (M4)
 
 **FR-ORG-1 (P0) Register organization.** Any student: name, description, category. Created with `status='pending'`. The organization page shows a banner "Pending verification: you cannot publish events yet."
@@ -224,6 +226,8 @@ AC: from Home, one click on the preview opens the Map page; a click on a marker 
 **FR-ORG-3 (P0) Organization page** `/orgs/:id`: name, description, category, verified tick, upcoming events, community link, "Open for collaboration" tag.
 
 **FR-ORG-4 (P1) Manage page** `/orgs/:id/manage` (owner): edit description, toggle `open_for_collab` (only if verified), create community, create event, see applicants per event.
+
+**FR-ORG-5 (P1) Organization introduction page** `/organization-profile` (public): a landing page explains organization features and workflow, with clear registration and login links. The landing page's "Pelajari Fitur Organisasi" action opens this page.
 
 ### 5.6 Events (M4)
 
@@ -236,6 +240,10 @@ AC: from Home, one click on the preview opens the Map page; a click on a marker 
 **FR-EVT-4 (P0) Review applicants.** The event owner sees applicants (name, faculty, message, status) and accepts or rejects. Accept fails with 409 when accepted count already equals `capacity`. The student sees the updated status.
 
 **FR-EVT-5 (P1) Reward.** When an application becomes `accepted`, award `attend_event` points once per event.
+
+**FR-EVT-6 (P1) Event ticket QR.** An accepted applicant can retrieve and display a unique QR ticket from `/events/:id`; the QR can be enlarged for scanning. Ticket access is unavailable to other applicants and event owners.
+
+**FR-EVT-7 (P1) Event check-in.** The event owner validates accepted applicants using the live camera scanner, a QR image, or a manual 64-character ticket code. A successful scan records `checked_in_at` and `checked_in_by` and gives clear feedback. The event must be published; invalid, unaccepted, already-used, or wrong-event tickets are rejected.
 
 ### 5.7 Community Hub: rule-based chat (M5)
 
@@ -330,6 +338,8 @@ The Home map preview uses `GET /locations/live` (below), not the `/home` payload
 | PATCH | `/groups/:id` | Creator | `{status:"closed"}` (P1) |
 | GET | `/groups/:id/posts` | Yes | Questions with nested answers |
 | POST | `/groups/:id/posts` | Member | `{type:"question"\|"answer"\|"note", content, parent_id?}`; answers need a `parent_id` question in the same group; returns `{post, points, badgeRequested}` |
+| GET | `/groups/:id/ticket` | Group member | Returns the member's QR ticket |
+| POST | `/groups/:id/check-ins` | Group creator | `{ticket_code}`; validates a member's one-time ticket for that group |
 
 ### 6.5 Organizations
 | Method | Path | Auth | Notes |
@@ -346,10 +356,12 @@ The Home map preview uses `GET /locations/live` (below), not the `/home` payload
 |---|---|---|---|
 | GET | `/events` | Yes | Published, upcoming |
 | GET | `/events/:id` | Yes | Detail + `myApplication` + counts |
+| GET | `/events/:id/ticket` | Accepted applicant | Returns the applicant's unique QR ticket |
 | POST | `/events` | Verified org owner | `{organization_id,title,description,location_id?,start_at,end_at?,capacity?}`; 403 otherwise |
 | POST | `/events/:id/apply` | Yes | `{message?}`; 409 duplicate; 403 if caller owns the organization |
 | GET | `/events/:id/applications` | Event owner | Applicants |
 | PATCH | `/applications/:id` | Event owner | `{action:"accept"\|"reject"}`; capacity check; awards `attend_event` on accept |
+| POST | `/events/:id/check-ins` | Event owner | `{ticket_code}`; validates one accepted ticket for this event and records the check-in once |
 
 ### 6.7 Communities and chat
 | Method | Path | Auth | Notes |
@@ -451,6 +463,7 @@ Group join: lock the group row and compare the member count with `max_members`. 
 | `/communities`, `/communities/:id` | Community Hub (rule-based chat) | Logged in |
 | `/events`, `/events/:id` | Events | Logged in |
 | `/orgs/new`, `/orgs/:id`, `/orgs/:id/manage` | Organizations | Logged in (manage: owner) |
+| `/organization-profile` | Organization feature introduction | Public |
 | `/collab` | Collaboration (P2) | Verified org owner |
 | `/leaderboard`, `/profile/:id` | Gamification | Logged in |
 | `/admin` | Admin panel | Admin |
@@ -548,12 +561,13 @@ Content:
 6. Log in as **robotics@** (pending): show the "Pending verification" banner and that publishing an event is blocked. As admin: verify the organization. Now publish an event.
 7. As Mikail: apply to the event. As the owner: accept the application.
 8. Open **Communities → HMIF Announcements** as Mikail. Type "hi" (greeting reply), "ada event apa?" (reply with the next real event from the database), "grup belajar database" (recommends a real group), "poin saya" (shows his points and rank), and a random sentence (fallback reply).
+9. As Mikail: open the accepted event's QR ticket and enlarge it. As the event owner: scan it with the camera, upload a QR image, or enter its code; confirm success, then verify that a repeated or wrong-event ticket is rejected.
 
 ---
 
 ## 13. Out of scope (do not build)
 
-Real-time sockets (Socket.IO/WebSocket); native mobile apps; push or email notifications; payments or ticketing; GPS or QR check-in; file/image uploads; multi-campus support; AI or LLM-based chat; analytics dashboards; password reset by email; social login; direct (1-to-1) messaging; cloud deployment.
+Real-time sockets (Socket.IO/WebSocket); native mobile apps; push or email notifications; payments or paid ticketing; GPS tracking; general-purpose file/image uploads; multi-campus support; AI or LLM-based chat; analytics dashboards; password reset by email; social login; direct (1-to-1) messaging; cloud deployment.
 
 ---
 
@@ -565,7 +579,7 @@ Real-time sockets (Socket.IO/WebSocket); native mobile apps; push or email notif
 | **M1** | Auth | FR-AUTH-1..3, middleware, login/register pages, protected routes, navbar | Register, login, `/me` work; wrong role gets 403 |
 | **M2** | Home + map preview | FR-HOME-1..2, `/locations/live`, `PlaceMap` component (mini mode), `/home` endpoint with real data and empty states | Home renders for student, org owner, admin; clicking the preview opens `/map` |
 | **M3** | Map + Open Party | FR-MAP-1..5, FR-PARTY-1..5, points engine, place requests | Demo steps 2, 3, 5 work |
-| **M4** | Orgs, events, admin | FR-ORG-1..3, FR-EVT-1..4, FR-ADM-1 | Demo steps 6, 7 work |
+| **M4** | Orgs, events, admin | FR-ORG-1..5, FR-EVT-1..7, FR-ADM-1 | Demo steps 6, 7, 9 work |
 | **M5** | Community Hub (rule-based chat) | FR-COM-1..4, `chatbot.js` | Demo step 8 works |
 | **M6** | Points, leaderboard, badges | FR-PTS-1..2, FR-BDG-1..2, profile | Demo step 4 works; caps verified |
 | **M7** | Polish and stretch | FR-COL-1, broadcast, filters, leave/close group, states, dark mode, README | Full demo script passes twice in a row |
@@ -573,6 +587,7 @@ Real-time sockets (Socket.IO/WebSocket); native mobile apps; push or email notif
 ### 14.1 Test checklist
 - **Permissions:** a pending organization cannot publish an event (403); non-members cannot post in a group or read/send community messages; non-admins cannot reach `/api/admin/*`.
 - **Rules:** full group rejects join; duplicate event application rejected; event capacity respected; daily cap stops points and shows "Daily limit reached"; leaving and rejoining gives no extra points.
+- **QR check-in:** event and Open Party tickets are single-use and scoped to their event/group; only the event owner or group creator can validate them; pending applicants, invalid codes, wrong-event codes, and repeat scans are rejected.
 - **Chat:** each rule in Appendix B returns the expected reply in English and in Indonesian; broadcasts get no reply; fallback works; auto-replies never award points.
 - **Home preview:** non-draggable; tooltip on hover; marker click goes to `/map?place=<id>` with that place selected; other clicks go to `/map`.
 - **Map:** headcount changes after joining a group; approved place appears; pending place visible only to its requester.
@@ -585,7 +600,7 @@ Real-time sockets (Socket.IO/WebSocket); native mobile apps; push or email notif
 - The default campus center is configurable (`VITE_MAP_LAT`, `VITE_MAP_LNG`); the seed uses coordinates near ITB Bandung.
 - `bcryptjs` is used instead of native `bcrypt` to avoid compile issues; hashes are compatible.
 - A user may own more than one organization; Home and the navbar handle the list.
-- Event attendance is represented by an accepted application (no check-in).
+- Event acceptance and attendance are separate: only accepted applicants can check in with a single-use event ticket.
 - UI language is English; strings are centralised for a later Indonesian version.
 
 ---
@@ -687,10 +702,16 @@ CREATE TABLE study_groups (
 CREATE TABLE study_group_members (
   group_id INT NOT NULL,
   user_id INT NOT NULL,
+  ticket_code CHAR(64) NULL,
+  checked_in_at DATETIME NULL,
+  checked_in_by INT NULL,
   joined_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (group_id, user_id),
+  UNIQUE KEY uq_group_ticket_code (ticket_code),
+  INDEX idx_group_check_in (group_id, checked_in_at),
   FOREIGN KEY (group_id) REFERENCES study_groups(id) ON DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (checked_in_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
 CREATE TABLE group_posts (
@@ -764,11 +785,17 @@ CREATE TABLE event_applications (
   user_id INT NOT NULL,
   message TEXT,
   status ENUM('pending','accepted','rejected') NOT NULL DEFAULT 'pending',
+  ticket_code CHAR(64) NULL,
+  checked_in_at DATETIME NULL,
+  checked_in_by INT NULL,
   applied_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   UNIQUE KEY uq_event_user (event_id, user_id),
+  UNIQUE KEY uq_event_ticket_code (ticket_code),
   INDEX idx_event_status (event_id, status),
+  INDEX idx_event_check_in (event_id, checked_in_at),
   FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE,
-  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (checked_in_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
 CREATE TABLE point_rules (
