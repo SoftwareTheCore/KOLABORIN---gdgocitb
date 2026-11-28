@@ -6,8 +6,14 @@ import { QRCodeSVG } from 'qrcode.react';
 import StudyRoomSidebar from '../components/StudyRoomSidebar';
 import StudyRoomWorkspace from '../components/StudyRoomWorkspace';
 import { PageSkeleton } from '../components/LoadingSkeleton';
+import {
+  decodeQrFromImage,
+  getQrCameraErrorMessage,
+  getQrImageErrorMessage,
+  startQrCamera
+} from '../utils/qrScanner';
 
-function OpenPartyAttendance({ groupId, isMember, isCreator, onCheckedIn }) {
+function OpenPartyAttendance({ groupId, isMember, isCreator, checkedInAt, onCheckedIn }) {
   const videoRef = useRef(null);
   const checkTicketRef = useRef(null);
   const checkingRef = useRef(false);
@@ -18,6 +24,7 @@ function OpenPartyAttendance({ groupId, isMember, isCreator, onCheckedIn }) {
   const [checking, setChecking] = useState(false);
   const [feedback, setFeedback] = useState(null);
   const [scannerError, setScannerError] = useState('');
+  const [cameraStarting, setCameraStarting] = useState(false);
   const [qrExpanded, setQrExpanded] = useState(false);
   const qrDialogRef = useRef(null);
 
@@ -73,22 +80,21 @@ function OpenPartyAttendance({ groupId, isMember, isCreator, onCheckedIn }) {
     let controls;
     const startScanner = async () => {
       try {
-        const { BrowserMultiFormatReader } = await import('@zxing/browser');
-        if (!active) return;
-        const reader = new BrowserMultiFormatReader();
-        controls = await reader.decodeFromVideoDevice(undefined, videoRef.current, (result) => {
-          if (!active || !result) return;
-          const code = result.getText().trim();
+        controls = await startQrCamera(videoRef.current, (value) => {
+          if (!active) return;
+          const code = value.trim();
           const now = Date.now();
           if (!code || (lastScanRef.current.code === code && now - lastScanRef.current.at < 4000)) return;
           lastScanRef.current = { code, at: now };
           checkTicketRef.current?.(code);
         });
-        if (!active) controls.stop();
+        if (active) setCameraStarting(false);
+        else controls.stop();
       } catch (err) {
         if (!active) return;
         console.error('Unable to start Open Party QR scanner:', err);
-        setScannerError('Kamera tidak dapat dibuka. Periksa izin browser atau masukkan kode secara manual.');
+        setScannerError(getQrCameraErrorMessage(err));
+        setCameraStarting(false);
         setCameraActive(false);
       }
     };
@@ -99,6 +105,22 @@ function OpenPartyAttendance({ groupId, isMember, isCreator, onCheckedIn }) {
     };
   }, [cameraActive, isCreator]);
 
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setScannerError('');
+    setFeedback(null);
+    try {
+      const code = await decodeQrFromImage(file);
+      await checkTicket(code);
+    } catch (err) {
+      console.error('Unable to decode Open Party QR image:', err);
+      setScannerError(getQrImageErrorMessage(err));
+    }
+  };
+
   if (!isMember && !isCreator) return null;
 
   return (
@@ -108,16 +130,23 @@ function OpenPartyAttendance({ groupId, isMember, isCreator, onCheckedIn }) {
           <div>
             <span className="eyebrow">Kehadiran Open Party</span>
             <h3>QR check-in Anda</h3>
-            <p>Tunjukkan kode ini kepada penyelenggara saat tiba di lokasi.</p>
+            <p>{checkedInAt ? 'Kehadiran Anda sudah berhasil diverifikasi.' : 'Tunjukkan kode ini kepada penyelenggara saat tiba di lokasi.'}</p>
           </div>
-          <div className="party-attendance-qr" aria-label="QR check-in Open Party">
-            {ticketCode ? <QRCodeSVG value={ticketCode} size={132} level="M" includeMargin /> : <span className="skeleton-block" />}
-            {ticketCode && (
-              <button type="button" className="btn-secondary party-qr-expand" onClick={() => setQrExpanded(true)}>
-                Perbesar QR
-              </button>
-            )}
-          </div>
+          {checkedInAt ? (
+            <div className="org-qr-feedback is-success" role="status">
+              <strong><span className="material-symbols-outlined" aria-hidden="true">check_circle</span> Kehadiran berhasil</strong>
+              <span>{new Date(checkedInAt).toLocaleString('id-ID')}</span>
+            </div>
+          ) : (
+            <div className="party-attendance-qr" aria-label="QR check-in Open Party">
+              {ticketCode ? <QRCodeSVG value={ticketCode} size={132} level="M" includeMargin /> : <span className="skeleton-block" />}
+              {ticketCode && (
+                <button type="button" className="btn-secondary party-qr-expand" onClick={() => setQrExpanded(true)}>
+                  Perbesar QR
+                </button>
+              )}
+            </div>
+          )}
         </div>
       )}
       <dialog
@@ -153,19 +182,45 @@ function OpenPartyAttendance({ groupId, isMember, isCreator, onCheckedIn }) {
             <div><span className="eyebrow">Khusus penyelenggara</span><h3>Verifikasi kehadiran</h3></div>
             <button type="button" className={cameraActive ? 'btn-secondary' : 'btn-primary'} onClick={() => {
               setScannerError('');
-              setCameraActive((active) => !active);
-            }}>
-              {cameraActive ? 'Matikan kamera' : 'Scan QR'}
+              if (cameraActive) {
+                setCameraActive(false);
+                setCameraStarting(false);
+              } else {
+                setCameraStarting(true);
+                setCameraActive(true);
+              }
+            }} disabled={cameraStarting}>
+              {cameraStarting ? 'Menghubungkan kamera…' : cameraActive ? 'Matikan kamera' : 'Scan QR'}
             </button>
           </div>
           {cameraActive && <video ref={videoRef} className="party-attendance-video" autoPlay muted playsInline />}
           {scannerError && <p className="org-qr-feedback is-error" role="alert">{scannerError}</p>}
           {feedback && (
             <div className={`org-qr-feedback ${feedback.type === 'success' ? 'is-success' : 'is-error'}`} role={feedback.type === 'success' ? 'status' : 'alert'}>
-              <strong>{feedback.type === 'success' ? 'Kehadiran terverifikasi' : 'Verifikasi gagal'}</strong>
+              <strong>
+                <span className="material-symbols-outlined" aria-hidden="true">
+                  {feedback.type === 'success' ? 'check_circle' : 'error'}
+                </span>
+                {feedback.type === 'success' ? 'Kehadiran terverifikasi' : 'Verifikasi gagal'}
+              </strong>
               <span>{feedback.type === 'success' ? feedback.attendee?.name : feedback.message}</span>
+              {feedback.type === 'success' && feedback.attendee?.checked_in_at && (
+                <small>{new Date(feedback.attendee.checked_in_at).toLocaleString('id-ID')}</small>
+              )}
             </div>
           )}
+          <label className="org-qr-image-upload" htmlFor="party-ticket-image">
+            <span className="material-symbols-outlined" aria-hidden="true">image</span>
+            Scan QR dari foto atau gambar
+            <input
+              id="party-ticket-image"
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handleImageChange}
+              disabled={checking}
+            />
+          </label>
           <form className="org-qr-manual-form" onSubmit={(event) => {
             event.preventDefault();
             checkTicket(manualCode);
@@ -328,6 +383,7 @@ export default function GroupDetail() {
   }
 
   const { group, members, isMember, isCreator } = data;
+  const ownMembership = members.find((member) => String(member.user_id) === String(user.id));
 
   return (
     <div className="container" style={{ padding: '2rem 1rem', maxWidth: '1400px', margin: '0 auto' }}>
@@ -390,6 +446,7 @@ export default function GroupDetail() {
         groupId={id}
         isMember={isMember}
         isCreator={isCreator}
+        checkedInAt={ownMembership?.checked_in_at}
         onCheckedIn={loadGroupAndPosts}
       />
 

@@ -12,6 +12,7 @@ import { PageSkeleton } from './components/LoadingSkeleton';
 const Home = lazy(() => import('./pages/Home'));
 const Profile = lazy(() => import('./pages/Profile'));
 const PublicProfile = lazy(() => import('./pages/PublicProfile'));
+const OrganizationProfile = lazy(() => import('./pages/OrganizationProfile'));
 const MapPage = lazy(() => import('./pages/MapPage'));
 const Party = lazy(() => import('./pages/Party'));
 const NewGroup = lazy(() => import('./pages/NewGroup'));
@@ -40,20 +41,24 @@ function AppContent() {
   const { user } = useAuth();
   const location = useLocation();
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
-  const hasSidebar = Boolean(user) && !['/login', '/register'].includes(location.pathname);
+  const isOrganizationProfile = location.pathname === '/organization-profile';
+  const hasSidebar = Boolean(user) && !['/login', '/register', '/organization-profile'].includes(location.pathname);
 
   return (
     <div className={`app-layout${hasSidebar ? ' has-sidebar' : ''}${sidebarCollapsed ? ' sidebar-collapsed' : ''}`}>
-      <Navbar
-        sidebarCollapsed={sidebarCollapsed}
-        onToggleSidebar={() => setSidebarCollapsed((collapsed) => !collapsed)}
-      />
+      {!isOrganizationProfile && (
+        <Navbar
+          sidebarCollapsed={sidebarCollapsed}
+          onToggleSidebar={() => setSidebarCollapsed((collapsed) => !collapsed)}
+        />
+      )}
       <div className="app-content">
         <Suspense fallback={<PageSkeleton />}>
         <Routes>
           {/* Public routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/organization-profile" element={<OrganizationProfile />} />
 
           {/* Protected routes */}
           <Route path="/" element={<LandingOrHome />} />

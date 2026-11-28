@@ -121,6 +121,7 @@ const FACULTY_PROGRAMS = {
 export default function Register() {
   const [searchParams] = useSearchParams();
   const initialEmail = searchParams.get('email') || '';
+  const initialRole = searchParams.get('role') === 'organization' ? 'organization' : 'student';
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState(initialEmail);
@@ -130,7 +131,7 @@ export default function Register() {
   const [major, setMajor] = useState(FACULTY_PROGRAMS.STEI.programs[0].value);
   const [otherFaculty, setOtherFaculty] = useState('');
   const [otherMajor, setOtherMajor] = useState('');
-  const [role, setRole] = useState('student');
+  const [role, setRole] = useState(initialRole);
   const [organizationName, setOrganizationName] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(true);
   const [error, setError] = useState('');
@@ -224,12 +225,18 @@ export default function Register() {
             <div className="rc-card-hero">
               <div className="rc-hero-top">
                 <div className="rc-hero-icon">
-                  <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>school</span>
+                  <span className="material-symbols-outlined" style={{ fontSize: '28px' }}>
+                    {role === 'organization' ? 'domain' : 'school'}
+                  </span>
                 </div>
               </div>
-              <h1 className="rc-card-title">Pendaftaran Akun Mahasiswa</h1>
+              <h1 className="rc-card-title">
+                {role === 'organization' ? 'Pendaftaran Akun Organisasi' : 'Pendaftaran Akun Mahasiswa'}
+              </h1>
               <p className="rc-card-desc">
-                Buat profil kolaborasi akademik Anda dan temukan teman belajar satu kampus.
+                {role === 'organization'
+                  ? 'Daftarkan organisasi kampus Anda dan siapkan profil untuk proses verifikasi.'
+                  : 'Buat profil kolaborasi akademik Anda dan temukan teman belajar satu kampus.'}
               </p>
             </div>
 

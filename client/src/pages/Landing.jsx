@@ -179,7 +179,7 @@ export default function Landing() {
                     <span>Mulai Jelajah Kampus</span>
                     <span className="material-symbols-outlined" style={{ fontSize: '18px' }}>arrow_forward</span>
                   </button>
-                  <button onClick={() => navigate('/login')} className="st-cta-secondary">
+                  <button onClick={() => navigate('/organization-profile')} className="st-cta-secondary">
                     <span className="material-symbols-outlined" style={{ fontSize: '18px', color: '#777587' }}>domain_verification</span>
                     <span>Pelajari Fitur Organisasi</span>
                   </button>

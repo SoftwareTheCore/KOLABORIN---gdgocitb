@@ -1,6 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import api from '../api';
+import {
+  decodeQrFromImage,
+  getQrCameraErrorMessage,
+  getQrImageErrorMessage,
+  startQrCamera
+} from '../utils/qrScanner';
 
 const STATUS_LABELS = {
   pending: 'Menunggu',
@@ -48,7 +54,7 @@ function exportApplications(applications) {
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-function QrGateScanner({ eventId, eventStatus, onCheckedIn }) {
+function QrGateScanner({ eventId, eventTitle, eventStatus, onCheckedIn }) {
   const videoRef = useRef(null);
   const checkTicketRef = useRef(null);
   const checkingRef = useRef(false);
@@ -59,6 +65,7 @@ function QrGateScanner({ eventId, eventStatus, onCheckedIn }) {
   const [checking, setChecking] = useState(false);
   const [scannerError, setScannerError] = useState('');
   const [feedback, setFeedback] = useState(null);
+  const [cameraStarting, setCameraStarting] = useState(false);
 
   const checkTicket = async (value) => {
     const ticketCode = typeof value === 'string' ? value.trim() : '';
@@ -86,29 +93,33 @@ function QrGateScanner({ eventId, eventStatus, onCheckedIn }) {
   checkTicketRef.current = checkTicket;
 
   useEffect(() => {
-    if (!cameraActive || !eventId || eventStatus !== 'published') return undefined;
+    if (!cameraActive) return undefined;
+    if (!eventId || eventStatus !== 'published') {
+      setCameraStarting(false);
+      setCameraActive(false);
+      return undefined;
+    }
 
     let active = true;
     let scannerControls;
     const startScanner = async () => {
       try {
-        const { BrowserMultiFormatReader } = await import('@zxing/browser');
-        if (!active) return;
-        const reader = new BrowserMultiFormatReader();
-        scannerControls = await reader.decodeFromVideoDevice(undefined, videoRef.current, (result) => {
-          if (!active || !result) return;
-          const code = result.getText().trim();
+        scannerControls = await startQrCamera(videoRef.current, (value) => {
+          if (!active) return;
+          const code = value.trim();
           const now = Date.now();
           if (!code || checkedCodesRef.current.has(code)) return;
           if (lastScanRef.current.code === code && now - lastScanRef.current.at < 4000) return;
           lastScanRef.current = { code, at: now };
           checkTicketRef.current?.(code);
         });
-        if (!active) scannerControls.stop();
+        if (active) setCameraStarting(false);
+        else scannerControls.stop();
       } catch (err) {
         if (!active) return;
         console.error('Unable to start QR camera scanner:', err);
-        setScannerError('Kamera tidak dapat dibuka. Periksa izin kamera browser atau gunakan kode manual.');
+        setScannerError(getQrCameraErrorMessage(err));
+        setCameraStarting(false);
         setCameraActive(false);
       }
     };
@@ -125,6 +136,22 @@ function QrGateScanner({ eventId, eventStatus, onCheckedIn }) {
     checkTicket(manualCode);
   };
 
+  const handleImageChange = async (event) => {
+    const file = event.target.files?.[0];
+    event.target.value = '';
+    if (!file) return;
+
+    setScannerError('');
+    setFeedback(null);
+    try {
+      const code = await decodeQrFromImage(file);
+      await checkTicket(code);
+    } catch (err) {
+      console.error('Unable to decode event QR image:', err);
+      setScannerError(getQrImageErrorMessage(err));
+    }
+  };
+
   return (
     <section className="org-qr-scanner-panel">
       <header className="org-qr-scanner-heading">
@@ -133,9 +160,12 @@ function QrGateScanner({ eventId, eventStatus, onCheckedIn }) {
           <h2>Live QR Gate Scanner</h2>
         </div>
         <span className={`org-qr-live-indicator ${cameraActive ? 'is-active' : ''}`}>
-          <i /> {cameraActive ? 'Kamera aktif' : 'Gate siap'}
+          <i /> {cameraStarting ? 'Menghubungkan kamera' : cameraActive ? 'Kamera siap' : 'Gate siap'}
         </span>
       </header>
+      <p className="org-qr-selected-event">
+        {eventTitle ? `Tiket yang dipindai akan divalidasi untuk: ${eventTitle}` : 'Pilih event untuk mulai check-in.'}
+      </p>
 
       <div className={`org-qr-viewfinder ${cameraActive ? 'is-camera-active' : ''}`}>
         {cameraActive ? (
@@ -156,11 +186,17 @@ function QrGateScanner({ eventId, eventStatus, onCheckedIn }) {
           className={cameraActive ? 'btn-secondary' : 'btn-primary'}
           onClick={() => {
             setScannerError('');
-            setCameraActive((active) => !active);
+            if (cameraActive) {
+              setCameraActive(false);
+              setCameraStarting(false);
+            } else {
+              setCameraStarting(true);
+              setCameraActive(true);
+            }
           }}
-          disabled={!eventId || eventStatus !== 'published'}
+          disabled={!eventId || eventStatus !== 'published' || cameraStarting}
         >
-          {cameraActive ? 'Hentikan kamera' : 'Mulai scan dengan kamera'}
+          {cameraStarting ? 'Menghubungkan kamera…' : cameraActive ? 'Hentikan kamera' : 'Mulai scan dengan kamera'}
         </button>
         {(!eventId || eventStatus !== 'published') && (
           <small>Pilih event yang dipublikasikan untuk mengaktifkan scanner.</small>
@@ -170,7 +206,12 @@ function QrGateScanner({ eventId, eventStatus, onCheckedIn }) {
       {scannerError && <p className="org-qr-feedback is-error" role="alert">{scannerError}</p>}
       {feedback && (
         <div className={`org-qr-feedback ${feedback.type === 'success' ? 'is-success' : 'is-error'}`} role={feedback.type === 'success' ? 'status' : 'alert'}>
-          <strong>{feedback.type === 'success' ? 'Check-in berhasil' : 'Check-in gagal'}</strong>
+          <strong>
+            <span className="material-symbols-outlined" aria-hidden="true">
+              {feedback.type === 'success' ? 'check_circle' : 'error'}
+            </span>
+            {feedback.type === 'success' ? 'Check-in berhasil' : 'Check-in gagal'}
+          </strong>
           <span>{feedback.type === 'success' ? feedback.attendee?.name : feedback.message}</span>
           {feedback.type === 'success' && feedback.attendee && (
             <small>
@@ -182,6 +223,19 @@ function QrGateScanner({ eventId, eventStatus, onCheckedIn }) {
           )}
         </div>
       )}
+
+      <label className="org-qr-image-upload" htmlFor="event-ticket-image">
+        <span className="material-symbols-outlined" aria-hidden="true">image</span>
+        Scan QR dari foto atau gambar
+        <input
+          id="event-ticket-image"
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleImageChange}
+          disabled={checking || !eventId || eventStatus !== 'published'}
+        />
+      </label>
 
       <form className="org-qr-manual-form" onSubmit={handleManualSubmit}>
         <label htmlFor="manual-event-ticket">Validasi manual jika kamera terkendala</label>
@@ -561,6 +615,7 @@ export default function OrgEventWorkspace({ mode = 'events' }) {
       {!isRecruitmentView && (
         <QrGateScanner
           eventId={selectedEventId}
+          eventTitle={selectedEvent?.title}
           eventStatus={selectedEvent?.status}
           onCheckedIn={() => setRefreshKey((key) => key + 1)}
         />
